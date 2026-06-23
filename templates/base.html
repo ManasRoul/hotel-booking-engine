@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SagarBela Hotel Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css") }}">
+    {% block extra_style %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <a href="/" class="brand">✨ Sagar Bela</a>
+        <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a href="/">📊 Dashboard</a>
+            <a href="/book">📝 Book Room</a>
+            <a href="/block">🚫 Block Room</a>
+            <a href="/bookings">📋 Bookings</a>
+            <a href="/reports">📈 Reports</a>
+            <a href="/rooms">🏨 Rooms</a>
+            {% if session.get('username') == 'admin' %}
+            <a href="/users">👥 Users</a>
+            {% endif %}
+            <a href="/logout" style="color:#e53e3e;">🚪 Logout</a>
+        </div>
+    </nav>
+    <script>
+        function toggleNav() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('open');
+        }
+        
+        // Close nav when clicking outside
+        document.addEventListener('click', function(e) {
+            const nav = document.querySelector('nav');
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (navLinks && navLinks.classList.contains('open') && !nav.contains(e.target)) {
+                navLinks.classList.remove('open');
+            }
+        });
+        
+        // Close nav when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                const navLinks = document.getElementById('navLinks');
+                if (navLinks) {
+                    navLinks.classList.remove('open');
+                }
+            });
+        });
+    </script>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

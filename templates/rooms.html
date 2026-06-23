@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/rooms.css") }}">
+{% endblock %}
+{% block content %}
+<h2>🏨 Manage Rooms</h2>
+<div class="page-grid">
+    <div class="card">
+        <h3 style="margin-bottom:1.5rem; color:#2d3748;">✨ Add New Room</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label>🚪 Room Number</label>
+                <input type="text" name="number" required placeholder="e.g. 101">
+            </div>
+            <div class="form-group">
+                <label>🏨 Room Type</label>
+                <select name="room_type" required>
+                    <option value="Single">🛏️ Single</option>
+                    <option value="Double">🛏️🛏️ Double</option>
+                    <option value="Suite">👑 Suite</option>
+                    <option value="Deluxe">💎 Deluxe</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>❄️ Climate</label>
+                <select name="ac_type" required>
+                    <option value="AC">❄️ AC</option>
+                    <option value="Non-AC">🌡️ Non-AC</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>💰 Price per Day</label>
+                <input type="number" name="price_per_day" required step="0.01" placeholder="₹ 0.00">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.9rem;">✨ Add Room</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+            <h3 style="margin:0; color:#2d3748;">🏨 Existing Rooms</h3>
+            <div style="display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap;">
+                <span style="background:linear-gradient(135deg,#48bb78,#38a169); color:white; padding:0.4rem 1rem; border-radius:12px; font-size:0.75rem; font-weight:700; box-shadow:0 4px 12px rgba(72,187,120,0.2);">📅 {{ current_month_name }} {{ current_year }}</span>
+                <span style="background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:800; box-shadow:0 4px 12px rgba(102,126,234,0.3);">{{ rooms|length }} Rooms</span>
+            </div>
+        </div>
+        
+        <!-- Month Filter -->
+        {% if available_months %}
+        <div style="margin-bottom:1.2rem;">
+            <form method="GET" id="monthFilterForm" style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                <label style="font-weight:600; color:#4a5568; font-size:0.9rem;">🗓️ View Prices For:</label>
+                <select name="month" id="monthSelect" style="padding:0.5rem 2.5rem 0.5rem 0.7rem; border:2px solid #667eea; border-radius:8px; font-size:0.9rem; background:linear-gradient(135deg,#f7fafc,#edf2f7); cursor:pointer; font-weight:600; color:#2d3748;" onchange="document.getElementById('monthFilterForm').submit()">
+                    <option value="">All Months</option>
+                    {% for year, month in available_months %}
+                    <option value="{{ month }}" data-year="{{ year }}" {% if selected_month == month and selected_year == year %}selected{% endif %}>
+                        {{ [None, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][month] }} {{ year }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="year" id="yearInput" value="{{ selected_year or '' }}">
+                {% if selected_month %}
+                <a href="/rooms" style="padding:0.5rem 0.8rem; background:#718096; color:white; border-radius:8px; font-size:0.85rem; font-weight:600; text-decoration:none; transition:all 0.2s; box-shadow:0 2px 8px rgba(113,128,150,0.3);" onmouseover="this.style.background='#e53e3e'" onmouseout="this.style.background='#718096'">✕ Clear</a>
+                {% endif %}
+            </form>
+        </div>
+        {% endif %}
+        
+        <div style="background:#e6f2ff; border-left:4px solid #667eea; padding:0.8rem 1rem; margin-bottom:1rem; border-radius:8px; font-size:0.85rem; color:#4a5568;">
+            💡 <strong>Tip:</strong> Click on a room number to view details and set monthly pricing
+        </div>
+        {% if rooms %}
+        <table>
+            <thead>
+            <tr><th>Number 🔗</th><th>Type</th><th>Climate</th><th>{{ current_month_name }} Price</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+            {% for room in rooms %}
+            {% set price_info = room_prices[room.id] %}
+            <tr>
+                <td data-label="Number" style="font-weight:800; font-size:1.05rem;"><a href="/room/{{ room.id }}" style="color:#667eea; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.color='#5a67d8'; this.style.textDecoration='underline'" onmouseout="this.style.color='#667eea'; this.style.textDecoration='none'">{{ room.number }} →</a></td>
+                <td data-label="Type"><span style="background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:700; color:#2d3748;">{{ room.room_type }}</span></td>
+                <td data-label="Climate"><span style="background:{% if room.ac_type == 'AC' %}linear-gradient(135deg,#bee3f8,#90cdf4){% else %}linear-gradient(135deg,#feebc8,#fbd38d){% endif %}; padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:700; color:#2d3748;">{{ room.ac_type }}</span></td>
+                <td data-label="{{ current_month_name }} Price">
+                    <div style="display:flex; flex-direction:column; gap:0.3rem;">
+                        <div style="font-weight:800; {% if price_info.is_custom %}color:#48bb78{% else %}color:#667eea{% endif %}; font-size:1rem;">
+                            ₹{{ price_info.price }}
+                            {% if price_info.is_custom %}
+                            <span style="background:linear-gradient(135deg,#48bb78,#38a169); color:white; padding:0.15rem 0.5rem; border-radius:6px; font-size:0.65rem; font-weight:700; margin-left:0.3rem; box-shadow:0 2px 6px rgba(72,187,120,0.3);">Custom</span>
+                            {% endif %}
+                        </div>
+                        {% if price_info.is_custom %}
+                        <div style="font-size:0.7rem; color:#718096;">Base: ₹{{ price_info.base_price }}</div>
+                        {% endif %}
+                    </div>
+                </td>
+                <td data-label="Action">
+                    <form method="POST" action="/rooms/delete/{{ room.id }}" style="display:inline;">
+                        <button class="btn btn-danger btn-sm" onclick="return confirm('Delete room {{ room.number }}?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div style="display:flex; gap:1.5rem; margin-top:1rem; padding-top:1rem; border-top:2px solid #f7fafc; font-size:0.8rem; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span style="color:#48bb78; font-weight:800; font-size:1.1rem;">₹</span>
+                <span style="color:#718096;">= Custom price for {{ current_month_name }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span style="color:#667eea; font-weight:800; font-size:1.1rem;">₹</span>
+                <span style="color:#718096;">= Base price (no custom price set)</span>
+            </div>
+        </div>
+        {% else %}
+        <div style="text-align:center; padding:4rem 2rem;">
+            <div style="font-size:4rem; margin-bottom:1rem;">🏨</div>
+            <p style="color:#718096; font-size:1.2rem; font-weight:600;">No rooms yet. Add your first room!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Sync year field when month is selected
+document.getElementById('monthSelect')?.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const year = selectedOption.getAttribute('data-year');
+    document.getElementById('yearInput').value = year || '';
+});
+</script>
+
+{% endblock %}

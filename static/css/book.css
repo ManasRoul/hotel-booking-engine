@@ -1,0 +1,137 @@
+/* Mobile-first approach with maximum specificity */
+    @media screen and (max-width: 768px) {
+        /* Container */
+        div[style*="max-width"] {
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            padding: 0 1rem !important;
+        }
+        
+        body > main > div[style*="max-width"],
+        #content > div[style*="max-width"] {
+            max-width: 100% !important;
+            padding: 0 1rem !important;
+        }
+        
+        h2 {
+            font-size: 1.4rem !important;
+            margin-bottom: 1.2rem !important;
+        }
+        
+        .card {
+            padding: 1.5rem 1rem !important;
+            border-radius: 16px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Override grid completely - use flexbox instead */
+        form .form-row,
+        form .form-row-3,
+        .card .form-row,
+        .card .form-row-3 {
+            display: flex !important;
+            flex-direction: column !important;
+            grid-template-columns: none !important;
+            gap: 0 !important;
+            width: 100% !important;
+        }
+        
+        /* Every form group stacks */
+        form .form-group,
+        .card .form-group {
+            margin-bottom: 1rem !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+        }
+        
+        /* Labels */
+        form .form-group label,
+        .card .form-group label {
+            font-size: 0.9rem !important;
+            margin-bottom: 0.5rem !important;
+            display: block !important;
+        }
+        
+        /* All inputs full width */
+        form .form-group input,
+        form .form-group select,
+        .card .form-group input,
+        .card .form-group select {
+            font-size: 16px !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 10px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+        }
+        
+        /* Readonly inputs */
+        form input[readonly],
+        .card input[readonly] {
+            font-size: 16px !important;
+            width: 100% !important;
+        }
+        
+        /* Submit button */
+        form button[type="submit"],
+        .card button[type="submit"] {
+            padding: 0.9rem 1rem !important;
+            font-size: 1rem !important;
+            margin-top: 1rem !important;
+            border-radius: 12px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Error div */
+        #date-error {
+            font-size: 0.85rem !important;
+            padding: 0.8rem !important;
+            border-radius: 10px !important;
+            margin-bottom: 1rem !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Room status */
+        #room-status {
+            display: block !important;
+            margin-left: 0 !important;
+            margin-top: 0.3rem !important;
+            font-size: 0.75rem !important;
+        }
+    }
+    
+    @media screen and (max-width: 480px) {
+        div[style*="max-width"] {
+            padding: 0 0.8rem !important;
+        }
+        
+        h2 {
+            font-size: 1.2rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .card {
+            padding: 1.2rem 0.8rem !important;
+        }
+        
+        form .form-group,
+        .card .form-group {
+            margin-bottom: 0.9rem !important;
+        }
+        
+        form .form-group label,
+        .card .form-group label {
+            font-size: 0.85rem !important;
+        }
+        
+        form button[type="submit"],
+        .card button[type="submit"] {
+            font-size: 0.95rem !important;
+        }
+    }

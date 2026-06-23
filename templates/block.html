@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/block.css") }}">
+{% endblock %}
+{% block content %}
+<h2>🚫 Block Room</h2>
+<div class="page-grid">
+    <div class="card">
+        <h3 style="margin-bottom:1rem; color:#2d3748;">🔒 Block a Room</h3>
+        <div style="background:#e6f2ff; border-left:4px solid #48bb78; padding:0.8rem 1rem; margin-bottom:1.5rem; border-radius:8px; font-size:0.85rem; color:#4a5568;">
+            💡 <strong>Tip:</strong> Multiple users can block the same room for overlapping dates. All blocks will be displayed on the calendar.
+        </div>
+        <form method="POST">
+            <div class="form-group">
+                <label>📅 From</label>
+                <input type="datetime-local" name="start_date" id="start_date" required>
+            </div>
+            <div class="form-group">
+                <label>📅 To</label>
+                <input type="datetime-local" name="end_date" id="end_date" required>
+            </div>
+            <div class="form-group">
+                <label>🏨 Room <span id="room-status" style="font-size:0.78rem; font-weight:600; color:#667eea; margin-left:0.5rem;"></span></label>
+                <select name="room_id" id="room_select" required>
+                    <option value="">Select dates first...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>👤 Blocked By</label>
+                <input type="text" name="blocked_by" value="{{ current_username }}" readonly style="background:#f7fafc; cursor:not-allowed;" required>
+            </div>
+            <div class="form-group">
+                <label>📝 Reason</label>
+                <input type="text" name="reason" placeholder="e.g. Maintenance, VIP hold">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.9rem;">🔒 Block Room</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.5rem; margin-bottom:1.5rem;">
+            <h3 style="margin:0; color:#2d3748;">🚫 Active Blocks</h3>
+            <span style="background:linear-gradient(135deg,#ed8936,#dd6b20); color:white; padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:800; box-shadow:0 4px 12px rgba(237,137,54,0.3);">{{ blocks|length }} Blocked</span>
+        </div>
+        {% if blocks %}
+        <table>
+            <thead>
+            <tr><th>Room</th><th>Blocked By</th><th>Reason</th><th>From</th><th>To</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+            {% for b in blocks %}
+            <tr>
+                <td data-label="Room"><span style="background:linear-gradient(135deg,#ed8936,#dd6b20); color:white; padding:0.4rem 0.9rem; border-radius:10px; font-size:0.85rem; font-weight:800; box-shadow:0 4px 12px rgba(237,137,54,0.3);">{{ b.room.number }}</span></td>
+                <td data-label="Blocked By" style="font-weight:700; color:#2d3748;">{{ b.blocked_by }}</td>
+                <td data-label="Reason" style="color:#718096; font-style:italic;">{{ b.reason or '—' }}</td>
+                <td data-label="From" style="font-size:0.85rem; font-weight:600;">{{ b.start_date.strftime('%d %b %Y, %H:%M') }}</td>
+                <td data-label="To" style="font-size:0.85rem; font-weight:600;">{{ b.end_date.strftime('%d %b %Y, %H:%M') }}</td>
+                <td data-label="Action">
+                    <form method="POST" action="/block/delete/{{ b.id }}" style="display:inline;">
+                        <button class="btn btn-danger btn-sm" onclick="return confirm('Unblock this room?')">Unblock</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div style="text-align:center; padding:4rem 2rem;">
+            <div style="font-size:4rem; margin-bottom:1rem;">✅</div>
+            <p style="color:#718096; font-size:1.2rem; font-weight:600;">No rooms currently blocked</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// All rooms data from server
+const allRooms = [
+    {% for room in rooms %}
+    {
+        id: {{ room.id }},
+        number: "{{ room.number }}",
+        type: "{{ room.room_type }}",
+        ac: "{{ room.ac_type }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+function updateRooms() {
+    const start = document.getElementById('start_date').value;
+    const end = document.getElementById('end_date').value;
+    const select = document.getElementById('room_select');
+    const status = document.getElementById('room-status');
+    
+    if (!start || !end) {
+        select.innerHTML = '<option value="">Select dates first...</option>';
+        status.textContent = '';
+        return;
+    }
+    
+    // Populate all rooms (allow overlapping blocks)
+    select.innerHTML = '<option value="">Select a room...</option>';
+    allRooms.forEach(room => {
+        const opt = document.createElement('option');
+        opt.value = room.id;
+        opt.textContent = `${room.number} — ${room.type} ${room.ac}`;
+        select.appendChild(opt);
+    });
+    status.textContent = `(${allRooms.length} rooms - overlapping blocks allowed)`;
+    status.style.color = '#48bb78';
+}
+
+document.getElementById('start_date').addEventListener('change', updateRooms);
+document.getElementById('end_date').addEventListener('change', updateRooms);
+</script>
+{% endblock %}

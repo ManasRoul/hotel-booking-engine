@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/month.css") }}">
+{% endblock %}
+
+{% block content %}
+<a href="/?year={{ year }}" class="back-link">← Back to {{ year }} overview</a>
+
+<div class="month-header">
+    {% if month > 1 %}
+    <a href="/month/{{ year }}/{{ month - 1 }}">◀</a>
+    {% else %}
+    <a href="/month/{{ year - 1 }}/12">◀</a>
+    {% endif %}
+    <h2 style="margin:0; flex:1;">📅 {{ month_name }} {{ year }}</h2>
+    {% if month < 12 %}
+    <a href="/month/{{ year }}/{{ month + 1 }}">▶</a>
+    {% else %}
+    <a href="/month/{{ year + 1 }}/1">▶</a>
+    {% endif %}
+</div>
+
+<div class="legend">
+    <span><span class="box" style="background:#f7fafc; border:2px solid #cbd5e0;"></span> Available (Room #)</span>
+    <span><span class="box" style="background:#e53e3e;"></span> Booked</span>
+    <span><span class="box" style="background:#dd6b20;"></span> Blocked</span>
+</div>
+
+<div class="card" style="overflow-x:auto; padding:2rem;">
+    <table class="cal-table">
+        <thead>
+        <tr>
+            <th class="room-label">Room</th>
+            {% for day in range(1, days_in_month + 1) %}
+            <th>{{ day }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for room in rooms %}
+        <tr>
+            <td class="room-label">{{ room.number }} ({{ room.ac_type }})</td>
+            {% for day in range(1, days_in_month + 1) %}
+                {% set ns = namespace(booked=false, blocked_list=[], guest='') %}
+                {% for b in bookings %}
+                    {% if b.room_id == room.id %}
+                        {% set day_start = year * 10000 + month * 100 + day %}
+                        {% set b_start = b.checkin.year * 10000 + b.checkin.month * 100 + b.checkin.day %}
+                        {% set b_end = b.checkout.year * 10000 + b.checkout.month * 100 + b.checkout.day %}
+                        {% if day_start >= b_start and day_start < b_end %}
+                            {% set ns.booked = true %}
+                            {% set ns.guest = b.guest_name %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if not ns.booked %}
+                    {% for bl in blocks %}
+                        {% if bl.room_id == room.id %}
+                            {% set day_start = year * 10000 + month * 100 + day %}
+                            {% set bl_start = bl.start_date.year * 10000 + bl.start_date.month * 100 + bl.start_date.day %}
+                            {% set bl_end = bl.end_date.year * 10000 + bl.end_date.month * 100 + bl.end_date.day %}
+                            {% if day_start >= bl_start and day_start < bl_end %}
+                                {% set _ = ns.blocked_list.append(bl) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if ns.booked %}
+                <td class="booked" title="{{ ns.guest }}" onclick="showBookingDetails({{ year }}, {{ month }}, {{ day }}, {{ room.id }})">●</td>
+                {% elif ns.blocked_list|length > 0 %}
+                {% set all_blocked_by = ns.blocked_list|map(attribute='blocked_by')|join(', ') %}
+                {% set user_colors = [] %}
+                {% for bl in ns.blocked_list %}
+                    {% set user_color = bl.user.color if bl.user else '#dd6b20' %}
+                    {% set _ = user_colors.append(user_color) %}
+                {% endfor %}
+                {% if ns.blocked_list|length == 1 %}
+                    {% set bg_style = 'background:' + user_colors[0] %}
+                {% elif ns.blocked_list|length == 2 %}
+                    {% set bg_style = 'background:linear-gradient(135deg,' + user_colors[0] + ' 0%, ' + user_colors[0] + ' 50%, ' + user_colors[1] + ' 50%, ' + user_colors[1] + ' 100%)' %}
+                {% else %}
+                    {% set bg_style = 'background:linear-gradient(135deg,' + user_colors|join(',') + ')' %}
+                {% endif %}
+                <td class="blocked" title="{{ ns.blocked_list|length }} block(s): {{ all_blocked_by }}" onclick="showBlockedDetails({{ year }}, {{ month }}, {{ day }}, {{ room.id }})" style="{{ bg_style }}; color:white; font-weight:800;">✖{% if ns.blocked_list|length > 1 %}<span style="font-size:0.65rem; font-weight:800; vertical-align:super;">{{ ns.blocked_list|length }}</span>{% endif %}</td>
+                {% else %}
+                <td class="available">{{ room.number }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if bookings %}
+<div class="card booking-list">
+    <h3 style="margin-bottom:1.5rem; color:#2d3748;">📋 Bookings in {{ month_name }}</h3>
+    {% for b in bookings %}
+    <div class="booking-item" onclick="showBookingDetailsById({{ b.id }})">
+        <span class="booking-room">{{ b.room.number }}</span>
+        <span class="booking-guest">{{ b.guest_name }}</span>
+        <span class="booking-dates">{{ b.checkin.strftime('%d %b %H:%M') }} → {{ b.checkout.strftime('%d %b %H:%M') }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:4rem 2rem;">
+    <div style="font-size:4rem; margin-bottom:1rem;">📅</div>
+    <p style="color:#718096; font-size:1.2rem; font-weight:600;">No bookings for {{ month_name }} {{ year }}</p>
+</div>
+{% endif %}
+
+<!-- Booking Details Modal -->
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">📋 Booking Details</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <p style="text-align: center; color: #718096;">Loading...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Store bookings data for quick lookup
+const bookingsData = [
+    {% for b in bookings %}
+    {
+        id: {{ b.id }},
+        room_id: {{ b.room_id }},
+        room_number: "{{ b.room.number }}",
+        room_type: "{{ b.room.room_type }}",
+        ac_type: "{{ b.room.ac_type }}",
+        guest_name: "{{ b.guest_name }}",
+        guest_phone: "{{ b.guest_phone or '' }}",
+        id_number: "{{ b.id_number or '' }}",
+        checkin: new Date("{{ b.checkin.isoformat() }}"),
+        checkout: new Date("{{ b.checkout.isoformat() }}"),
+        payment_mode: "{{ b.payment_mode or '' }}",
+        payment_type: "{{ b.payment_type or '' }}",
+        total_amount: {{ b.total_amount or 0 }},
+        amount_received: {{ b.amount_received or 0 }},
+        booked_by: "{{ b.booked_by or '' }}",
+        receipt_no: "{{ b.receipt_no or '' }}"
+    },
+    {% endfor %}
+];
+
+// Store blocked rooms data
+const blocksData = [
+    {% for bl in blocks %}
+    {
+        id: {{ bl.id }},
+        room_id: {{ bl.room_id }},
+        room_number: "{{ bl.room.number }}",
+        room_type: "{{ bl.room.room_type }}",
+        ac_type: "{{ bl.room.ac_type }}",
+        start_date: new Date("{{ bl.start_date.isoformat() }}"),
+        end_date: new Date("{{ bl.end_date.isoformat() }}"),
+        blocked_by: "{{ bl.blocked_by or '' }}",
+        reason: "{{ bl.reason or '' }}",
+        user_color: "{{ bl.user.color if bl.user else '#dd6b20' }}"
+    },
+    {% endfor %}
+];
+
+function showBookingDetails(year, month, day, roomId) {
+    const clickedDate = new Date(year, month - 1, day);
+    
+    // Find the booking for this date and room
+    const booking = bookingsData.find(b => {
+        return b.room_id === roomId && 
+               clickedDate >= new Date(b.checkin.getFullYear(), b.checkin.getMonth(), b.checkin.getDate()) &&
+               clickedDate < new Date(b.checkout.getFullYear(), b.checkout.getMonth(), b.checkout.getDate());
+    });
+    
+    if (!booking) return;
+    
+    // Load payment history
+    fetch(`/api/booking-payments/${booking.id}`)
+        .then(r => r.json())
+        .then(payments => {
+            displayBookingWithPayments(booking, payments);
+        })
+        .catch(error => {
+            console.error('Error loading payments:', error);
+            document.getElementById('modalBody').innerHTML = '<p style="color:#e53e3e;">Error loading booking details</p>';
+        });
+    
+    document.getElementById('bookingModal').classList.add('active');
+}
+
+function displayBookingWithPayments(booking, payments) {
+    // Format dates
+    const checkinStr = booking.checkin.toLocaleString('en-IN', { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+    
+    const checkoutStr = booking.checkout.toLocaleString('en-IN', { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+    
+    // Calculate nights
+    const nights = Math.ceil((booking.checkout - booking.checkin) / (1000 * 60 * 60 * 24));
+    
+    // Calculate payment totals
+    const cashTotal = payments.filter(p => p.payment_mode === 'Cash').reduce((sum, p) => sum + p.amount, 0);
+    const upiTotal = payments.filter(p => p.payment_mode === 'UPI').reduce((sum, p) => sum + p.amount, 0);
+    const totalPaid = cashTotal + upiTotal;
+    const remaining = booking.total_amount - totalPaid;
+    
+    // Build modal content
+    let html = `
+        <div id="viewMode">
+            <div class="detail-row">
+                <div class="detail-label">Room:</div>
+                <div class="detail-value"><strong>${booking.room_number} (${booking.room_type} ${booking.ac_type})</strong></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Guest Name:</div>
+                <div class="detail-value"><strong>${booking.guest_name}</strong></div>
+            </div>
+    `;
+    
+    if (booking.guest_phone) {
+        html += `
+            <div class="detail-row">
+                <div class="detail-label">Phone:</div>
+                <div class="detail-value">${booking.guest_phone}</div>
+            </div>
+        `;
+    }
+    
+    if (booking.id_number) {
+        html += `
+            <div class="detail-row">
+                <div class="detail-label">ID Number:</div>
+                <div class="detail-value">${booking.id_number}</div>
+            </div>
+        `;
+    }
+    
+    html += `
+            <div class="detail-row">
+                <div class="detail-label">Check-in:</div>
+                <div class="detail-value">${checkinStr}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Check-out:</div>
+                <div class="detail-value">${checkoutStr}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Nights:</div>
+                <div class="detail-value">${nights}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Total Amount:</div>
+                <div class="detail-value" id="displayTotal"><strong>₹${booking.total_amount.toFixed(2)}</strong></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Total Paid:</div>
+                <div class="detail-value" style="color:#38a169;" id="displayPaid"><strong>₹${totalPaid.toFixed(2)}</strong></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Cash Paid:</div>
+                <div class="detail-value" id="displayCash">₹${cashTotal.toFixed(2)}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">UPI Paid:</div>
+                <div class="detail-value" id="displayUPI">₹${upiTotal.toFixed(2)}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Remaining:</div>
+                <div class="detail-value" style="color:#e53e3e;" id="displayRemaining"><strong>₹${remaining.toFixed(2)}</strong></div>
+            </div>
+    `;
+    
+    if (booking.booked_by) {
+        html += `
+            <div class="detail-row">
+                <div class="detail-label">Booked By:</div>
+                <div class="detail-value">${booking.booked_by}</div>
+            </div>
+        `;
+    }
+    
+    if (payments.length > 0) {
+        html += `
+            <div class="payment-history">
+                <div class="payment-history-title">💳 Payment History</div>
+                <div id="paymentList">
+                    ${payments.map(p => `
+                        <div class="payment-item">
+                            <div class="payment-item-left">
+                                <span class="payment-mode-badge payment-mode-${p.payment_mode.toLowerCase()}">${p.payment_mode}</span>
+                                <span class="payment-amount">₹${p.amount.toFixed(2)}</span>
+                            </div>
+                            <div class="payment-date">${p.payment_date}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (remaining > 0) {
+        html += `<button class="btn-add-payment" onclick="showAddPaymentForm(${booking.id}, ${remaining})">💰 Add Payment</button>`;
+    }
+    
+    html += `
+        </div>
+        <div id="addPaymentMode" class="edit-form">
+            <form id="addPaymentForm" onsubmit="addPayment(event, ${booking.id})">
+                <div class="edit-form-group">
+                    <label>Payment Amount (₹)</label>
+                    <input type="number" name="amount" id="paymentAmount" step="0.01" min="0.01" max="${remaining}" required placeholder="Enter amount">
+                </div>
+                <div class="edit-form-group">
+                    <label>Payment Mode</label>
+                    <select name="payment_mode" id="paymentMode" required>
+                        <option value="Cash">💵 Cash</option>
+                        <option value="UPI">📲 UPI</option>
+                    </select>
+                </div>
+                <div class="edit-form-group">
+                    <label>Receipt No. (Optional)</label>
+                    <input type="text" name="receipt_no" id="paymentReceipt" placeholder="Receipt number">
+                </div>
+                <div class="edit-form-group">
+                    <label>Notes (Optional)</label>
+                    <input type="text" name="notes" id="paymentNotes" placeholder="Payment notes">
+                </div>
+                <div class="edit-buttons">
+                    <button type="submit" class="edit-btn edit-btn-primary">✅ Add Payment</button>
+                    <button type="button" class="edit-btn edit-btn-secondary" onclick="hideAddPaymentForm()">❌ Cancel</button>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('bookingModal').classList.add('active');
+}
+
+function showBlockedDetails(year, month, day, roomId) {
+    const clickedDate = new Date(year, month - 1, day);
+    
+    // Find ALL blocks for this date and room
+    const matchingBlocks = blocksData.filter(bl => {
+        return bl.room_id === roomId && 
+               clickedDate >= new Date(bl.start_date.getFullYear(), bl.start_date.getMonth(), bl.start_date.getDate()) &&
+               clickedDate < new Date(bl.end_date.getFullYear(), bl.end_date.getMonth(), bl.end_date.getDate());
+    });
+    
+    if (matchingBlocks.length === 0) return;
+    
+    // Get room info from first block
+    const firstBlock = matchingBlocks[0];
+    
+    // Build modal content
+    let html = `<div style="margin-bottom:1rem; color:#718096; font-size:0.9rem;">
+        <strong>${matchingBlocks.length}</strong> overlapping block(s) for this room:
+    </div>`;
+    
+    matchingBlocks.forEach((block, index) => {
+        // Format dates
+        const startStr = block.start_date.toLocaleString('en-IN', { 
+            day: '2-digit', 
+            month: 'short', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+        
+        const endStr = block.end_date.toLocaleString('en-IN', { 
+            day: '2-digit', 
+            month: 'short', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+        
+        // Calculate nights
+        const nights = Math.ceil((block.end_date - block.start_date) / (1000 * 60 * 60 * 24));
+        const userColor = block.user_color || '#dd6b20';
+        
+        html += `
+            <div style="background: ${index % 2 === 0 ? '#f7fafc' : 'white'}; border: 2px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.8rem;">
+                    <span style="background:${userColor}; color:white; padding:0.2rem 0.6rem; border-radius:6px; font-size:0.75rem; font-weight:800;">Block ${index + 1}</span>
+                    <span style="color:#718096; font-size:0.8rem;">${block.room_number} (${block.room_type} ${block.ac_type})</span>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Blocked By:</div>
+                    <div class="detail-value"><strong>${block.blocked_by}</strong> <span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:${userColor}; margin-left:0.3rem; vertical-align:middle;"></span></div>
+                </div>
+        `;
+        
+        if (block.reason) {
+            html += `
+                <div class="detail-row">
+                    <div class="detail-label">Reason:</div>
+                    <div class="detail-value">${block.reason}</div>
+                </div>
+            `;
+        }
+        
+        html += `
+                <div class="detail-row">
+                    <div class="detail-label">Start Date:</div>
+                    <div class="detail-value">${startStr}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">End Date:</div>
+                    <div class="detail-value">${endStr}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Duration:</div>
+                    <div class="detail-value"><strong>${nights} night${nights !== 1 ? 's' : ''}</strong></div>
+                </div>
+            </div>
+        `;
+    });
+    
+    document.getElementById('modalTitle').textContent = `🚫 Blocked Room: ${firstBlock.room_number} (${firstBlock.room_type} ${firstBlock.ac_type})`;
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('bookingModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('bookingModal').classList.remove('active');
+    document.getElementById('modalTitle').textContent = '📋 Booking Details';
+}
+
+// Show booking details by ID (for clicking booking list items)
+function showBookingDetailsById(bookingId) {
+    const booking = bookingsData.find(b => b.id === bookingId);
+    if (!booking) return;
+    
+    // Load payment history
+    fetch(`/api/booking-payments/${bookingId}`)
+        .then(r => r.json())
+        .then(payments => {
+            displayBookingWithPayments(booking, payments);
+        })
+        .catch(error => {
+            console.error('Error loading payments:', error);
+            document.getElementById('modalBody').innerHTML = '<p style="color:#e53e3e;">Error loading booking details</p>';
+        });
+    
+    document.getElementById('bookingModal').classList.add('active');
+}
+
+function showAddPaymentForm(bookingId, remaining) {
+    document.getElementById('viewMode').style.display = 'none';
+    document.getElementById('addPaymentMode').classList.add('active');
+    document.getElementById('paymentAmount').value = remaining.toFixed(2);
+    document.getElementById('paymentAmount').max = remaining;
+}
+
+function hideAddPaymentForm() {
+    document.getElementById('viewMode').style.display = 'block';
+    document.getElementById('addPaymentMode').classList.remove('active');
+}
+
+function addPayment(event, bookingId) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    fetch(`/bookings/update/${bookingId}`, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the display values
+            document.getElementById('displayTotal').innerHTML = `<strong>₹${data.booking.total_amount.toFixed(2)}</strong>`;
+            document.getElementById('displayPaid').innerHTML = `<strong>₹${data.booking.amount_received.toFixed(2)}</strong>`;
+            document.getElementById('displayCash').textContent = `₹${data.booking.cash_total.toFixed(2)}`;
+            document.getElementById('displayUPI').textContent = `₹${data.booking.upi_total.toFixed(2)}`;
+            document.getElementById('displayRemaining').innerHTML = `<strong>₹${data.booking.remaining.toFixed(2)}</strong>`;
+            
+            // Update payment history list
+            const paymentList = document.getElementById('paymentList');
+            if (paymentList) {
+                paymentList.innerHTML = data.payments.map(p => `
+                    <div class="payment-item">
+                        <div class="payment-item-left">
+                            <span class="payment-mode-badge payment-mode-${p.payment_mode.toLowerCase()}">${p.payment_mode}</span>
+                            <span class="payment-amount">₹${p.amount.toFixed(2)}</span>
+                        </div>
+                        <div class="payment-date">${p.payment_date}</div>
+                    </div>
+                `).join('');
+            }
+            
+            // Hide form and show view mode
+            hideAddPaymentForm();
+            
+            // Show success message
+            alert('✅ Payment added successfully! Collection totals have been updated.');
+        } else {
+            alert('❌ Error adding payment. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('❌ Error adding payment. Please try again.');
+    });
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('bookingModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// Swipe gestures for month navigation (mobile)
+let touchStartX = 0;
+let touchEndX = 0;
+
+const monthHeader = document.querySelector('.month-header');
+if (monthHeader) {
+    monthHeader.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    monthHeader.addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+}
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        const currentYear = {{ year }};
+        const currentMonth = {{ month }};
+        
+        if (diff > 0) {
+            // Swipe left - next month
+            if (currentMonth < 12) {
+                window.location.href = `/month/${currentYear}/${currentMonth + 1}`;
+            } else {
+                window.location.href = `/month/${currentYear + 1}/1`;
+            }
+        } else {
+            // Swipe right - previous month
+            if (currentMonth > 1) {
+                window.location.href = `/month/${currentYear}/${currentMonth - 1}`;
+            } else {
+                window.location.href = `/month/${currentYear - 1}/12`;
+            }
+        }
+    }
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/reports.css") }}">
+{% endblock %}
+
+{% block content %}
+<div class="month-nav">
+    {% if month > 1 %}
+    <a href="?year={{ year }}&month={{ month - 1 }}">◀</a>
+    {% else %}
+    <a href="?year={{ year - 1 }}&month=12">◀</a>
+    {% endif %}
+    <h2 style="margin:0; flex:1;">📊 {{ month_name }} {{ year }} Reports</h2>
+    {% if month < 12 %}
+    <a href="?year={{ year }}&month={{ month + 1 }}">▶</a>
+    {% else %}
+    <a href="?year={{ year + 1 }}&month=1">▶</a>
+    {% endif %}
+</div>
+
+<h3 style="margin-bottom:1.2rem; color:#2d3748; font-size:1.3rem;">💰 Collection Summary</h3>
+<div class="collection-cards">
+    <div class="col-card total">
+        <div class="amount">₹{{ total_collected }}</div>
+        <div class="label">💵 Total Collected</div>
+    </div>
+    <div class="col-card cash">
+        <div class="amount">₹{{ cash_collected }}</div>
+        <div class="label">💵 Cash</div>
+    </div>
+    <div class="col-card upi">
+        <div class="amount">₹{{ upi_collected }}</div>
+        <div class="label">📲 UPI</div>
+    </div>
+    <div class="col-card total" style="border-color:#f56565;">
+        <div class="amount">{{ bookings|length }}</div>
+        <div class="label">📋 Bookings</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom:1.5rem; color:#2d3748;">🏨 Occupancy by Room</h3>
+    <table style="width:100%;">
+        <thead>
+        <tr><th>Room</th><th>Type</th><th>Occupied Days</th><th>Occupancy Rate</th></tr>
+        </thead>
+        <tbody>
+        {% for rid, data in room_occupancy.items() %}
+        <tr>
+            <td style="font-weight:800; font-size:1.05rem; color:#667eea;">{{ data.room.number }}</td>
+            <td><span style="background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:700; color:#2d3748;">{{ data.room.room_type }}</span></td>
+            <td style="font-weight:700; color:#2d3748;">{{ data.occupied }} / {{ data.total }} days</td>
+            <td style="width:45%;">
+                <div style="display:flex; align-items:center; gap:0.8rem;">
+                    <div class="occ-bar" style="flex:1;">
+                        <div class="fill {% if data.percent >= 70 %}high{% elif data.percent >= 40 %}mid{% else %}low{% endif %}" style="width:{{ data.percent }}%;"></div>
+                    </div>
+                    <span style="font-weight:800; font-size:0.95rem; min-width:50px; color:#667eea;">{{ data.percent }}%</span>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom:1.5rem; color:#2d3748;">📅 Daily Occupancy Overview</h3>
+    <div class="daily-grid">
+        {% for day, data in daily_occupancy.items() %}
+        <div class="day-cell">
+            <div class="day-num">Day {{ day }}</div>
+            <div class="day-val" style="color:{% if data.percent >= 70 %}#38a169{% elif data.percent >= 40 %}#dd6b20{% else %}#e53e3e{% endif %};">{{ data.occupied }}/{{ data.total }}</div>
+            <div class="day-pct" style="color:{% if data.percent >= 70 %}#38a169{% elif data.percent >= 40 %}#dd6b20{% else %}#e53e3e{% endif %};">{{ data.percent }}%</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+// Swipe gestures for month navigation (mobile)
+let touchStartX = 0;
+let touchEndX = 0;
+
+const monthNav = document.querySelector('.month-nav');
+if (monthNav) {
+    monthNav.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    monthNav.addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+}
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        const currentYear = {{ year }};
+        const currentMonth = {{ month }};
+        
+        if (diff > 0) {
+            // Swipe left - next month
+            if (currentMonth < 12) {
+                window.location.href = `?year=${currentYear}&month=${currentMonth + 1}`;
+            } else {
+                window.location.href = `?year=${currentYear + 1}&month=1`;
+            }
+        } else {
+            // Swipe right - previous month
+            if (currentMonth > 1) {
+                window.location.href = `?year=${currentYear}&month=${currentMonth - 1}`;
+            } else {
+                window.location.href = `?year=${currentYear - 1}&month=12`;
+            }
+        }
+    }
+}
+</script>
+
+{% endblock %}

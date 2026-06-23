@@ -1,0 +1,220 @@
+@media (max-width: 768px) {
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .page-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.2rem !important;
+        }
+        
+        .card {
+            padding: 1.2rem !important;
+        }
+        
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem !important;
+        }
+        
+        /* Form inputs on mobile */
+        .form-group input,
+        .form-group select {
+            font-size: 16px !important; /* Prevent zoom on iOS */
+        }
+        
+        /* Make table scrollable */
+        .card > table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table th, table td {
+            padding: 0.6rem 0.4rem;
+            font-size: 0.75rem;
+        }
+        
+        [style*="justify-content:space-between"] {
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        
+        [style*="justify-content:space-between"] h3 {
+            font-size: 0.95rem !important;
+        }
+        
+        [style*="justify-content:space-between"] span {
+            font-size: 0.7rem !important;
+            padding: 0.3rem 0.7rem !important;
+        }
+        
+        /* Header badges wrap on mobile */
+        .card > div:first-child > div {
+            width: 100%;
+            justify-content: flex-start !important;
+        }
+        
+        /* Month filter on mobile */
+        #monthFilterForm {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+        
+        #monthFilterForm label {
+            font-size: 0.85rem !important;
+        }
+        
+        #monthFilterForm select {
+            width: 100% !important;
+            font-size: 16px !important; /* Prevent zoom on iOS */
+        }
+        
+        #monthFilterForm a {
+            text-align: center;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        h2 {
+            font-size: 1.2rem !important;
+        }
+        
+        /* Tip box on mobile */
+        .card > div[style*="background:#e6f2ff"] {
+            font-size: 0.75rem !important;
+            padding: 0.6rem 0.8rem !important;
+        }
+        
+        /* Card-style table for very small screens */
+        .card > table {
+            overflow-x: visible !important;
+        }
+        
+        table thead {
+            display: none !important;
+        }
+        
+        table tbody {
+            display: block !important;
+        }
+        
+        table tr {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem 0.8rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        table td {
+            text-align: left !important;
+            padding: 0.5rem 0 !important;
+            border: none !important;
+        }
+        
+        table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #4a5568;
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+        }
+        
+        /* Room number - no label, full width, bigger text */
+        table td:first-child {
+            grid-column: 1 / -1;
+            padding-bottom: 0.8rem !important;
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid #f7fafc;
+        }
+        
+        table td:first-child::before {
+            display: none;
+        }
+        
+        table td:first-child a {
+            font-size: 1.4rem !important;
+            font-weight: 900 !important;
+        }
+        
+        /* Type, Climate, Price - 3 columns in a row */
+        table td:nth-child(2),
+        table td:nth-child(3),
+        table td:nth-child(4) {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Type and Climate badges */
+        table td[data-label="Type"] span,
+        table td[data-label="Climate"] span {
+            font-size: 0.7rem !important;
+            padding: 0.4rem 0.6rem !important;
+            display: inline-block;
+        }
+        
+        /* Price column on mobile */
+        table td[data-label*="Price"] > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        
+        table td[data-label*="Price"] span {
+            display: inline-block !important;
+            font-size: 0.55rem !important;
+            padding: 0.2rem 0.45rem !important;
+        }
+        
+        table td[data-label*="Price"] div:first-child {
+            font-size: 1rem !important;
+            line-height: 1.4;
+        }
+        
+        table td[data-label*="Price"] div:last-child {
+            font-size: 0.65rem !important;
+        }
+        
+        /* Action button - full width at bottom */
+        table td:last-child {
+            grid-column: 1 / -1;
+            margin-top: 0.3rem;
+            padding-top: 0.8rem !important;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        table td:last-child::before {
+            display: none;
+        }
+        
+        table td:last-child form {
+            display: block !important;
+        }
+        
+        table td:last-child button {
+            width: 100% !important;
+            padding: 0.7rem 1rem !important;
+            justify-content: center;
+            font-size: 0.85rem !important;
+        }
+        
+        /* Legend at bottom */
+        .card > div[style*="border-top"] {
+            flex-direction: column !important;
+            gap: 0.8rem !important;
+            font-size: 0.75rem !important;
+        }
+        
+        .card > div[style*="border-top"] > div {
+            width: 100%;
+        }
+    }

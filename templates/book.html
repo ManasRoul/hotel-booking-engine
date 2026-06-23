@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/book.css") }}">
+{% endblock %}
+{% block content %}
+<div style="max-width:700px; margin:0 auto;">
+    <h2>📝 Book a Room</h2>
+    {% if error %}
+    <div class="error">⚠️ {{ error }}</div>
+    {% endif %}
+    <div class="card">
+        <form method="POST" onsubmit="return validateDates()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>✓ Check-in</label>
+                    <input type="datetime-local" name="checkin" id="checkin" required onchange="validateDateRange()">
+                </div>
+                <div class="form-group">
+                    <label>✓ Check-out</label>
+                    <input type="datetime-local" name="checkout" id="checkout" required onchange="validateDateRange()">
+                </div>
+            </div>
+            <div id="date-error" style="display:none; background:#fff5f5; border:2px solid #fc8181; color:#c53030; padding:0.8rem 1rem; border-radius:12px; margin-bottom:1rem; font-size:0.85rem; font-weight:600;">
+            </div>
+            <div class="form-group">
+                <label>🏨 Room <span id="room-status" style="font-size:0.78rem; font-weight:600; color:#667eea; margin-left:0.5rem;"></span></label>
+                <select name="room_id" id="room_select" required>
+                    <option value="">Select dates first...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>👤 Guest Name</label>
+                <input type="text" name="guest_name" required placeholder="Full name">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📱 Phone</label>
+                    <input type="text" name="guest_phone" placeholder="Contact number">
+                </div>
+                <div class="form-group">
+                    <label>🆔 DL / Aadhaar</label>
+                    <input type="text" name="id_number" placeholder="ID number">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>💳 Payment Mode</label>
+                    <select name="payment_mode" required>
+                        <option value="">Select...</option>
+                        <option value="Cash">💵 Cash</option>
+                        <option value="UPI">📲 UPI</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>💰 Payment Type</label>
+                    <select name="payment_type" required>
+                        <option value="">Select...</option>
+                        <option value="Advance">Advance</option>
+                        <option value="Full">Full Payment</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row form-row-3">
+                <div class="form-group">
+                    <label>💵 Total Amount (₹)</label>
+                    <input type="number" name="total_amount" id="total_amount" step="0.01" required placeholder="0.00" oninput="calcRemaining()">
+                </div>
+                <div class="form-group">
+                    <label>💵 Advance/Paid (₹)</label>
+                    <input type="number" name="amount_received" id="amount_received" step="0.01" required placeholder="0.00" oninput="calcRemaining()">
+                </div>
+                <div class="form-group">
+                    <label>📊 Remaining (₹)</label>
+                    <input type="text" id="remaining" readonly style="background:#f7fafc; font-weight:700; color:#e53e3e;" value="0.00">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📄 Receipt No.</label>
+                    <input type="text" name="receipt_no" placeholder="Receipt number">
+                </div>
+                <div class="form-group">
+                    <label>👨‍💼 Booked By</label>
+                    <input type="text" name="booked_by" value="{{ current_username }}" readonly style="background:#f7fafc; cursor:not-allowed;" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:1rem; font-size:1rem; margin-top:1rem;">✨ Confirm Booking</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function validateDateRange() {
+    const checkin = document.getElementById('checkin').value;
+    const checkout = document.getElementById('checkout').value;
+    const errorDiv = document.getElementById('date-error');
+    
+    if (!checkin || !checkout) return true;
+    
+    const checkinDate = new Date(checkin);
+    const checkoutDate = new Date(checkout);
+    const now = new Date();
+    const oneDayAgo = new Date(now.getTime() - 86400000);
+    
+    // Check if checkout is after checkin
+    if (checkoutDate <= checkinDate) {
+        errorDiv.textContent = '⚠️ Check-out date must be after check-in date';
+        errorDiv.style.display = 'block';
+        return false;
+    }
+    
+    // Check if checkin is not too far in the past
+    if (checkinDate < oneDayAgo) {
+        errorDiv.textContent = '⚠️ Check-in date cannot be more than 1 day in the past';
+        errorDiv.style.display = 'block';
+        return false;
+    }
+    
+    // Check minimum stay (1 hour)
+    const hoursDiff = (checkoutDate - checkinDate) / (1000 * 60 * 60);
+    if (hoursDiff < 1) {
+        errorDiv.textContent = '⚠️ Minimum booking duration is 1 hour';
+        errorDiv.style.display = 'block';
+        return false;
+    }
+    
+    errorDiv.style.display = 'none';
+    return true;
+}
+
+function validateDates() {
+    return validateDateRange();
+}
+
+function updateRooms() {
+    const checkin = document.getElementById('checkin').value;
+    const checkout = document.getElementById('checkout').value;
+    const select = document.getElementById('room_select');
+    const status = document.getElementById('room-status');
+    
+    if (!checkin || !checkout) return;
+    
+    // Don't fetch rooms if dates are invalid
+    if (!validateDateRange()) {
+        select.innerHTML = '<option value="">Fix date errors first...</option>';
+        status.textContent = '';
+        return;
+    }
+    
+    fetch(`/api/available-rooms?checkin=${checkin}&checkout=${checkout}`)
+        .then(r => r.json())
+        .then(rooms => {
+            select.innerHTML = '<option value="">Select a room...</option>';
+            let avail = 0;
+            rooms.forEach(room => {
+                const opt = document.createElement('option');
+                opt.value = room.id;
+                if (room.available) {
+                    opt.textContent = `${room.number} — ${room.type} ${room.ac} (₹${room.price}/day)`;
+                    avail++;
+                } else {
+                    opt.textContent = `${room.number} — ${room.type} ${room.ac} [${room.reason}]`;
+                    opt.disabled = true;
+                    opt.style.color = '#999';
+                }
+                select.appendChild(opt);
+            });
+            status.textContent = `(${avail} available)`;
+        });
+}
+document.getElementById('checkin').addEventListener('change', updateRooms);
+document.getElementById('checkout').addEventListener('change', updateRooms);
+
+function calcRemaining() {
+    var total = parseFloat(document.getElementById('total_amount').value) || 0;
+    var paid = parseFloat(document.getElementById('amount_received').value) || 0;
+    document.getElementById('remaining').value = (total - paid).toFixed(2);
+}
+
+// Set default times: checkin 08:00 today, checkout 07:00 next day
+(function() {
+    const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const tomorrow = new Date(now.getTime() + 86400000).toISOString().slice(0, 10);
+    document.getElementById('checkin').value = today + 'T08:00';
+    document.getElementById('checkout').value = tomorrow + 'T07:00';
+    updateRooms();
+})();
+</script>
+{% endblock %}

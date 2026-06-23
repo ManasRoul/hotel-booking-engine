@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/users.css") }}">
+{% endblock %}
+{% block content %}
+<h2>👥 Manage Users</h2>
+<div class="page-grid">
+    <div class="card">
+        <h3 style="margin-bottom:1.2rem;">Add New User</h3>
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Add User</button>
+        </form>
+    </div>
+    <div class="card">
+        <h3 style="margin-bottom:1.2rem;">Existing Users</h3>
+        <table>
+            <tr><th>Username</th><th></th></tr>
+            {% for user in users %}
+            <tr>
+                <td data-label="Username" style="font-weight:600;">{{ user.username }}</td>
+                <td data-label="Action">
+                    {% if user.id != session.get('user_id') %}
+                    <form method="POST" action="/users/delete/{{ user.id }}" style="display:inline;">
+                        <button class="btn btn-danger btn-sm" onclick="return confirm('Delete user {{ user.username }}?')">Delete</button>
+                    </form>
+                    {% else %}
+                    <span style="color:#718096; font-size:0.85rem;">(you)</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

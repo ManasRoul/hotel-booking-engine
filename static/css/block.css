@@ -1,0 +1,270 @@
+@media (max-width: 768px) {
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .page-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.2rem !important;
+        }
+        
+        .card {
+            padding: 1.2rem !important;
+        }
+        
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem !important;
+        }
+        
+        /* Make table scrollable */
+        .card > table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            margin: 0;
+        }
+        
+        .card > table thead,
+        .card > table tbody {
+            display: table;
+            width: max-content;
+            min-width: 100%;
+            table-layout: auto;
+        }
+        
+        .card > table tr {
+            display: table-row;
+        }
+        
+        .card > table th,
+        .card > table td {
+            display: table-cell;
+        }
+        
+        table th, table td {
+            padding: 0.6rem 0.5rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            min-width: fit-content;
+            vertical-align: middle;
+        }
+        
+        /* Set minimum widths to prevent overlap */
+        table th:nth-child(1),
+        table td:nth-child(1) {
+            min-width: 70px;
+        }
+        
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            min-width: 80px;
+        }
+        
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            min-width: 90px;
+            max-width: 120px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        
+        table th:nth-child(4),
+        table td:nth-child(4),
+        table th:nth-child(5),
+        table td:nth-child(5) {
+            font-size: 0.7rem;
+            min-width: 110px;
+        }
+        
+        table th:nth-child(6),
+        table td:nth-child(6) {
+            min-width: 70px;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            font-size: 16px;
+            padding: 0.75rem 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1rem !important;
+        }
+        
+        [style*="flex-wrap:wrap"] {
+            gap: 0.8rem !important;
+        }
+        
+        [style*="flex-wrap:wrap"] h3 {
+            font-size: 0.95rem !important;
+        }
+        
+        /* Badge styling for blocked count */
+        [style*="flex-wrap:wrap"] span {
+            font-size: 0.75rem !important;
+            padding: 0.35rem 0.75rem !important;
+            background: linear-gradient(135deg, #ed8936, #dd6b20) !important;
+            color: white !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 3px 10px rgba(237, 137, 54, 0.3) !important;
+            display: inline-block;
+            white-space: nowrap;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        h2 {
+            font-size: 1.2rem;
+        }
+        
+        /* Keep Active Blocks header horizontal */
+        [style*="flex-wrap:wrap"] h3 {
+            font-size: 0.9rem !important;
+        }
+        
+        [style*="flex-wrap:wrap"] span {
+            font-size: 0.7rem !important;
+            padding: 0.3rem 0.6rem !important;
+        }
+        
+        /* Override tablet styles - force card view */
+        .card > table {
+            display: block !important;
+            overflow-x: visible !important;
+        }
+        
+        .card > table tbody {
+            display: block !important;
+            width: 100% !important;
+            table-layout: auto !important;
+        }
+        
+        .card > table thead {
+            display: none !important;
+        }
+        
+        .card > table tr {
+            display: block !important;
+        }
+        
+        .card > table td {
+            display: block !important;
+        }
+        
+        .card > table th {
+            display: none !important;
+        }
+        
+        table {
+            font-size: 0.7rem;
+        }
+        
+        /* Stack table cells as cards for very small screens */
+        table thead {
+            display: none !important;
+        }
+        
+        table thead tr,
+        table thead th {
+            display: none !important;
+        }
+        
+        table, table tbody {
+            display: block !important;
+            width: 100% !important;
+        }
+        
+        table tr {
+            display: block !important;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        table td {
+            display: block !important;
+            text-align: left !important;
+            padding: 0.5rem 0;
+            border: none;
+            white-space: normal;
+            min-width: auto !important;
+            max-width: none !important;
+        }
+        
+        /* Remove all column-specific widths in card view */
+        table th:nth-child(1),
+        table td:nth-child(1),
+        table th:nth-child(2),
+        table td:nth-child(2),
+        table th:nth-child(3),
+        table td:nth-child(3),
+        table th:nth-child(4),
+        table td:nth-child(4),
+        table th:nth-child(5),
+        table td:nth-child(5),
+        table th:nth-child(6),
+        table td:nth-child(6) {
+            min-width: auto !important;
+            max-width: none !important;
+            width: 100% !important;
+        }
+        
+        table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #4a5568;
+            display: block !important;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+        
+        table td:last-child {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        /* Make action buttons full width in cards */
+        table td form {
+            display: block !important;
+            width: 100%;
+        }
+        
+        .btn-sm {
+            padding: 0.6rem 1rem !important;
+            font-size: 0.75rem !important;
+            width: 100% !important;
+            display: block !important;
+        }
+        
+        /* Ensure room badges display properly on mobile */
+        table td span[style*="background"] {
+            display: inline-block;
+            font-size: 0.85rem !important;
+            padding: 0.4rem 0.8rem !important;
+            background: linear-gradient(135deg, #ed8936, #dd6b20) !important;
+            color: white !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 2px 8px rgba(237, 137, 54, 0.3) !important;
+            white-space: nowrap;
+        }
+        
+        /* Hide scroll indicator on card view */
+        .card:has(table)::after {
+            display: none;
+        }
+    }

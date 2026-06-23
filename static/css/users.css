@@ -1,0 +1,68 @@
+@media (max-width: 768px) {
+        h2 {
+            font-size: 1.4rem;
+        }
+        
+        .page-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.2rem !important;
+        }
+        
+        .card {
+            padding: 1.2rem !important;
+        }
+        
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem !important;
+        }
+        
+        table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table th,
+        table td {
+            padding: 0.7rem 0.5rem;
+            font-size: 0.85rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        table thead {
+            display: none;
+        }
+        
+        table tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 2px solid #f7fafc;
+            border-radius: 12px;
+            padding: 0.8rem;
+            background: white;
+        }
+        
+        table td {
+            display: block;
+            text-align: left !important;
+            padding: 0.4rem 0;
+            border: none;
+        }
+        
+        table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #4a5568;
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+        }
+        
+        table td:last-child {
+            margin-top: 0.5rem;
+        }
+    }

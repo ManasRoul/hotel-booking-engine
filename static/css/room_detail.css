@@ -1,0 +1,119 @@
+@media (max-width: 768px) {
+        h2 {
+            font-size: 1.4rem;
+        }
+        
+        [style*="grid-template-columns:repeat(auto-fit"] {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .card {
+            padding: 1.2rem !important;
+        }
+        
+        [style*="justify-content:space-between"] {
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        
+        [style*="justify-content:space-between"] h3 {
+            font-size: 1rem !important;
+        }
+        
+        [style*="justify-content:space-between"] span {
+            font-size: 0.75rem !important;
+            padding: 0.3rem 0.8rem !important;
+        }
+        
+        table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            font-size: 0.8rem;
+        }
+        
+        table th,
+        table td {
+            padding: 0.6rem 0.4rem;
+            font-size: 0.75rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        h2 {
+            font-size: 1.3rem !important;
+        }
+        
+        /* Monthly pricing grid on mobile */
+        #monthlyPriceGrid {
+            grid-template-columns: 1fr !important;
+        }
+        
+        /* Card-style tables */
+        table thead {
+            display: none !important;
+        }
+        
+        table tbody {
+            display: block !important;
+        }
+        
+        table tr {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem 0.8rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        table td {
+            display: block !important;
+            text-align: left !important;
+            padding: 0.4rem 0 !important;
+            border: none !important;
+        }
+        
+        table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #4a5568;
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* Bookings table - 6 columns becomes 3x2 grid */
+        .card:nth-of-type(3) table tr {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        /* Blocks table - 4 columns becomes 3+1 */
+        .card:nth-of-type(4) table tr {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        .card:nth-of-type(4) table td:nth-child(4) {
+            grid-column: 1 / -1;
+        }
+        
+        /* Payment badges wrap properly */
+        table td[data-label="Payment"] span {
+            font-size: 0.7rem !important;
+            padding: 0.25rem 0.6rem !important;
+            display: inline-block;
+            max-width: 100%;
+        }
+        
+        /* Amount styling */
+        table td[data-label="Amount"] {
+            font-size: 0.9rem !important;
+        }
+    }
