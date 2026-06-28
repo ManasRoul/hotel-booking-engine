@@ -3,8 +3,10 @@ from collections import defaultdict
 from datetime import date as date_type, datetime, timedelta
 from functools import wraps
 import calendar
+import csv
+from io import StringIO
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -49,12 +51,16 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     color = db.Column(db.String(7), default='#667eea')  # Hex color code
+    role = db.Column(db.String(20), default='contributor')  # 'owner' or 'contributor'
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def is_owner(self):
+        return self.role == 'owner'
 
 
 class Room(db.Model):
@@ -136,6 +142,7 @@ def login():
             if user and user.check_password(password):
                 session['user_id'] = user.id
                 session['username'] = user.username
+                session['user_role'] = user.role
                 return redirect(url_for('dashboard'))
             error = 'Invalid username or password'
     return render_template('login.html', error=error)
@@ -385,6 +392,134 @@ def reports():
                            cash_collected=cash_collected, upi_collected=upi_collected,
                            room_occupancy=room_occupancy, daily_occupancy=daily_occupancy,
                            bookings=bookings, rooms=rooms)
+
+
+@app.route('/reports/download/customer')
+@login_required
+def download_customer_report():
+    """Download customer details report as CSV"""
+    # Only owners can download reports
+    current_user = User.query.get(session.get('user_id'))
+    if not current_user or current_user.role != 'owner':
+        return "Access denied. Only owners can download reports.", 403
+    # Get date range from query params
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    
+    if not start_date or not end_date:
+        return "Start date and end date are required", 400
+    
+    try:
+        start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+        end_dt = datetime.strptime(end_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+    except ValueError:
+        return "Invalid date format. Use YYYY-MM-DD", 400
+    
+    # Query bookings in date range
+    bookings = Booking.query.filter(
+        Booking.checkin >= start_dt,
+        Booking.checkin <= end_dt
+    ).order_by(Booking.checkin.desc()).all()
+    
+    # Create CSV
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow(['Date', 'Room Number', 'Guest Name', 'Phone', 'ID Number', 'Check-in', 'Check-out', 'Booked By'])
+    
+    # Write data
+    for booking in bookings:
+        writer.writerow([
+            booking.checkin.strftime('%d-%m-%Y'),
+            booking.room.number,
+            booking.guest_name,
+            booking.guest_phone or '',
+            booking.id_number or '',
+            booking.checkin.strftime('%d-%m-%Y %H:%M'),
+            booking.checkout.strftime('%d-%m-%Y %H:%M'),
+            booking.booked_by or ''
+        ])
+    
+    # Prepare response
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = f'attachment; filename=customer_report_{start_date}_to_{end_date}.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+
+
+@app.route('/reports/download/financial')
+@login_required
+def download_financial_report():
+    """Download financial report as CSV"""
+    # Only owners can download reports
+    current_user = User.query.get(session.get('user_id'))
+    if not current_user or current_user.role != 'owner':
+        return "Access denied. Only owners can download reports.", 403
+    # Get date range from query params
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    
+    if not start_date or not end_date:
+        return "Start date and end date are required", 400
+    
+    try:
+        start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+        end_dt = datetime.strptime(end_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+    except ValueError:
+        return "Invalid date format. Use YYYY-MM-DD", 400
+    
+    # Query bookings in date range
+    bookings = Booking.query.filter(
+        Booking.checkin >= start_dt,
+        Booking.checkin <= end_dt
+    ).order_by(Booking.checkin.desc()).all()
+    
+    # Create CSV
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow(['Date', 'Receipt No.', 'Room Number', 'Guest Name', 'Payment Mode', 'Payment Type', 'Total Amount', 'Amount Received', 'Balance'])
+    
+    # Track totals
+    total_amount_sum = 0
+    total_received_sum = 0
+    total_balance_sum = 0
+    
+    # Write data
+    for booking in bookings:
+        total_amt = booking.total_amount or 0
+        received = booking.amount_received or 0
+        balance = total_amt - received
+        
+        total_amount_sum += total_amt
+        total_received_sum += received
+        total_balance_sum += balance
+        
+        writer.writerow([
+            booking.checkin.strftime('%d-%m-%Y'),
+            booking.receipt_no or '',
+            booking.room.number,
+            booking.guest_name,
+            booking.payment_mode or '',
+            booking.payment_type or '',
+            f'{total_amt:.2f}',
+            f'{received:.2f}',
+            f'{balance:.2f}'
+        ])
+    
+    # Write totals row
+    writer.writerow([])
+    writer.writerow(['', '', '', '', '', 'TOTAL:', f'{total_amount_sum:.2f}', f'{total_received_sum:.2f}', f'{total_balance_sum:.2f}'])
+    
+    # Prepare response
+    output.seek(0)
+    response = make_response(output.getvalue())
+    response.headers['Content-Disposition'] = f'attachment; filename=financial_report_{start_date}_to_{end_date}.csv'
+    response.headers['Content-Type'] = 'text/csv'
+    return response
 
 
 @app.route('/book', methods=['GET', 'POST'])
@@ -789,6 +924,23 @@ def block_room():
         
         start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%dT%H:%M')
         end_date = datetime.strptime(request.form['end_date'], '%Y-%m-%dT%H:%M')
+        
+        # Validate dates
+        now = datetime.now()
+        if start_date < now:
+            rooms = Room.query.order_by(Room.number).all()
+            blocks = BlockedRoom.query.order_by(BlockedRoom.start_date.desc()).all()
+            current_username = session.get('username', 'Unknown')
+            return render_template('block.html', rooms=rooms, blocks=blocks, current_username=current_username, 
+                                 error='Start date cannot be in the past. Please select a current or future date.')
+        
+        if end_date <= start_date:
+            rooms = Room.query.order_by(Room.number).all()
+            blocks = BlockedRoom.query.order_by(BlockedRoom.start_date.desc()).all()
+            current_username = session.get('username', 'Unknown')
+            return render_template('block.html', rooms=rooms, blocks=blocks, current_username=current_username, 
+                                 error='End date must be after start date.')
+        
         user_id = session.get('user_id')
         block = BlockedRoom(room_id=room_id, user_id=user_id, blocked_by=blocked_by, reason=reason,
                             start_date=start_date, end_date=end_date)
@@ -813,13 +965,16 @@ def delete_block(block_id):
 @app.route('/users', methods=['GET', 'POST'])
 @login_required
 def manage_users():
-    # Only admin can access this page
-    if session.get('username') != 'admin':
+    # Only owners can access this page
+    current_user = User.query.get(session.get('user_id'))
+    if not current_user or current_user.role != 'owner':
         return redirect(url_for('dashboard'))
     
     if request.method == 'POST':
         username = request.form['username'].strip()
         password = request.form['password']
+        color = request.form.get('color', '#667eea').strip()
+        role = request.form.get('role', 'contributor')
         
         length_error = validate_length(username, 50, 'Username')
         if not username:
@@ -828,6 +983,12 @@ def manage_users():
             length_error = length_error or 'Password must be at least 4 characters.'
         if len(password) > 128:
             length_error = length_error or 'Password must be 128 characters or less.'
+        # Validate color format
+        if not color.startswith('#') or len(color) != 7:
+            length_error = length_error or 'Invalid color format. Use hex color like #FF5733'
+        # Validate role
+        if role not in ['owner', 'contributor']:
+            length_error = length_error or 'Invalid role selected'
         if length_error:
             users = User.query.all()
             return render_template('users.html', users=users, error=length_error)
@@ -835,7 +996,7 @@ def manage_users():
         if User.query.filter_by(username=username).first():
             users = User.query.all()
             return render_template('users.html', users=users, error='Username already exists')
-        user = User(username=username)
+        user = User(username=username, color=color, role=role)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
@@ -844,11 +1005,74 @@ def manage_users():
     return render_template('users.html', users=users, error=None)
 
 
+@app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(user_id):
+    # Only owners can edit users
+    current_user = User.query.get(session.get('user_id'))
+    if not current_user or current_user.role != 'owner':
+        return redirect(url_for('dashboard'))
+    
+    user = User.query.get_or_404(user_id)
+    
+    if request.method == 'POST':
+        username = request.form['username'].strip()
+        password = request.form.get('password', '').strip()
+        color = request.form.get('color', user.color).strip()
+        role = request.form.get('role', user.role)
+        
+        length_error = validate_length(username, 50, 'Username')
+        if not username:
+            length_error = length_error or 'Username is required.'
+        # Only validate password if provided (optional for edit)
+        if password:
+            if len(password) < 4:
+                length_error = length_error or 'Password must be at least 4 characters.'
+            if len(password) > 128:
+                length_error = length_error or 'Password must be 128 characters or less.'
+        # Validate color format
+        if not color.startswith('#') or len(color) != 7:
+            length_error = length_error or 'Invalid color format. Use hex color like #FF5733'
+        # Validate role
+        if role not in ['owner', 'contributor']:
+            length_error = length_error or 'Invalid role selected'
+        if length_error:
+            users = User.query.all()
+            return render_template('users.html', users=users, error=length_error, edit_user=user)
+        
+        # Check if username is taken by another user
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user and existing_user.id != user_id:
+            users = User.query.all()
+            return render_template('users.html', users=users, error='Username already exists', edit_user=user)
+        
+        # Update user
+        user.username = username
+        user.color = color
+        user.role = role
+        if password:  # Only update password if provided
+            user.set_password(password)
+        
+        db.session.commit()
+        
+        # Update session if editing current user
+        if user_id == session.get('user_id'):
+            session['username'] = user.username
+            session['user_role'] = user.role
+        
+        return redirect(url_for('manage_users'))
+    
+    # GET request - show edit form
+    users = User.query.all()
+    return render_template('users.html', users=users, error=None, edit_user=user)
+
+
 @app.route('/users/delete/<int:user_id>', methods=['POST'])
 @login_required
 def delete_user(user_id):
-    # Only admin can delete users
-    if session.get('username') != 'admin':
+    # Only owners can delete users
+    current_user = User.query.get(session.get('user_id'))
+    if not current_user or current_user.role != 'owner':
         return redirect(url_for('dashboard'))
     
     if user_id == session.get('user_id'):
@@ -862,31 +1086,13 @@ def delete_user(user_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        # Create or update users
-        admin = User.query.filter_by(username='admin').first()
-        if not admin:
-            admin = User(username='admin', color='#667eea')
+        # Create default admin user (only on first run)
+        if not User.query.filter_by(username='admin').first():
+            admin = User(username='admin', color='#667eea', role='owner')  # Purple, Owner
             admin.set_password('admin123')
             db.session.add(admin)
+            db.session.commit()
+            print("✅ Database initialized with admin user")
         else:
-            admin.color = '#667eea'  # Update color if changed
-        
-        raj = User.query.filter_by(username='Raj').first()
-        if not raj:
-            raj = User(username='Raj', color='#ffd93d')  # Yellow
-            raj.set_password('raj123')
-            db.session.add(raj)
-        else:
-            raj.color = '#ffd93d'  # Update to yellow
-        
-        shakti = User.query.filter_by(username='Shakti').first()
-        if not shakti:
-            shakti = User(username='Shakti', color='#48bb78')  # Green
-            shakti.set_password('shakti123')
-            db.session.add(shakti)
-        else:
-            shakti.color = '#48bb78'  # Update color if changed
-        
-        db.session.commit()
-        print("✅ Database initialized ")
+            print("✅ Database initialized")
     app.run(debug=True, port=5001)

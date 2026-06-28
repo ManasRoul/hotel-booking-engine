@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 {% block extra_style %}
 <link rel="stylesheet" href="{{ url_for("static", filename="css/reports.css") }}">
+<style>
+    @media (max-width: 768px) {
+        #reportForm > div:first-child {
+            grid-template-columns: 1fr !important;
+        }
+        
+        #reportForm > div:last-child {
+            grid-template-columns: 1fr !important;
+        }
+        
+        #reportForm input[type="date"] {
+            font-size: 16px !important; /* Prevent iOS zoom */
+        }
+        
+        #reportForm button {
+            padding: 0.9rem 1.2rem !important;
+            font-size: 0.95rem !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .card h3 {
+            font-size: 1.1rem !important;
+        }
+        
+        #reportForm button {
+            padding: 0.85rem 1rem !important;
+            font-size: 0.9rem !important;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -17,6 +48,44 @@
     <a href="?year={{ year + 1 }}&month=1">▶</a>
     {% endif %}
 </div>
+
+<!-- Download Reports Section (Owners Only) -->
+{% if session.get('user_role') == 'owner' %}
+<div class="card" style="margin-bottom:2rem; background:linear-gradient(135deg,#f7fafc,#edf2f7);">
+    <h3 style="margin-bottom:1.2rem; color:#2d3748; display:flex; align-items:center; gap:0.5rem;">
+        📥 <span>Download Reports</span>
+        <span style="background:linear-gradient(135deg,#f59e0b,#d97706); color:white; padding:0.2rem 0.6rem; border-radius:6px; font-size:0.7rem; font-weight:700;">OWNER ONLY</span>
+    </h3>
+    <div style="background:#e6f2ff; border-left:4px solid #667eea; padding:0.8rem 1rem; margin-bottom:1.5rem; border-radius:8px; font-size:0.85rem; color:#4a5568;">
+        💡 <strong>Tip:</strong> Select a date range and download customer details or financial reports in CSV format
+    </div>
+    
+    <form id="reportForm" style="display:grid; gap:1.2rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div>
+                <label style="display:block; font-weight:700; color:#4a5568; margin-bottom:0.5rem; font-size:0.9rem;">📅 Start Date</label>
+                <input type="date" id="startDate" name="start_date" required style="width:100%; padding:0.75rem; border:2px solid #cbd5e0; border-radius:8px; font-size:0.95rem; transition:all 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#cbd5e0'">
+            </div>
+            <div>
+                <label style="display:block; font-weight:700; color:#4a5568; margin-bottom:0.5rem; font-size:0.9rem;">📅 End Date</label>
+                <input type="date" id="endDate" name="end_date" required style="width:100%; padding:0.75rem; border:2px solid #cbd5e0; border-radius:8px; font-size:0.95rem; transition:all 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#cbd5e0'">
+            </div>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <button type="button" onclick="downloadCustomerReport()" style="background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:1rem 1.5rem; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 12px rgba(102,126,234,0.3); display:flex; align-items:center; justify-content:center; gap:0.5rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102,126,234,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102,126,234,0.3)'">
+                <span>👥</span>
+                <span>Customer Report</span>
+            </button>
+            
+            <button type="button" onclick="downloadFinancialReport()" style="background:linear-gradient(135deg,#48bb78,#38a169); color:white; padding:1rem 1.5rem; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 12px rgba(72,187,120,0.3); display:flex; align-items:center; justify-content:center; gap:0.5rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(72,187,120,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(72,187,120,0.3)'">
+                <span>💰</span>
+                <span>Financial Report</span>
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
 
 <h3 style="margin-bottom:1.2rem; color:#2d3748; font-size:1.3rem;">💰 Collection Summary</h3>
 <div class="collection-cards">
@@ -119,6 +188,53 @@ function handleSwipe() {
         }
     }
 }
+
+// Download report functions
+function downloadCustomerReport() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    
+    if (!startDate || !endDate) {
+        alert('⚠️ Please select both start and end dates');
+        return;
+    }
+    
+    if (new Date(endDate) < new Date(startDate)) {
+        alert('⚠️ End date must be after start date');
+        return;
+    }
+    
+    // Trigger download
+    window.location.href = `/reports/download/customer?start_date=${startDate}&end_date=${endDate}`;
+}
+
+function downloadFinancialReport() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    
+    if (!startDate || !endDate) {
+        alert('⚠️ Please select both start and end dates');
+        return;
+    }
+    
+    if (new Date(endDate) < new Date(startDate)) {
+        alert('⚠️ End date must be after start date');
+        return;
+    }
+    
+    // Trigger download
+    window.location.href = `/reports/download/financial?start_date=${startDate}&end_date=${endDate}`;
+}
+
+// Set default dates to current month
+(function() {
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    
+    document.getElementById('startDate').value = firstDay.toISOString().split('T')[0];
+    document.getElementById('endDate').value = lastDay.toISOString().split('T')[0];
+})();
 </script>
 
 {% endblock %}
