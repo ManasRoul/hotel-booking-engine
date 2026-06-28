@@ -61,7 +61,7 @@
             </tr>
             {% for room in rooms %}
             <tr>
-                <td class="room-label"><a href="/room/{{ room.id }}">{{ room.number }} ({{ room.ac_type }})</a></td>
+                <td class="room-label"><a href="/room/{{ room.id }}">{{ room.number }} ({{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }})</a></td>
                 {% for day in range(1, days_in_month + 1) %}
                     {% set cell = cal_data[month]['rooms'][room.id][day] %}
                     {% if cell['status'] == 'booked' %}
@@ -73,6 +73,9 @@
                         data-guest="{{ b.guest_name }}"
                         data-phone="{{ b.guest_phone or '—' }}"
                         data-id="{{ b.id_number or '—' }}"
+                        data-adults="{{ b.adults or 1 }}"
+                        data-children="{{ b.children or 0 }}"
+                        data-mattress="{{ b.mattress or 0 }}"
                         data-checkin="{{ b.checkin.strftime('%d %b %Y, %H:%M') }}"
                         data-checkout="{{ b.checkout.strftime('%d %b %Y, %H:%M') }}"
                         data-payment="{{ b.payment_mode or '—' }} / {{ b.payment_type or '—' }}"
@@ -110,7 +113,7 @@
                         data-blocks='{{ blocks_json|tojson }}'
                         data-room="{{ room.number }}"
                         data-roomtype="{{ room.room_type }}"
-                        data-ac="{{ room.ac_type }}"
+                        data-ac="{{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }}"
                         style="cursor:pointer; {{ bg_style }}; color:white; font-weight:800;">
                         ✖{% if block_count > 1 %}<span style="font-size:0.7rem; font-weight:800; vertical-align:super; pointer-events:none;">{{ block_count }}</span>{% endif %}
                     </td>
@@ -193,6 +196,14 @@ document.addEventListener('click', function(e) {
                     <div class="detail-value"><strong>${cell.dataset.guest}</strong></div>
                 </div>
                 <div class="detail-row">
+                    <div class="detail-label">👥 Adults / 👶 Children:</div>
+                    <div class="detail-value"><span style="background:#e6f2ff; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700;">${cell.dataset.adults} / ${cell.dataset.children}</span></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">🛏️ Extra Mattress:</div>
+                    <div class="detail-value"><span style="background:#fff3cd; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700; color:#856404;">${cell.dataset.mattress}</span></div>
+                </div>
+                <div class="detail-row">
                     <div class="detail-label">Phone:</div>
                     <div class="detail-value">${cell.dataset.phone}</div>
                 </div>
@@ -250,7 +261,10 @@ document.addEventListener('click', function(e) {
                 </div>
                 ` : ''}
                 
-                ${remaining > 0 ? `<button class="btn-add-payment" onclick="showAddPaymentForm(${bookingId}, ${remaining})">💰 Add Payment</button>` : ''}
+                <div style="display:flex; gap:0.8rem; margin-top:1.2rem; flex-wrap:wrap;">
+                    <a href="/bookings/edit/${bookingId}" class="btn-add-payment" style="background:#667eea; text-decoration:none; display:inline-block;">✏️ Edit Booking</a>
+                    ${remaining > 0 ? `<button class="btn-add-payment" onclick="showAddPaymentForm(${bookingId}, ${remaining})">💰 Add Payment</button>` : ''}
+                </div>
             </div>
             <div id="addPaymentMode" class="edit-form">
                 <form id="addPaymentForm" onsubmit="addPayment(event, ${bookingId})">

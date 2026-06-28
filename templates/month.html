@@ -39,7 +39,7 @@
         <tbody>
         {% for room in rooms %}
         <tr>
-            <td class="room-label">{{ room.number }} ({{ room.ac_type }})</td>
+            <td class="room-label">{{ room.number }} ({{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }})</td>
             {% for day in range(1, days_in_month + 1) %}
                 {% set ns = namespace(booked=false, blocked_list=[], guest='') %}
                 {% for b in bookings %}
@@ -132,10 +132,13 @@ const bookingsData = [
         room_id: {{ b.room_id }},
         room_number: "{{ b.room.number }}",
         room_type: "{{ b.room.room_type }}",
-        ac_type: "{{ b.room.ac_type }}",
+        ac_type: "{{ 'N-AC' if b.room.ac_type == 'Non-AC' else b.room.ac_type }}",
         guest_name: "{{ b.guest_name }}",
         guest_phone: "{{ b.guest_phone or '' }}",
         id_number: "{{ b.id_number or '' }}",
+        adults: {{ b.adults or 1 }},
+        children: {{ b.children or 0 }},
+        mattress: {{ b.mattress or 0 }},
         checkin: new Date("{{ b.checkin.isoformat() }}"),
         checkout: new Date("{{ b.checkout.isoformat() }}"),
         payment_mode: "{{ b.payment_mode or '' }}",
@@ -156,7 +159,7 @@ const blocksData = [
         room_id: {{ bl.room_id }},
         room_number: "{{ bl.room.number }}",
         room_type: "{{ bl.room.room_type }}",
-        ac_type: "{{ bl.room.ac_type }}",
+        ac_type: "{{ 'N-AC' if bl.room.ac_type == 'Non-AC' else bl.room.ac_type }}",
         start_date: new Date("{{ bl.start_date.isoformat() }}"),
         end_date: new Date("{{ bl.end_date.isoformat() }}"),
         blocked_by: "{{ bl.blocked_by or '' }}",
@@ -231,6 +234,14 @@ function displayBookingWithPayments(booking, payments) {
             <div class="detail-row">
                 <div class="detail-label">Guest Name:</div>
                 <div class="detail-value"><strong>${booking.guest_name}</strong></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">👥 Adults / 👶 Children:</div>
+                <div class="detail-value"><span style="background:#e6f2ff; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700;">${booking.adults} / ${booking.children}</span></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">🛏️ Extra Mattress:</div>
+                <div class="detail-value"><span style="background:#fff3cd; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700; color:#856404;">${booking.mattress}</span></div>
             </div>
     `;
     
@@ -315,11 +326,11 @@ function displayBookingWithPayments(booking, payments) {
         `;
     }
     
-    if (remaining > 0) {
-        html += `<button class="btn-add-payment" onclick="showAddPaymentForm(${booking.id}, ${remaining})">💰 Add Payment</button>`;
-    }
-    
     html += `
+        <div style="display:flex; gap:0.8rem; margin-top:1.2rem; flex-wrap:wrap;">
+            <a href="/bookings/edit/${booking.id}" class="btn-add-payment" style="background:#667eea; text-decoration:none; display:inline-block;">✏️ Edit Booking</a>
+            ${remaining > 0 ? `<button class="btn-add-payment" onclick="showAddPaymentForm(${booking.id}, ${remaining})">💰 Add Payment</button>` : ''}
+        </div>
         </div>
         <div id="addPaymentMode" class="edit-form">
             <form id="addPaymentForm" onsubmit="addPayment(event, ${booking.id})">

@@ -104,6 +104,9 @@ class Booking(db.Model):
     guest_name = db.Column(db.String(100), nullable=False)
     guest_phone = db.Column(db.String(20))
     id_number = db.Column(db.String(50))  # DL or Aadhaar
+    adults = db.Column(db.Integer, default=1)  # Number of adults
+    children = db.Column(db.Integer, default=0)  # Number of children
+    mattress = db.Column(db.Integer, default=0)  # Number of extra mattresses
     payment_mode = db.Column(db.String(20))  # Cash or UPI
     payment_type = db.Column(db.String(20))  # Advance or Full
     total_amount = db.Column(db.Float, default=0)
@@ -597,6 +600,9 @@ def book_room():
         booking = Booking(room_id=room_id, guest_name=guest_name,
                           guest_phone=guest_phone, checkin=checkin, checkout=checkout,
                           id_number=request.form.get('id_number', ''),
+                          adults=int(request.form.get('adults', 1) or 1),
+                          children=int(request.form.get('children', 0) or 0),
+                          mattress=int(request.form.get('mattress', 0) or 0),
                           payment_mode=request.form.get('payment_mode', ''),
                           payment_type=request.form.get('payment_type', ''),
                           total_amount=float(request.form.get('total_amount', 0) or 0),
@@ -723,6 +729,7 @@ def list_bookings():
     page = request.args.get('page', 1, type=int)
     month = request.args.get('month', type=int)
     year = request.args.get('year', type=int)
+    booked_by = request.args.get('booked_by', type=str)
     per_page = 20
     
     # Base query
@@ -737,6 +744,10 @@ def list_bookings():
             end_date = datetime(year, month + 1, 1)
         query = query.filter(Booking.checkin >= start_date, Booking.checkin < end_date)
     
+    # Apply booked_by filter if provided
+    if booked_by:
+        query = query.filter(Booking.booked_by == booked_by)
+    
     # Get available months/years for filter dropdown
     all_bookings = Booking.query.with_entities(Booking.checkin).all()
     available_months = set()
@@ -745,14 +756,20 @@ def list_bookings():
             available_months.add((b.checkin.year, b.checkin.month))
     available_months = sorted(available_months, reverse=True)
     
+    # Get list of all users who have booked
+    booked_by_list = db.session.query(Booking.booked_by).filter(Booking.booked_by != None, Booking.booked_by != '').distinct().order_by(Booking.booked_by).all()
+    booked_by_list = [b[0] for b in booked_by_list if b[0]]
+    
     pagination = query.order_by(Booking.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
     
     return render_template('bookings.html', 
                          bookings=pagination.items, 
                          pagination=pagination,
                          available_months=available_months,
+                         booked_by_list=booked_by_list,
                          selected_month=month,
-                         selected_year=year)
+                         selected_year=year,
+                         selected_booked_by=booked_by)
 
 
 @app.route('/bookings/delete/<int:booking_id>', methods=['POST'])
@@ -762,6 +779,92 @@ def delete_booking(booking_id):
     db.session.delete(booking)
     db.session.commit()
     return redirect(url_for('list_bookings'))
+
+
+@app.route('/bookings/edit/<int:booking_id>', methods=['GET', 'POST'])
+@login_required
+def edit_booking(booking_id):
+    booking = Booking.query.get_or_404(booking_id)
+    
+    if request.method == 'POST':
+        # Get form data
+        guest_name = request.form.get('guest_name', '').strip()
+        guest_phone = request.form.get('guest_phone', '').strip()
+        id_number = request.form.get('id_number', '').strip()
+        adults = int(request.form.get('adults', 1) or 1)
+        children = int(request.form.get('children', 0) or 0)
+        mattress = int(request.form.get('mattress', 0) or 0)
+        payment_mode = request.form.get('payment_mode', '')
+        payment_type = request.form.get('payment_type', '')
+        total_amount = float(request.form.get('total_amount', 0) or 0)
+        receipt_no = request.form.get('receipt_no', '').strip()
+        booked_by = request.form.get('booked_by', '').strip()
+        
+        # Validate lengths
+        length_error = (
+            validate_length(guest_name, 100, 'Guest name') or
+            validate_length(guest_phone, 20, 'Phone number') or
+            validate_length(id_number, 50, 'ID number') or
+            validate_length(receipt_no, 50, 'Receipt number') or
+            validate_length(booked_by, 100, 'Booked by')
+        )
+        if not guest_name:
+            length_error = 'Guest name is required.'
+        
+        if length_error:
+            return render_template('edit_booking.html', booking=booking, error=length_error)
+        
+        # Parse dates
+        checkin = datetime.strptime(request.form['checkin'], '%Y-%m-%dT%H:%M')
+        checkout = datetime.strptime(request.form['checkout'], '%Y-%m-%dT%H:%M')
+        
+        # Validate dates
+        if checkout <= checkin:
+            return render_template('edit_booking.html', booking=booking, error='Check-out must be after check-in.')
+        
+        # Check for conflicts with other bookings (excluding current booking)
+        conflict = Booking.query.filter(
+            Booking.room_id == booking.room_id,
+            Booking.id != booking_id,
+            Booking.checkin < checkout,
+            Booking.checkout > checkin
+        ).first()
+        
+        if conflict:
+            return render_template('edit_booking.html', booking=booking, 
+                                 error=f'Room is already booked for this period by {conflict.guest_name}.')
+        
+        # Check for blocks
+        blocked = BlockedRoom.query.filter(
+            BlockedRoom.room_id == booking.room_id,
+            BlockedRoom.start_date < checkout,
+            BlockedRoom.end_date > checkin
+        ).first()
+        
+        if blocked:
+            error_msg = f'Room is blocked by {blocked.blocked_by} during this period.'
+            return render_template('edit_booking.html', booking=booking, error=error_msg)
+        
+        # Update booking
+        booking.guest_name = guest_name
+        booking.guest_phone = guest_phone
+        booking.id_number = id_number
+        booking.adults = adults
+        booking.children = children
+        booking.mattress = mattress
+        booking.payment_mode = payment_mode
+        booking.payment_type = payment_type
+        booking.total_amount = total_amount
+        booking.receipt_no = receipt_no
+        booking.booked_by = booked_by
+        booking.checkin = checkin
+        booking.checkout = checkout
+        
+        db.session.commit()
+        return redirect(url_for('list_bookings'))
+    
+    # GET request - show edit form
+    return render_template('edit_booking.html', booking=booking, error=None)
 
 
 @app.route('/bookings/update/<int:booking_id>', methods=['POST'])
@@ -856,7 +959,7 @@ def api_available_rooms():
     if not checkin or not checkout:
         rooms = Room.query.order_by(Room.number).all()
         return jsonify([{'id': r.id, 'number': r.number, 'type': r.room_type,
-                         'ac': r.ac_type, 'price': r.price_per_day, 'available': True} for r in rooms])
+                         'ac': 'N-AC' if r.ac_type == 'Non-AC' else r.ac_type, 'price': r.price_per_day, 'available': True} for r in rooms])
     
     checkin_dt = datetime.strptime(checkin, '%Y-%m-%dT%H:%M')
     checkout_dt = datetime.strptime(checkout, '%Y-%m-%dT%H:%M')
@@ -897,7 +1000,7 @@ def api_available_rooms():
                 reason_detail = f"Blocked from {conflict_block.start_date.strftime('%d %b %H:%M')}"
         
         result.append({'id': room.id, 'number': room.number, 'type': room.room_type,
-                       'ac': room.ac_type, 'price': price, 'available': not booked and not blocked,
+                       'ac': 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type, 'price': price, 'available': not booked and not blocked,
                        'reason': reason_detail or ('Booked' if booked else ('Blocked' if blocked else None))})
     return jsonify(result)
 

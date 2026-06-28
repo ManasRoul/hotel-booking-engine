@@ -25,7 +25,7 @@
                 <label>❄️ Climate</label>
                 <select name="ac_type" required>
                     <option value="AC">❄️ AC</option>
-                    <option value="Non-AC">🌡️ Non-AC</option>
+                    <option value="Non-AC">🌡️ N-AC</option>
                 </select>
             </div>
             <div class="form-group">
@@ -80,7 +80,7 @@
             <tr>
                 <td data-label="Number" style="font-weight:800; font-size:1.05rem;"><a href="/room/{{ room.id }}" style="color:#667eea; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.color='#5a67d8'; this.style.textDecoration='underline'" onmouseout="this.style.color='#667eea'; this.style.textDecoration='none'">{{ room.number }} →</a></td>
                 <td data-label="Type"><span style="background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:700; color:#2d3748;">{{ room.room_type }}</span></td>
-                <td data-label="Climate"><span style="background:{% if room.ac_type == 'AC' %}linear-gradient(135deg,#bee3f8,#90cdf4){% else %}linear-gradient(135deg,#feebc8,#fbd38d){% endif %}; padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:700; color:#2d3748;">{{ room.ac_type }}</span></td>
+                <td data-label="Climate"><span style="background:{% if room.ac_type == 'AC' %}linear-gradient(135deg,#bee3f8,#90cdf4){% else %}linear-gradient(135deg,#feebc8,#fbd38d){% endif %}; padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:700; color:#2d3748;">{{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }}</span></td>
                 <td data-label="{{ current_month_name }} Price">
                     <div style="display:flex; flex-direction:column; gap:0.3rem;">
                         <div style="font-weight:800; {% if price_info.is_custom %}color:#48bb78{% else %}color:#667eea{% endif %}; font-size:1rem;">

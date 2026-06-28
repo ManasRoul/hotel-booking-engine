@@ -13,7 +13,7 @@
     </div>
     <div class="card" style="margin:0; text-align:center; padding:1.5rem;">
         <div style="font-size:0.82rem; color:#718096; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem;">❄️ Climate</div>
-        <div style="font-size:1.5rem; font-weight:900; background:linear-gradient(135deg,#48bb78,#38a169); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">{{ room.ac_type }}</div>
+        <div style="font-size:1.5rem; font-weight:900; background:linear-gradient(135deg,#48bb78,#38a169); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">{{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }}</div>
     </div>
     <div class="card" style="margin:0; text-align:center; padding:1.5rem;">
         <div style="font-size:0.82rem; color:#718096; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem;">💰 Daily Rate</div>
