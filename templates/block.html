@@ -10,7 +10,7 @@
         <div style="background:#e6f2ff; border-left:4px solid #48bb78; padding:0.8rem 1rem; margin-bottom:1.5rem; border-radius:8px; font-size:0.85rem; color:#4a5568;">
             💡 <strong>Tip:</strong> Multiple users can block the same room for overlapping dates. All blocks will be displayed on the calendar.
         </div>
-        <form method="POST">
+        <form method="POST" id="blockForm">
             <div class="form-group">
                 <label>📅 From</label>
                 <input type="datetime-local" name="start_date" id="start_date" required>
@@ -74,6 +74,21 @@
 </div>
 
 <script>
+// Set minimum date to current date/time
+(function() {
+    const now = new Date();
+    // Format: YYYY-MM-DDTHH:MM
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    
+    document.getElementById('start_date').min = minDateTime;
+    document.getElementById('end_date').min = minDateTime;
+})();
+
 // All rooms data from server
 const allRooms = [
     {% for room in rooms %}
@@ -98,6 +113,25 @@ function updateRooms() {
         return;
     }
     
+    // Validate dates are not in the past
+    const now = new Date();
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    
+    if (startDate < now) {
+        select.innerHTML = '<option value="">Start date cannot be in the past</option>';
+        status.textContent = '⚠️ Invalid date';
+        status.style.color = '#e53e3e';
+        return;
+    }
+    
+    if (endDate <= startDate) {
+        select.innerHTML = '<option value="">End date must be after start date</option>';
+        status.textContent = '⚠️ Invalid date';
+        status.style.color = '#e53e3e';
+        return;
+    }
+    
     // Populate all rooms (allow overlapping blocks)
     select.innerHTML = '<option value="">Select a room...</option>';
     allRooms.forEach(room => {
@@ -109,6 +143,27 @@ function updateRooms() {
     status.textContent = `(${allRooms.length} rooms - overlapping blocks allowed)`;
     status.style.color = '#48bb78';
 }
+
+// Validate form before submission
+document.getElementById('blockForm').addEventListener('submit', function(e) {
+    const start = document.getElementById('start_date').value;
+    const end = document.getElementById('end_date').value;
+    const now = new Date();
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    
+    if (startDate < now) {
+        e.preventDefault();
+        alert('⚠️ Start date cannot be in the past. Please select a current or future date.');
+        return false;
+    }
+    
+    if (endDate <= startDate) {
+        e.preventDefault();
+        alert('⚠️ End date must be after start date.');
+        return false;
+    }
+});
 
 document.getElementById('start_date').addEventListener('change', updateRooms);
 document.getElementById('end_date').addEventListener('change', updateRooms);
