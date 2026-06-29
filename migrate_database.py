@@ -179,6 +179,69 @@ def migrate_user_table(cursor, is_mysql):
     
     return changes_made
 
+def create_audit_table_mysql(conn, cursor):
+    """Create audit_log table if it doesn't exist (MySQL)."""
+    changes_made = []
+    
+    # Check if audit_log table exists
+    cursor.execute("SHOW TABLES LIKE 'audit_log'")
+    table_exists = cursor.fetchone() is not None
+    
+    if not table_exists:
+        cursor.execute("""
+            CREATE TABLE audit_log (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                username VARCHAR(50),
+                action VARCHAR(50) NOT NULL,
+                entity_type VARCHAR(20) NOT NULL,
+                entity_id INT,
+                details VARCHAR(500),
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                INDEX ix_audit_log_action (action),
+                INDEX ix_audit_log_created_at (created_at),
+                FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE SET NULL
+            )
+        """)
+        conn.commit()
+        changes_made.append("✅ Created 'audit_log' table for tracking changes")
+    else:
+        print("   ℹ️  'audit_log' table already exists")
+    
+    return changes_made
+
+def create_audit_table_sqlite(conn):
+    """Create audit_log table if it doesn't exist (SQLite)."""
+    cursor = conn.cursor()
+    changes_made = []
+    
+    # Check if audit_log table exists
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='audit_log'")
+    table_exists = cursor.fetchone() is not None
+    
+    if not table_exists:
+        cursor.execute("""
+            CREATE TABLE audit_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                username VARCHAR(50),
+                action VARCHAR(50) NOT NULL,
+                entity_type VARCHAR(20) NOT NULL,
+                entity_id INTEGER,
+                details VARCHAR(500),
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE SET NULL
+            )
+        """)
+        cursor.execute("CREATE INDEX IF NOT EXISTS ix_audit_log_action ON audit_log(action)")
+        cursor.execute("CREATE INDEX IF NOT EXISTS ix_audit_log_created_at ON audit_log(created_at)")
+        conn.commit()
+        changes_made.append("✅ Created 'audit_log' table for tracking changes")
+    else:
+        print("   ℹ️  'audit_log' table already exists")
+    
+    return changes_made
+
 def verify_indexes_mysql(conn, cursor):
     """Ensure all necessary indexes exist (MySQL)."""
     changes_made = []
@@ -324,7 +387,15 @@ def main():
         all_changes.extend(changes)
         print()
         
-        print("🔍 Verifying indexes...")
+        print("� Checking audit_log table...")
+        if use_mysql:
+            changes = create_audit_table_mysql(conn, cursor)
+        else:
+            changes = create_audit_table_sqlite(conn)
+        all_changes.extend(changes)
+        print()
+        
+        print("�🔍 Verifying indexes...")
         if use_mysql:
             changes = verify_indexes_mysql(conn, cursor)
         else:
@@ -355,6 +426,7 @@ def main():
         print("   • Soft delete with status tracking (active/canceled)")
         print("   • Comments field for bookings (up to 200 characters)")
         print("   • Checkout day indicators in calendar views")
+        print("   • Audit log for tracking all changes (available in /audit)")
         print()
         
         conn.close()
