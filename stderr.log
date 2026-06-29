@@ -1,0 +1,1542 @@
+
+text/plain stderr.log ( ASCII text )
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 6, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2486][230966] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+Traceback (most recent call last):
+  File "/home/sagaufqr/book.sagarbela.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'app.py')
+  File "/opt/alt/python39/lib64/python3.9/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 711, in _load
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "app.py", line 9, in <module>
+    from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response
+ModuleNotFoundError: No module named 'flask'
+Traceback (most recent call last):
+  File "/home/sagaufqr/book.sagarbela.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'app.py')
+  File "/opt/alt/python39/lib64/python3.9/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 711, in _load
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "app.py", line 9, in <module>
+    from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response
+ModuleNotFoundError: No module named 'flask'
+Traceback (most recent call last):
+  File "/home/sagaufqr/book.sagarbela.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'app.py')
+  File "/opt/alt/python39/lib64/python3.9/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 711, in _load
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "app.py", line 9, in <module>
+    from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response
+ModuleNotFoundError: No module named 'flask'
+Traceback (most recent call last):
+  File "/home/sagaufqr/book.sagarbela.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'app.py')
+  File "/opt/alt/python39/lib64/python3.9/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 711, in _load
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "app.py", line 9, in <module>
+    from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response
+ModuleNotFoundError: No module named 'flask'
+[2026-06-28 02:55:42,129] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '0UIcp4Iv@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '0UIcp4Iv@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '0UIcp4Iv@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 02:56:00,897] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '0UIcp4Iv@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '0UIcp4Iv@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '0UIcp4Iv@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 03:22:35,699] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 03:45:57,255] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 03:50:17,862] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 04:10:12,459] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '(59l_{rp,5=@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 04:26:41,053] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '.M^@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '.M^@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '.M^@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 04:30:44,091] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '.M^@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '.M^@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '.M^@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 04:30:53,310] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 323, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Unknown MySQL server host '.M^@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2005 (HY000): Unknown MySQL server host '.M^@localhost' (-2)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    self._dec_overflow()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+sqlalchemy.exc.DatabaseError: (mysql.connector.errors.DatabaseError) 2005 (HY000): Unknown MySQL server host '.M^@localhost' (-2)
+(Background on this error at: https://sqlalche.me/e/20/4xp6)
+[2026-06-28 04:35:24,187] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Table 'sagaufqr_book_sagar.user' doesn't exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.ProgrammingError: 1146 (42S02): Table 'sagaufqr_book_sagar.user' doesn't exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1146 (42S02): Table 'sagaufqr_book_sagar.user' doesn't exist
+[SQL: SELECT user.id AS user_id, user.username AS user_username, user.password_hash AS user_password_hash, user.color AS user_color, user.role AS user_role 
+FROM user 
+WHERE user.username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'admin', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+[2026-06-28 04:35:39,880] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Table 'sagaufqr_book_sagar.user' doesn't exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.ProgrammingError: 1146 (42S02): Table 'sagaufqr_book_sagar.user' doesn't exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 141, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1146 (42S02): Table 'sagaufqr_book_sagar.user' doesn't exist
+[SQL: SELECT user.id AS user_id, user.username AS user_username, user.password_hash AS user_password_hash, user.color AS user_color, user.role AS user_role 
+FROM user 
+WHERE user.username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'admin', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+[2026-06-29 08:52:10,279] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Unknown column 'user.show_checkout_indicator' in 'SELECT'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'user.show_checkout_indicator' in 'SELECT'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 205, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1054 (42S22): Unknown column 'user.show_checkout_indicator' in 'SELECT'
+[SQL: SELECT user.id AS user_id, user.username AS user_username, user.password_hash AS user_password_hash, user.color AS user_color, user.role AS user_role, user.show_checkout_indicator AS user_show_checkout_indicator 
+FROM user 
+WHERE user.username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'admin', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+[2026-06-29 08:54:10,773] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Unknown column 'user.show_checkout_indicator' in 'SELECT'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'user.show_checkout_indicator' in 'SELECT'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 205, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1054 (42S22): Unknown column 'user.show_checkout_indicator' in 'SELECT'
+[SQL: SELECT user.id AS user_id, user.username AS user_username, user.password_hash AS user_password_hash, user.color AS user_color, user.role AS user_role, user.show_checkout_indicator AS user_show_checkout_indicator 
+FROM user 
+WHERE user.username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'admin', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+[2026-06-29 08:55:22,931] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 661, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Unknown column 'user.show_checkout_indicator' in 'SELECT'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'user.show_checkout_indicator' in 'SELECT'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib/python3.9/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "app.py", line 205, in login
+    user = User.query.filter_by(username=username).first()
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/cursor_cext.py", line 374, in execute
+    result = self._cnx.cmd_query(
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 74, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/home/sagaufqr/virtualenv/book.sagarbela.com/3.9/lib64/python3.9/site-packages/mysql/connector/connection_cext.py", line 669, in cmd_query
+    raise get_mysql_exception(
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1054 (42S22): Unknown column 'user.show_checkout_indicator' in 'SELECT'
+[SQL: SELECT user.id AS user_id, user.username AS user_username, user.password_hash AS user_password_hash, user.color AS user_color, user.role AS user_role, user.show_checkout_indicator AS user_show_checkout_indicator 
+FROM user 
+WHERE user.username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'admin', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
