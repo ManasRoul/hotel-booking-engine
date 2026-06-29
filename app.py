@@ -78,7 +78,6 @@ class User(db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     color = db.Column(db.String(7), default='#667eea')  # Hex color code
     role = db.Column(db.String(20), default='contributor')  # 'owner' or 'contributor'
-    show_checkout_indicator = db.Column(db.Boolean, default=True)  # Show checkout day indicators in calendar
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
