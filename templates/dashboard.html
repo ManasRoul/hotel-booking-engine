@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block extra_style %}
-<link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard.css") }}">
+<link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard.css") }}?v=1782720100">
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
         <div class="stat-label">Total Rooms</div>
     </div>
     <div class="stat-card">
-        <div class="stat-value">{{ bookings|length }}</div>
+        <div class="stat-value">{{ booking_count }}</div>
         <div class="stat-label">Bookings This Year</div>
     </div>
 </div>
@@ -24,6 +24,7 @@
 <div class="legend">
     <span><span class="box" style="background:#f7fafc; border:2px solid #cbd5e0;"></span> Available (Room #)</span>
     <span><span class="box" style="background:#e53e3e;"></span> Booked</span>
+    <span><span class="box" style="background:linear-gradient(135deg, #e53e3e 50%, #f7fafc 50%);"></span> Checkout Day</span>
     <span><span class="box" style="background:#dd6b20;"></span> Blocked</span>
 </div>
 
@@ -48,8 +49,9 @@
 <div class="month-grid">
 {% for month in range(1, 13) %}
     {% set month_name = ['January','February','March','April','May','June','July','August','September','October','November','December'][month-1] %}
-    {% set days_in_month = cal_data[month]['days'] %}
-    <div class="month-card {% if year == current_year and month == current_month %}current-month{% endif %}" id="month-{{ month }}">
+    <div class="month-card {% if year == current_year and month == current_month %}current-month{% endif %}" id="month-{{ month }}" data-month="{{ month }}" data-year="{{ year }}">
+        {% if month == loaded_month %}
+        {% set days_in_month = cal_data[month]['days'] %}
         <h3><a href="/month/{{ year }}/{{ month }}" style="color:inherit; text-decoration:none;">{{ month_name }} ↗</a></h3>
         <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
         <table class="cal-table">
@@ -83,7 +85,29 @@
                         data-total="{{ b.total_amount or 0 }}"
                         data-amount="{{ b.amount_received or 0 }}"
                         data-bookedby="{{ b.booked_by or '—' }}"
-                        data-receipt="{{ b.receipt_no or '—' }}">●</td>
+                        data-receipt="{{ b.receipt_no or '—' }}"
+                        data-comments="{{ b.comments or '' }}">●</td>
+                    {% elif cell['status'] == 'checkout' %}
+                    {% set b = cell['booking'] %}
+                    <td class="checkout-day" title="{{ b.guest_name }} (checkout {{ b.checkout.strftime('%H:%M') }})" 
+                        data-type="booking"
+                        data-bookingid="{{ b.id }}"
+                        data-room="{{ room.number }}"
+                        data-guest="{{ b.guest_name }}"
+                        data-phone="{{ b.guest_phone or '—' }}"
+                        data-id="{{ b.id_number or '—' }}"
+                        data-adults="{{ b.adults or 1 }}"
+                        data-children="{{ b.children or 0 }}"
+                        data-mattress="{{ b.mattress or 0 }}"
+                        data-checkin="{{ b.checkin.strftime('%d %b %Y, %H:%M') }}"
+                        data-checkout="{{ b.checkout.strftime('%d %b %Y, %H:%M') }}"
+                        data-payment="{{ b.payment_mode or '—' }} / {{ b.payment_type or '—' }}"
+                        data-paymenttype="{{ b.payment_type or '—' }}"
+                        data-total="{{ b.total_amount or 0 }}"
+                        data-amount="{{ b.amount_received or 0 }}"
+                        data-bookedby="{{ b.booked_by or '—' }}"
+                        data-receipt="{{ b.receipt_no or '—' }}"
+                        data-comments="{{ b.comments or '' }}">◐</td>
                     {% elif cell['status'] == 'blocked' %}
                     {% set blocks_list = cell['blocks'] %}
                     {% set block_count = cell['count'] %}
@@ -125,6 +149,13 @@
             {% endfor %}
         </table>
         </div>
+        {% else %}
+        <h3><a href="/month/{{ year }}/{{ month }}" style="color:inherit; text-decoration:none;">{{ month_name }} ↗</a></h3>
+        <div class="month-placeholder" style="text-align:center; padding:2rem 1rem; color:#a0aec0;">
+            <div style="font-size:1.5rem; margin-bottom:0.5rem;">⏳</div>
+            <div style="font-size:0.85rem;">Loading...</div>
+        </div>
+        {% endif %}
     </div>
 {% endfor %}
 </div>
@@ -196,11 +227,11 @@ document.addEventListener('click', function(e) {
                     <div class="detail-value"><strong>${cell.dataset.guest}</strong></div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">👥 Adults / 👶 Children:</div>
+                    <div class="detail-label">Adults / Children:</div>
                     <div class="detail-value"><span style="background:#e6f2ff; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700;">${cell.dataset.adults} / ${cell.dataset.children}</span></div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">🛏️ Extra Mattress:</div>
+                    <div class="detail-label">Extra Mattress:</div>
                     <div class="detail-value"><span style="background:#fff3cd; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700; color:#856404;">${cell.dataset.mattress}</span></div>
                 </div>
                 <div class="detail-row">
@@ -243,6 +274,12 @@ document.addEventListener('click', function(e) {
                     <div class="detail-label">Booked By:</div>
                     <div class="detail-value">${cell.dataset.bookedby}</div>
                 </div>
+                ${cell.dataset.comments ? `
+                <div class="detail-row">
+                    <div class="detail-label">Comments:</div>
+                    <div class="detail-value" style="font-style:italic; color:#4a5568;">${cell.dataset.comments}</div>
+                </div>
+                ` : ''}
                 
                 ${payments.length > 0 ? `
                 <div class="payment-history">
@@ -261,9 +298,10 @@ document.addEventListener('click', function(e) {
                 </div>
                 ` : ''}
                 
-                <div style="display:flex; gap:0.8rem; margin-top:1.2rem; flex-wrap:wrap;">
-                    <a href="/bookings/edit/${bookingId}" class="btn-add-payment" style="background:#667eea; text-decoration:none; display:inline-block;">✏️ Edit Booking</a>
+                <div style="display:flex; gap:0.5rem; margin-top:1.2rem; flex-wrap:wrap; align-items:center;">
+                    <a href="/bookings/edit/${bookingId}" class="btn-add-payment" style="background:#667eea; text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">✏️ Edit Booking</a>
                     ${remaining > 0 ? `<button class="btn-add-payment" onclick="showAddPaymentForm(${bookingId}, ${remaining})">💰 Add Payment</button>` : ''}
+                    <button class="btn-add-payment" style="background:#38a169;" onclick="checkoutBooking(${bookingId}, '${cell.dataset.guest}')">🏁 Checkout</button>
                 </div>
             </div>
             <div id="addPaymentMode" class="edit-form">
@@ -303,6 +341,166 @@ document.addEventListener('click', function(e) {
     
     if (type === 'booking') {
         modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+});
+
+// Handle clicks on checkout-day cells
+document.addEventListener('click', function(e) {
+    const cell = e.target.closest('.checkout-day');
+    if (!cell) return;
+    
+    const type = cell.dataset.type;
+    const modal = document.getElementById('detailModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    
+    if (type === 'booking') {
+        const bookingId = cell.dataset.bookingid;
+        modalTitle.textContent = '📋 Booking Details';
+        
+        // Load payment history
+        fetch(`/api/booking-payments/${bookingId}`)
+            .then(r => r.json())
+            .then(payments => {
+                const cashTotal = payments.filter(p => p.payment_mode === 'Cash').reduce((sum, p) => sum + p.amount, 0);
+                const upiTotal = payments.filter(p => p.payment_mode === 'UPI').reduce((sum, p) => sum + p.amount, 0);
+                const totalPaid = cashTotal + upiTotal;
+                const totalAmount = parseFloat(cell.dataset.total);
+                const remaining = totalAmount - totalPaid;
+                
+                modalBody.innerHTML = `
+            <div id="viewMode">
+                <div class="detail-row">
+                    <div class="detail-label">Room:</div>
+                    <div class="detail-value"><strong>${cell.dataset.room}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Guest Name:</div>
+                    <div class="detail-value"><strong>${cell.dataset.guest}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Adults / Children:</div>
+                    <div class="detail-value"><span style="background:#e6f2ff; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700;">${cell.dataset.adults} / ${cell.dataset.children}</span></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Extra Mattress:</div>
+                    <div class="detail-value"><span style="background:#fff3cd; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700; color:#856404;">${cell.dataset.mattress}</span></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Phone:</div>
+                    <div class="detail-value">${cell.dataset.phone}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">ID Number:</div>
+                    <div class="detail-value">${cell.dataset.id}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Check-in:</div>
+                    <div class="detail-value">${cell.dataset.checkin}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Check-out:</div>
+                    <div class="detail-value">${cell.dataset.checkout}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Payment Mode / Type:</div>
+                    <div class="detail-value">${cell.dataset.payment}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Total Amount:</div>
+                    <div class="detail-value" id="displayTotal"><strong>₹${parseFloat(cell.dataset.total).toFixed(2)}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Total Paid:</div>
+                    <div class="detail-value" style="color:#38a169;" id="displayPaid"><strong>₹${totalPaid.toFixed(2)}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Cash Paid:</div>
+                    <div class="detail-value" id="displayCash">₹${cashTotal.toFixed(2)}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">UPI Paid:</div>
+                    <div class="detail-value" id="displayUPI">₹${upiTotal.toFixed(2)}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Remaining:</div>
+                    <div class="detail-value" style="color:#e53e3e;" id="displayRemaining"><strong>₹${remaining.toFixed(2)}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Booked By:</div>
+                    <div class="detail-value">${cell.dataset.bookedby}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Receipt No.:</div>
+                    <div class="detail-value">${cell.dataset.receipt}</div>
+                </div>
+                ${cell.dataset.comments && cell.dataset.comments !== '' ? `
+                <div class="detail-row">
+                    <div class="detail-label">Comments:</div>
+                    <div class="detail-value" style="font-style:italic; color:#4a5568;">${cell.dataset.comments}</div>
+                </div>
+                ` : ''}
+                ${payments.length > 0 ? `
+                <div class="payment-history">
+                    <div class="payment-history-title">💳 Payment History</div>
+                    <div id="paymentList">
+                        ${payments.map(p => `
+                            <div class="payment-item">
+                                <div class="payment-item-left">
+                                    <span class="payment-mode-badge payment-mode-${p.payment_mode.toLowerCase()}">${p.payment_mode}</span>
+                                    <span class="payment-amount">₹${p.amount.toFixed(2)}</span>
+                                </div>
+                                <div class="payment-date">${p.payment_date}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                <div style="display:flex; gap:0.5rem; margin-top:1.2rem; flex-wrap:wrap; align-items:center;">
+                    <a href="/bookings/edit/${bookingId}" class="btn-add-payment" style="background:#667eea; text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">✏️ Edit Booking</a>
+                    ${remaining > 0 ? `<button class="btn-add-payment" onclick="showAddPaymentForm(${bookingId}, ${remaining})">💰 Add Payment</button>` : ''}
+                    <button class="btn-add-payment" style="background:#38a169;" onclick="checkoutBooking(${bookingId}, '${cell.dataset.guest}')">🏁 Checkout</button>
+                </div>
+            </div>
+            <div id="addPaymentMode" class="edit-form">
+                <form id="addPaymentForm" onsubmit="addPayment(event, ${bookingId})">
+                    <div class="edit-form-group">
+                        <label>Payment Amount (₹)</label>
+                        <input type="number" name="amount" id="paymentAmount" step="0.01" min="0.01" max="${remaining}" required placeholder="Enter amount">
+                    </div>
+                    <div class="edit-form-group">
+                        <label>Payment Mode</label>
+                        <select name="payment_mode" id="paymentMode" required>
+                            <option value="Cash">💵 Cash</option>
+                            <option value="UPI">📲 UPI</option>
+                        </select>
+                    </div>
+                    <div class="edit-form-group">
+                        <label>Receipt No. (Optional)</label>
+                        <input type="text" name="receipt_no" id="paymentReceipt" placeholder="Receipt number">
+                    </div>
+                    <div class="edit-form-group">
+                        <label>Notes (Optional)</label>
+                        <input type="text" name="notes" id="paymentNotes" placeholder="Payment notes">
+                    </div>
+                    <div class="edit-buttons">
+                        <button type="submit" class="edit-btn edit-btn-primary">✅ Add Payment</button>
+                        <button type="button" class="edit-btn edit-btn-secondary" onclick="hideAddPaymentForm()">❌ Cancel</button>
+                    </div>
+                </form>
+            </div>
+        `;
+            })
+            .catch(error => {
+                console.error('Error loading payments:', error);
+                modalBody.innerHTML = '<p style="color:#e53e3e;">Error loading booking details</p>';
+            });
+    }
+    
+    if (type === 'booking') {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 });
 
@@ -385,6 +583,7 @@ function showMultipleBlocks(blocksList, roomNumber, roomType, acType) {
     
     modalBody.innerHTML = html;
     modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 function showAddPaymentForm(bookingId, remaining) {
@@ -404,6 +603,7 @@ function addPayment(event, bookingId) {
     
     const form = event.target;
     const formData = new FormData(form);
+    formData.append('csrf_token', document.querySelector('meta[name="csrf-token"]').content);
     
     fetch(`/bookings/update/${bookingId}`, {
         method: 'POST',
@@ -448,6 +648,34 @@ function addPayment(event, bookingId) {
     .catch(error => {
         console.error('Error:', error);
         alert('❌ Error adding payment. Please try again.');
+    });
+}
+
+function checkoutBooking(bookingId, guestName) {
+    if (!confirm(`Check out ${guestName} now?`)) {
+        return;
+    }
+    
+    fetch(`/bookings/checkout/${bookingId}`, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            closeModal();
+            alert(`✅ ${guestName} has been checked out successfully!`);
+            // Reload the page to update the calendar
+            window.location.reload();
+        } else {
+            alert('❌ Error checking out. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('❌ Error checking out. Please try again.');
     });
 }
 
@@ -558,6 +786,53 @@ document.querySelectorAll('.month-link').forEach(link => {
         }
     });
 });
+
+// Lazy-load months via AJAX
+(function() {
+    const loadedMonths = new Set([{{ loaded_month }}]);
+    
+    function loadMonth(card) {
+        const month = parseInt(card.dataset.month);
+        const year = parseInt(card.dataset.year);
+        if (loadedMonths.has(month)) return;
+        loadedMonths.add(month);
+        
+        fetch(`/api/dashboard-month/${year}/${month}`)
+            .then(r => r.text())
+            .then(html => {
+                const placeholder = card.querySelector('.month-placeholder');
+                if (placeholder) placeholder.remove();
+                // Keep the h3 only if the response doesn't have one yet
+                const existingH3 = card.querySelector('h3');
+                if (existingH3) existingH3.remove();
+                card.insertAdjacentHTML('beforeend', html);
+            });
+    }
+    
+    // IntersectionObserver to load months when they scroll into view
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                loadMonth(entry.target);
+            }
+        });
+    }, { rootMargin: '200px' });
+    
+    document.querySelectorAll('.month-card').forEach(function(card) {
+        if (!loadedMonths.has(parseInt(card.dataset.month))) {
+            observer.observe(card);
+        }
+    });
+    
+    // Also load on month-link click
+    document.querySelectorAll('.month-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+            const targetId = this.getAttribute('href').substring(1);
+            const card = document.getElementById(targetId);
+            if (card) loadMonth(card);
+        });
+    });
+})();
 </script>
 
 {% endblock %}

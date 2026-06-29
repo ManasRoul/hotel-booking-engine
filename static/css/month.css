@@ -127,6 +127,20 @@
         box-shadow: 0 2px 8px rgba(229,62,62,0.3);
     }
     
+    .cal-table .checkout-day {
+        background: linear-gradient(135deg, #e53e3e 50%, #f7fafc 50%);
+        color: #2d3748;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(229,62,62,0.2);
+        font-size: 1.2rem;
+    }
+    
+    .cal-table .checkout-day:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(229,62,62,0.4);
+    }
+    
     .cal-table .available { 
         background: #f7fafc; 
         color: #718096; 

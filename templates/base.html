@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>SagarBela Hotel Booking</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css") }}?v=1782719771">
     {% block extra_style %}{% endblock %}
 </head>
 <body>
@@ -21,6 +22,7 @@
             <a href="/rooms">🏨 Rooms</a>
             {% if session.get('user_role') == 'owner' %}
             <a href="/users">👥 Users</a>
+            <a href="/audit">📜 Audit</a>
             {% endif %}
             <a href="/logout" style="color:#e53e3e;">🚪 Logout</a>
         </div>
@@ -55,5 +57,20 @@
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+    <script>
+        (function(){
+            var timeout;
+            function resetTimer(){clearTimeout(timeout);timeout=setTimeout(function(){window.location.href='/logout';},15*60*1000);}
+            ['mousemove','keydown','click','scroll','touchstart'].forEach(function(e){document.addEventListener(e,resetTimer);});
+            resetTimer();
+        })();
+        // Auto-inject CSRF token into all POST forms
+        document.querySelectorAll('form[method="POST"],form[method="post"]').forEach(function(f){
+            if(!f.querySelector('input[name="csrf_token"]')){
+                var i=document.createElement('input');i.type='hidden';i.name='csrf_token';i.value='{{ csrf_token }}';
+                f.appendChild(i);
+            }
+        });
+    </script>
 </body>
 </html>

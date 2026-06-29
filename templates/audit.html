@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<style>
+    .audit-table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+    .audit-table th, .audit-table td { padding:0.7rem 1rem; text-align:left; border-bottom:1px solid #e2e8f0; }
+    .audit-table th { background:#f7fafc; font-weight:700; color:#4a5568; position:sticky; top:0; }
+    .badge { padding:0.25rem 0.6rem; border-radius:8px; font-size:0.75rem; font-weight:700; color:white; }
+    .badge-created { background:#38a169; }
+    .badge-edited { background:#667eea; }
+    .badge-canceled { background:#e53e3e; }
+    .badge-checkout { background:#d69e2e; }
+    .badge-payment { background:#319795; }
+</style>
+{% endblock %}
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; background:rgba(255,255,255,0.9); padding:1.2rem 1.5rem; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="margin:0;">📜 Audit Trail</h2>
+</div>
+<div class="card" style="overflow-x:auto; padding:1rem;">
+    <table class="audit-table">
+        <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Type</th><th>ID</th><th>Details</th></tr></thead>
+        <tbody>
+        {% for log in logs.items %}
+        <tr>
+            <td style="white-space:nowrap;">{{ log.created_at.strftime('%d %b %Y, %H:%M') }}</td>
+            <td style="font-weight:600;">{{ log.username }}</td>
+            <td><span class="badge badge-{{ log.action }}">{{ log.action }}</span></td>
+            <td>{{ log.entity_type }}</td>
+            <td>#{{ log.entity_id }}</td>
+            <td style="color:#718096;">{{ log.details or '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" style="text-align:center; padding:3rem; color:#718096;">No activity logged yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if logs.pages > 1 %}
+<div style="display:flex; justify-content:center; gap:0.5rem; margin-top:1.5rem;">
+    {% if logs.has_prev %}<a href="?page={{ logs.prev_num }}" class="btn btn-primary btn-sm">← Prev</a>{% endif %}
+    <span style="padding:0.5rem 1rem; color:#718096;">Page {{ logs.page }} of {{ logs.pages }}</span>
+    {% if logs.has_next %}<a href="?page={{ logs.next_num }}" class="btn btn-primary btn-sm">Next →</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

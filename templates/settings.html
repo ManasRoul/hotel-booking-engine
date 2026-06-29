@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width:600px; margin:0 auto;">
+    <h2 style="margin-bottom:2rem; color:#2d3748;">⚙️ Settings</h2>
+    
+    <div class="card">
+        <form method="POST">
+            <div style="margin-bottom:2rem;">
+                <h3 style="margin-bottom:1rem; color:#4a5568; font-size:1.1rem;">📅 Calendar Display</h3>
+                
+                <div style="background:#f7fafc; padding:1.5rem; border-radius:12px; border:2px solid #e2e8f0;">
+                    <label style="display:flex; align-items:center; cursor:pointer; gap:1rem;">
+                        <input type="checkbox" name="show_checkout_indicator" 
+                               {% if user.show_checkout_indicator %}checked{% endif %}
+                               style="width:20px; height:20px; cursor:pointer;">
+                        <div>
+                            <div style="font-weight:700; color:#2d3748; margin-bottom:0.3rem;">Show Checkout Day Indicator</div>
+                            <div style="font-size:0.9rem; color:#718096;">
+                                When enabled, checkout days will be highlighted with a half-circle (◐) to indicate when guests are leaving. 
+                                When disabled, checkout days will show as available.
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <div style="background:#e6fffa; padding:1rem; border-radius:12px; border:1px solid #81e6d9; margin-bottom:1.5rem;">
+                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+                    <span style="font-size:1.2rem;">ℹ️</span>
+                    <strong style="color:#234e52;">About Checkout Indicators</strong>
+                </div>
+                <p style="margin:0; font-size:0.9rem; color:#285e61;">
+                    The checkout day indicator helps you see at a glance when rooms will become available. 
+                    It displays a half-filled circle on the guest's checkout date, making it easy to plan new bookings.
+                </p>
+            </div>
+            
+            <div style="display:flex; gap:1rem;">
+                <button type="submit" class="btn btn-primary" style="flex:1; justify-content:center; padding:1rem; font-size:1rem;">💾 Save Settings</button>
+                <a href="/" class="btn" style="flex:1; justify-content:center; padding:1rem; font-size:1rem; background:#e2e8f0; color:#4a5568; text-decoration:none;">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+    
+    <div class="card" style="margin-top:1.5rem; background:#fff5f5; border:2px solid #feb2b2;">
+        <h3 style="margin-bottom:1rem; color:#c53030; font-size:1rem;">⚠️ Note</h3>
+        <p style="margin:0; font-size:0.9rem; color:#742a2a;">
+            These settings are personal and will only affect your view of the calendar. 
+            Other users will see the calendar according to their own preferences.
+        </p>
+    </div>
+</div>
+{% endblock %}

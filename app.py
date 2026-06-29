@@ -24,7 +24,13 @@ else:
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
 db = SQLAlchemy(app)
+
+# --- Rate limiting for login ---
+login_attempts = {}  # {ip: [timestamp, ...]}
+MAX_LOGIN_ATTEMPTS = 5
+LOGIN_WINDOW = 300  # 5 minutes
 
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -37,6 +43,26 @@ def login_required(f):
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated
+
+
+import secrets
+
+@app.before_request
+def refresh_session():
+    session.modified = True
+    # Generate CSRF token if not present
+    if 'csrf_token' not in session:
+        session['csrf_token'] = secrets.token_hex(16)
+    # Validate CSRF on POST/DELETE requests (skip AJAX with JSON)
+    if request.method == 'POST' and request.content_type != 'application/json':
+        token = request.form.get('csrf_token') or request.headers.get('X-CSRF-Token')
+        if token != session.get('csrf_token'):
+            return 'CSRF token invalid. Please refresh the page and try again.', 403
+
+
+@app.context_processor
+def inject_csrf():
+    return {'csrf_token': session.get('csrf_token', '')}
 
 
 def validate_length(value, max_len, field_name):
@@ -52,6 +78,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     color = db.Column(db.String(7), default='#667eea')  # Hex color code
     role = db.Column(db.String(20), default='contributor')  # 'owner' or 'contributor'
+    show_checkout_indicator = db.Column(db.Boolean, default=True)  # Show checkout day indicators in calendar
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -113,8 +140,11 @@ class Booking(db.Model):
     amount_received = db.Column(db.Float, default=0)
     booked_by = db.Column(db.String(100))
     receipt_no = db.Column(db.String(50))
+    comments = db.Column(db.String(200))  # Comments for the booking
     checkin = db.Column(db.DateTime, nullable=False, index=True)
     checkout = db.Column(db.DateTime, nullable=False, index=True)
+    status = db.Column(db.String(20), default='active', index=True)  # active or canceled
+    canceled_at = db.Column(db.DateTime)  # When the booking was canceled
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -130,12 +160,43 @@ class Payment(db.Model):
     booking = db.relationship('Booking', backref='payments')
 
 
+class AuditLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    username = db.Column(db.String(50))
+    action = db.Column(db.String(50), nullable=False, index=True)  # created, edited, canceled, checkout, payment
+    entity_type = db.Column(db.String(20), nullable=False)  # booking, room, user
+    entity_id = db.Column(db.Integer)
+    details = db.Column(db.String(500))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+def log_action(action, entity_type, entity_id, details=None):
+    entry = AuditLog(
+        user_id=session.get('user_id'),
+        username=session.get('username', 'system'),
+        action=action,
+        entity_type=entity_type,
+        entity_id=entity_id,
+        details=details
+    )
+    db.session.add(entry)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
     error = None
     if request.method == 'POST':
+        # Rate limiting
+        ip = request.remote_addr
+        now = datetime.now().timestamp()
+        attempts = login_attempts.get(ip, [])
+        attempts = [t for t in attempts if now - t < LOGIN_WINDOW]
+        if len(attempts) >= MAX_LOGIN_ATTEMPTS:
+            error = 'Too many login attempts. Please try again in 5 minutes.'
+            return render_template('login.html', error=error)
+
         username = request.form['username'].strip()
         password = request.form['password']
         if len(username) > 50 or len(password) > 128:
@@ -143,11 +204,15 @@ def login():
         else:
             user = User.query.filter_by(username=username).first()
             if user and user.check_password(password):
+                login_attempts.pop(ip, None)
+                session.permanent = True
                 session['user_id'] = user.id
                 session['username'] = user.username
                 session['user_role'] = user.role
                 return redirect(url_for('dashboard'))
             error = 'Invalid username or password'
+        attempts.append(now)
+        login_attempts[ip] = attempts
     return render_template('login.html', error=error)
 
 
@@ -164,59 +229,96 @@ def dashboard():
     current_month = datetime.now().month
     current_year = datetime.now().year
     rooms = Room.query.order_by(Room.number).all()
-    bookings = Booking.query.filter(
+    
+    # Only compute data for the current month (or month 1 if viewing a different year)
+    target_month = current_month if year == current_year else 1
+    cal_data = _build_month_cal(year, target_month, rooms)
+
+    # Count bookings for stats
+    booking_count = Booking.query.filter(
+        Booking.status == 'active',
         db.extract('year', Booking.checkin) <= year,
         db.extract('year', Booking.checkout) >= year
+    ).count()
+
+    return render_template('dashboard.html', year=year, rooms=rooms, booking_count=booking_count,
+                           cal_data=cal_data, current_month=current_month, current_year=current_year,
+                           loaded_month=target_month)
+
+
+def _build_month_cal(year, month, rooms):
+    """Build calendar data for a single month."""
+    _, days_in_month = calendar.monthrange(year, month)
+    month_start = datetime(year, month, 1)
+    month_end = datetime(year, month, days_in_month, 23, 59, 59)
+
+    bookings = Booking.query.filter(
+        Booking.status == 'active',
+        Booking.checkin <= month_end,
+        Booking.checkout >= month_start
     ).all()
     blocks = BlockedRoom.query.filter(
-        db.extract('year', BlockedRoom.start_date) <= year,
-        db.extract('year', BlockedRoom.end_date) >= year
+        BlockedRoom.start_date <= month_end,
+        BlockedRoom.end_date >= month_start
     ).all()
 
-    # Pre-compute calendar data - build date-indexed lookup for O(1) per day
-    year_start = date_type(year, 1, 1)
-    year_end = date_type(year, 12, 31)
-    
-    # Build (room_id, date) -> booking mapping
+    # Build lookups for this month only
+    start_date = date_type(year, month, 1)
+    end_date = date_type(year, month, days_in_month)
+
     booking_by_room_date = {}
+    checkout_day_bookings = {}
     for b in bookings:
-        start = max(b.checkin.date(), year_start)
-        end = min(b.checkout.date(), year_end + timedelta(days=1))
-        d = start
-        while d < end:
-            booking_by_room_date[(b.room_id, d)] = b
+        s = max(b.checkin.date(), start_date)
+        checkout_date = b.checkout.date()
+        e = min(checkout_date + timedelta(days=1), end_date + timedelta(days=1))
+        d = s
+        while d < e:
+            if d == checkout_date:
+                checkout_day_bookings[(b.room_id, d)] = b
+            else:
+                booking_by_room_date[(b.room_id, d)] = b
             d += timedelta(days=1)
-    
-    # Build (room_id, date) -> [blocks] mapping
+
     blocks_by_room_date = defaultdict(list)
     for bl in blocks:
-        start = max(bl.start_date.date(), year_start)
-        end = min(bl.end_date.date(), year_end + timedelta(days=1))
-        d = start
-        while d < end:
+        s = max(bl.start_date.date(), start_date)
+        e = min(bl.end_date.date(), end_date + timedelta(days=1))
+        d = s
+        while d < e:
             blocks_by_room_date[(bl.room_id, d)].append(bl)
             d += timedelta(days=1)
 
-    cal_data = {}
-    for month in range(1, 13):
-        _, days_in_month = calendar.monthrange(year, month)
-        cal_data[month] = {'days': days_in_month, 'rooms': {}}
-        for room in rooms:
-            room_days = {}
-            for day in range(1, days_in_month + 1):
-                current = date_type(year, month, day)
-                booking = booking_by_room_date.get((room.id, current))
-                if booking:
-                    room_days[day] = {'status': 'booked', 'booking': booking}
+    month_data = {'days': days_in_month, 'rooms': {}}
+    for room in rooms:
+        room_days = {}
+        for day in range(1, days_in_month + 1):
+            current = date_type(year, month, day)
+            booking = booking_by_room_date.get((room.id, current))
+            if booking:
+                room_days[day] = {'status': 'booked', 'booking': booking}
+            else:
+                checkout_booking = checkout_day_bookings.get((room.id, current))
+                if checkout_booking:
+                    room_days[day] = {'status': 'checkout', 'booking': checkout_booking}
                 else:
                     matching_blocks = blocks_by_room_date.get((room.id, current))
                     if matching_blocks:
                         room_days[day] = {'status': 'blocked', 'blocks': matching_blocks, 'count': len(matching_blocks)}
                     else:
                         room_days[day] = {'status': 'available'}
-            cal_data[month]['rooms'][room.id] = room_days
+        month_data['rooms'][room.id] = room_days
+    return {month: month_data}
 
-    return render_template('dashboard.html', year=year, rooms=rooms, bookings=bookings, blocks=blocks, cal_data=cal_data, current_month=current_month, current_year=current_year)
+
+@app.route('/api/dashboard-month/<int:year>/<int:month>')
+@login_required
+def api_dashboard_month(year, month):
+    """Return rendered HTML for a single month calendar card."""
+    rooms = Room.query.order_by(Room.number).all()
+    cal_data = _build_month_cal(year, month, rooms)
+    return render_template('_month_card.html', year=year, month=month, rooms=rooms, cal_data=cal_data,
+                           current_month=datetime.now().month, current_year=datetime.now().year)
 
 
 @app.route('/api/bookings/<int:year>/<int:month>')
@@ -229,6 +331,7 @@ def api_month_bookings(year, month):
 
     rooms = Room.query.order_by(Room.number).all()
     bookings = Booking.query.filter(
+        Booking.status == 'active',
         Booking.checkin <= month_end,
         Booking.checkout >= month_start
     ).all()
@@ -256,7 +359,7 @@ def month_view(year, month):
     _, days_in_month = calendar.monthrange(year, month)
     month_start = datetime(year, month, 1)
     month_end = datetime(year, month, days_in_month, 23, 59, 59)
-    bookings = Booking.query.filter(Booking.checkin <= month_end, Booking.checkout >= month_start).all()
+    bookings = Booking.query.filter(Booking.status == 'active', Booking.checkin <= month_end, Booking.checkout >= month_start).all()
     blocks = BlockedRoom.query.filter(BlockedRoom.start_date <= month_end, BlockedRoom.end_date >= month_start).all()
     month_name = calendar.month_name[month]
     return render_template('month.html', year=year, month=month, month_name=month_name,
@@ -267,7 +370,7 @@ def month_view(year, month):
 @login_required
 def room_detail(room_id):
     room = Room.query.get_or_404(room_id)
-    bookings = Booking.query.filter_by(room_id=room_id).order_by(Booking.checkin.desc()).all()
+    bookings = Booking.query.filter_by(room_id=room_id, status='active').order_by(Booking.checkin.desc()).all()
     blocks = BlockedRoom.query.filter_by(room_id=room_id).order_by(BlockedRoom.start_date.desc()).all()
     
     # Get monthly prices for current year and next year
@@ -360,7 +463,19 @@ def reports():
     month_end = datetime(year, month, days_in_month, 23, 59, 59)
 
     rooms = Room.query.order_by(Room.number).all()
-    bookings = Booking.query.filter(Booking.checkin <= month_end, Booking.checkout >= month_start).all()
+    bookings = Booking.query.filter(Booking.status == 'active', Booking.checkin <= month_end, Booking.checkout >= month_start).all()
+
+    # Get canceled bookings for the month
+    canceled_bookings = Booking.query.filter(
+        Booking.status == 'canceled',
+        Booking.checkin <= month_end,
+        Booking.checkout >= month_start
+    ).order_by(Booking.canceled_at.desc()).all()
+    
+    # Canceled bookings summary
+    canceled_count = len(canceled_bookings)
+    canceled_total_lost = sum(b.total_amount or 0 for b in canceled_bookings)
+    canceled_refunded = sum(b.amount_received or 0 for b in canceled_bookings)
 
     # Collection totals
     total_collected = sum(b.amount_received or 0 for b in bookings)
@@ -394,7 +509,9 @@ def reports():
                            days_in_month=days_in_month, total_collected=total_collected,
                            cash_collected=cash_collected, upi_collected=upi_collected,
                            room_occupancy=room_occupancy, daily_occupancy=daily_occupancy,
-                           bookings=bookings, rooms=rooms)
+                           bookings=bookings, rooms=rooms,
+                           canceled_bookings=canceled_bookings, canceled_count=canceled_count,
+                           canceled_total_lost=canceled_total_lost, canceled_refunded=canceled_refunded)
 
 
 @app.route('/reports/download/customer')
@@ -420,6 +537,7 @@ def download_customer_report():
     
     # Query bookings in date range
     bookings = Booking.query.filter(
+        Booking.status == 'active',
         Booking.checkin >= start_dt,
         Booking.checkin <= end_dt
     ).order_by(Booking.checkin.desc()).all()
@@ -473,8 +591,9 @@ def download_financial_report():
     except ValueError:
         return "Invalid date format. Use YYYY-MM-DD", 400
     
-    # Query bookings in date range
+    # Query bookings in date range (active bookings only)
     bookings = Booking.query.filter(
+        Booking.status == 'active',
         Booking.checkin >= start_dt,
         Booking.checkin <= end_dt
     ).order_by(Booking.checkin.desc()).all()
@@ -539,7 +658,8 @@ def book_room():
             validate_length(guest_phone, 20, 'Phone number') or
             validate_length(request.form.get('id_number', ''), 50, 'ID number') or
             validate_length(request.form.get('receipt_no', ''), 50, 'Receipt number') or
-            validate_length(request.form.get('booked_by', ''), 100, 'Booked by')
+            validate_length(request.form.get('booked_by', ''), 100, 'Booked by') or
+            validate_length(request.form.get('comments', ''), 200, 'Comments')
         )
         if not guest_name:
             length_error = 'Guest name is required.'
@@ -573,6 +693,7 @@ def book_room():
         # Check for conflicts
         conflict = Booking.query.filter(
             Booking.room_id == room_id,
+            Booking.status == 'active',
             Booking.checkin < checkout,
             Booking.checkout > checkin
         ).first()
@@ -608,7 +729,8 @@ def book_room():
                           total_amount=float(request.form.get('total_amount', 0) or 0),
                           amount_received=float(request.form.get('amount_received', 0) or 0),
                           booked_by=request.form.get('booked_by', ''),
-                          receipt_no=request.form.get('receipt_no', ''))
+                          receipt_no=request.form.get('receipt_no', ''),
+                          comments=request.form.get('comments', '').strip())
         db.session.add(booking)
         db.session.flush()  # Get booking.id before committing
         
@@ -624,12 +746,19 @@ def book_room():
             )
             db.session.add(payment)
         
+        log_action('created', 'booking', booking.id, f'Guest: {booking.guest_name}, Room: {booking.room_id}')
         db.session.commit()
-        return redirect(url_for('dashboard'))
 
     rooms = Room.query.all()
     current_username = session.get('username', 'Unknown')
     return render_template('book.html', rooms=rooms, error=None, current_username=current_username)
+
+
+@app.route('/booking/confirmation/<int:booking_id>')
+@login_required
+def booking_confirmation(booking_id):
+    booking = Booking.query.get_or_404(booking_id)
+    return render_template('booking_confirmation.html', booking=booking)
 
 
 @app.route('/rooms', methods=['GET', 'POST'])
@@ -730,10 +859,20 @@ def list_bookings():
     month = request.args.get('month', type=int)
     year = request.args.get('year', type=int)
     booked_by = request.args.get('booked_by', type=str)
+    search = request.args.get('search', '').strip()
     per_page = 20
     
-    # Base query
-    query = Booking.query
+    # Base query - only show active bookings
+    query = Booking.query.filter_by(status='active')
+    
+    # Apply search filter
+    if search:
+        query = query.filter(
+            db.or_(
+                Booking.guest_name.ilike(f'%{search}%'),
+                Booking.guest_phone.ilike(f'%{search}%')
+            )
+        )
     
     # Apply month/year filter if provided
     if month and year:
@@ -749,7 +888,7 @@ def list_bookings():
         query = query.filter(Booking.booked_by == booked_by)
     
     # Get available months/years for filter dropdown
-    all_bookings = Booking.query.with_entities(Booking.checkin).all()
+    all_bookings = Booking.query.filter_by(status='active').with_entities(Booking.checkin).all()
     available_months = set()
     for b in all_bookings:
         if b.checkin:
@@ -757,7 +896,7 @@ def list_bookings():
     available_months = sorted(available_months, reverse=True)
     
     # Get list of all users who have booked
-    booked_by_list = db.session.query(Booking.booked_by).filter(Booking.booked_by != None, Booking.booked_by != '').distinct().order_by(Booking.booked_by).all()
+    booked_by_list = db.session.query(Booking.booked_by).filter(Booking.status == 'active', Booking.booked_by != None, Booking.booked_by != '').distinct().order_by(Booking.booked_by).all()
     booked_by_list = [b[0] for b in booked_by_list if b[0]]
     
     pagination = query.order_by(Booking.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
@@ -769,14 +908,31 @@ def list_bookings():
                          booked_by_list=booked_by_list,
                          selected_month=month,
                          selected_year=year,
-                         selected_booked_by=booked_by)
+                         selected_booked_by=booked_by,
+                         search=search,
+                         now=datetime.now())
 
 
 @app.route('/bookings/delete/<int:booking_id>', methods=['POST'])
 @login_required
 def delete_booking(booking_id):
     booking = Booking.query.get_or_404(booking_id)
-    db.session.delete(booking)
+    
+    # Mark booking as canceled instead of deleting
+    booking.status = 'canceled'
+    booking.canceled_at = datetime.now()
+    
+    log_action('canceled', 'booking', booking_id, f'Guest: {booking.guest_name}')
+    db.session.commit()
+    return redirect(url_for('list_bookings'))
+
+
+@app.route('/bookings/checkout/<int:booking_id>', methods=['POST'])
+@login_required
+def checkout_booking(booking_id):
+    booking = Booking.query.get_or_404(booking_id)
+    booking.checkout = datetime.now()
+    log_action('checkout', 'booking', booking_id, f'Guest: {booking.guest_name}')
     db.session.commit()
     return redirect(url_for('list_bookings'))
 
@@ -799,6 +955,7 @@ def edit_booking(booking_id):
         total_amount = float(request.form.get('total_amount', 0) or 0)
         receipt_no = request.form.get('receipt_no', '').strip()
         booked_by = request.form.get('booked_by', '').strip()
+        comments = request.form.get('comments', '').strip()
         
         # Validate lengths
         length_error = (
@@ -806,7 +963,8 @@ def edit_booking(booking_id):
             validate_length(guest_phone, 20, 'Phone number') or
             validate_length(id_number, 50, 'ID number') or
             validate_length(receipt_no, 50, 'Receipt number') or
-            validate_length(booked_by, 100, 'Booked by')
+            validate_length(booked_by, 100, 'Booked by') or
+            validate_length(comments, 200, 'Comments')
         )
         if not guest_name:
             length_error = 'Guest name is required.'
@@ -826,6 +984,7 @@ def edit_booking(booking_id):
         conflict = Booking.query.filter(
             Booking.room_id == booking.room_id,
             Booking.id != booking_id,
+            Booking.status == 'active',
             Booking.checkin < checkout,
             Booking.checkout > checkin
         ).first()
@@ -857,9 +1016,11 @@ def edit_booking(booking_id):
         booking.total_amount = total_amount
         booking.receipt_no = receipt_no
         booking.booked_by = booked_by
+        booking.comments = comments
         booking.checkin = checkin
         booking.checkout = checkout
         
+        log_action('edited', 'booking', booking_id, f'Guest: {guest_name}')
         db.session.commit()
         return redirect(url_for('list_bookings'))
     
@@ -875,7 +1036,7 @@ def update_booking(booking_id):
     # Input length validation
     length_error = (
         validate_length(request.form.get('receipt_no', ''), 50, 'Receipt number') or
-        validate_length(request.form.get('notes', ''), 200, 'Notes')
+        validate_length(request.form.get('comments', ''), 200, 'Comments')
     )
     if length_error:
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -901,6 +1062,7 @@ def update_booking(booking_id):
         if request.form.get('receipt_no'):
             booking.receipt_no = request.form.get('receipt_no')
         
+        log_action('payment', 'booking', booking.id, f'₹{amount} via {request.form.get("payment_mode", "Cash")}')
         db.session.commit()
         
         # Calculate payment breakdown
@@ -965,8 +1127,8 @@ def api_available_rooms():
     checkout_dt = datetime.strptime(checkout, '%Y-%m-%dT%H:%M')
     
     rooms = Room.query.order_by(Room.number).all()
-    # Single query for all conflicts instead of per-room
-    booked_room_ids = {b.room_id for b in Booking.query.filter(Booking.checkin < checkout_dt, Booking.checkout > checkin_dt).all()}
+    # Single query for all conflicts instead of per-room (active bookings only)
+    booked_room_ids = {b.room_id for b in Booking.query.filter(Booking.status == 'active', Booking.checkin < checkout_dt, Booking.checkout > checkin_dt).all()}
     blocked_room_ids = {bl.room_id for bl in BlockedRoom.query.filter(BlockedRoom.start_date < checkout_dt, BlockedRoom.end_date > checkin_dt).all()}
     
     # Batch fetch prices for checkin month
@@ -985,6 +1147,7 @@ def api_available_rooms():
         if booked:
             conflict_booking = Booking.query.filter(
                 Booking.room_id == room.id,
+                Booking.status == 'active',
                 Booking.checkin < checkout_dt,
                 Booking.checkout > checkin_dt
             ).first()
@@ -1186,6 +1349,17 @@ def delete_user(user_id):
     return redirect(url_for('manage_users'))
 
 
+@app.route('/audit')
+@login_required
+def audit_log():
+    current_user = User.query.get(session.get('user_id'))
+    if not current_user or current_user.role != 'owner':
+        return redirect(url_for('dashboard'))
+    page = request.args.get('page', 1, type=int)
+    logs = AuditLog.query.order_by(AuditLog.created_at.desc()).paginate(page=page, per_page=50, error_out=False)
+    return render_template('audit.html', logs=logs)
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
@@ -1198,4 +1372,4 @@ if __name__ == '__main__':
             print("✅ Database initialized with admin user")
         else:
             print("✅ Database initialized")
-    app.run(debug=True, port=5001)
+    app.run(debug=os.environ.get('FLASK_DEBUG', 'False') == 'True', port=5001)

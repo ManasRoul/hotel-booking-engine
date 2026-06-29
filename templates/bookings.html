@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block extra_style %}
-<link rel="stylesheet" href="{{ url_for("static", filename="css/bookings.css") }}">
+<link rel="stylesheet" href="{{ url_for("static", filename="css/bookings.css") }}?v=1782719771">
 {% endblock %}
 {% block content %}
 <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.5rem; background:rgba(255,255,255,0.9); backdrop-filter:blur(20px); padding:1.2rem 1.5rem; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
@@ -24,6 +24,9 @@
 <div class="card" style="margin-bottom:1.5rem; padding:1.2rem;">
     <form method="GET" action="/bookings" id="filterForm" style="display:grid; gap:1rem;">
         <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
+            <label style="font-weight:700; color:#4a5568; font-size:0.95rem;">🔍</label>
+            <input type="text" name="search" id="searchInput" value="{{ search or '' }}" placeholder="Search guest name or phone..." style="flex:1; min-width:200px; max-width:300px; padding:0.7rem 1rem; border:2px solid #cbd5e0; border-radius:12px; font-size:0.95rem; font-weight:600; color:#2d3748;">
+            
             <label style="font-weight:700; color:#4a5568; font-size:0.95rem;">🗓️ Month:</label>
             <select name="month_year" id="monthFilter" style="flex:1; min-width:180px; max-width:250px; padding:0.7rem 1rem; border:2px solid #cbd5e0; border-radius:12px; font-size:0.95rem; font-weight:600; color:#2d3748; background:white; cursor:pointer;">
                 <option value="">All Months</option>
@@ -43,7 +46,7 @@
             </select>
             
             <button type="submit" class="btn btn-primary">Apply Filters</button>
-            {% if selected_month or selected_year or selected_booked_by %}
+            {% if selected_month or selected_year or selected_booked_by or search %}
             <a href="/bookings" class="btn" style="background:#e2e8f0; color:#4a5568;">Clear All</a>
             {% endif %}
         </div>
@@ -54,7 +57,7 @@
 <div class="card" style="overflow-x:auto; padding:1.5rem;">
     <table>
         <thead>
-        <tr><th>Receipt</th><th>Room</th><th>Guest</th><th>👥 A/C/M</th><th>Phone</th><th>ID No.</th><th>Check-in</th><th>Check-out</th><th>Payment</th><th>Total</th><th>Paid</th><th>Remaining</th><th>Booked By</th><th>Action</th></tr>
+        <tr><th>Receipt</th><th>Room</th><th>Guest</th><th>A/C/M</th><th>Phone</th><th>ID No.</th><th>Check-in</th><th>Check-out</th><th>Payment</th><th>Total</th><th>Paid</th><th>Remaining</th><th>Comments</th><th>Booked By</th><th>Action</th></tr>
         </thead>
         <tbody>
         {% for b in bookings %}
@@ -62,21 +65,27 @@
             <td data-label="Receipt">{% if b.receipt_no %}<span style="background:linear-gradient(135deg,#f59e0b,#d97706); color:white; padding:0.4rem 0.9rem; border-radius:10px; font-size:0.85rem; font-weight:800; box-shadow:0 4px 12px rgba(245,158,11,0.3);">{{ b.receipt_no }}</span>{% else %}<span style="color:#cbd5e0; font-size:0.88rem;">—</span>{% endif %}</td>
             <td data-label="Room"><span style="background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:0.4rem 0.9rem; border-radius:10px; font-size:0.85rem; font-weight:800; box-shadow:0 4px 12px rgba(102,126,234,0.3);">{{ b.room.number }}</span></td>
             <td data-label="Guest" style="font-weight:700; color:#2d3748;">{{ b.guest_name }}</td>
-            <td data-label="👥 Adults/Children/Mattress" style="font-size:0.85rem; color:#4a5568;"><span style="background:#e6f2ff; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700;">{{ b.adults or 1 }}/{{ b.children or 0 }}/{{ b.mattress or 0 }}</span></td>
+            <td data-label="Adults/Children/Mat" style="font-size:0.85rem; color:#4a5568;"><span style="background:#e6f2ff; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700;">{{ b.adults or 1 }}/{{ b.children or 0 }}/{{ b.mattress or 0 }}</span></td>
             <td data-label="Phone" style="color:#718096; font-size:0.88rem;">{{ b.guest_phone or '—' }}</td>
             <td data-label="ID No." style="font-size:0.88rem; color:#4a5568;">{{ b.id_number or '—' }}</td>
             <td data-label="Check-in" style="font-size:0.85rem; font-weight:600;">{{ b.checkin.strftime('%d %b %Y, %H:%M') }}</td>
-            <td data-label="Check-out" style="font-size:0.85rem; font-weight:600;">{{ b.checkout.strftime('%d %b %Y, %H:%M') }}</td>
+            <td data-label="Check-out" style="font-size:0.85rem; font-weight:600;">{{ b.checkout.strftime('%d %b %Y, %H:%M') }}{% if b.checkout < now %} <span style="background:#38a169; color:white; padding:0.2rem 0.5rem; border-radius:6px; font-size:0.7rem; font-weight:700;">✓ OUT</span>{% endif %}</td>
             <td data-label="Payment"><span style="background:{% if b.payment_mode == 'Cash' %}linear-gradient(135deg,#48bb78,#38a169){% else %}linear-gradient(135deg,#667eea,#764ba2){% endif %}; color:white; padding:0.3rem 0.8rem; border-radius:10px; font-size:0.8rem; font-weight:700; box-shadow:0 3px 10px rgba(0,0,0,0.15);">{{ b.payment_mode or '—' }} / {{ b.payment_type or '—' }}</span></td>
             <td data-label="Total" style="font-weight:700;">₹{{ b.total_amount or 0 }}</td>
             <td data-label="Paid" style="font-weight:700; color:#38a169;">₹{{ b.amount_received or 0 }}</td>
             <td data-label="Remaining" style="font-weight:800; color:#e53e3e;">₹{{ (b.total_amount or 0) - (b.amount_received or 0) }}</td>
+            <td data-label="Comments" style="font-size:0.85rem; color:#4a5568; max-width:200px;">{% if b.comments %}<span title="{{ b.comments }}" style="display:block; white-space:normal; word-wrap:break-word;">{{ b.comments }}</span>{% else %}<span style="color:#cbd5e0;">—</span>{% endif %}</td>
             <td data-label="Booked By" style="font-size:0.88rem; color:#718096;">{{ b.booked_by or '—' }}</td>
             <td data-label="Action">
-                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                    <a href="/bookings/edit/{{ b.id }}" class="btn btn-sm" style="background:#667eea; color:white; text-decoration:none; padding:0.4rem 0.8rem;">✏️ Edit</a>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <a href="/bookings/edit/{{ b.id }}" class="btn btn-sm" style="background:#667eea; color:white; text-decoration:none; padding:0.5rem 0.9rem; display:inline-flex; align-items:center; justify-content:center; width:85px;">Edit</a>
+                    {% if b.checkout > now %}
+                    <form method="POST" action="/bookings/checkout/{{ b.id }}" style="display:inline; margin:0;">
+                        <button class="btn btn-sm" style="background:#38a169; color:white; padding:0.5rem 0.9rem; width:85px;" onclick="return confirm('Check out {{ b.guest_name }} now?')">Checkout</button>
+                    </form>
+                    {% endif %}
                     <form method="POST" action="/bookings/delete/{{ b.id }}" style="display:inline; margin:0;">
-                        <button class="btn btn-danger btn-sm" onclick="return confirm('Cancel booking for {{ b.guest_name }}?')">Cancel</button>
+                        <button class="btn btn-danger btn-sm" style="padding:0.5rem 0.9rem; width:85px;" onclick="return confirm('Cancel booking for {{ b.guest_name }}?')">Cancel</button>
                     </form>
                 </div>
             </td>
@@ -88,21 +97,21 @@
 {% if pagination.pages > 1 %}
 <div style="display:flex; justify-content:center; align-items:center; gap:0.5rem; margin-top:1.5rem;">
     {% if pagination.has_prev %}
-    <a href="?page={{ pagination.prev_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}" class="btn btn-primary btn-sm">← Prev</a>
+    <a href="?page={{ pagination.prev_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="btn btn-primary btn-sm">← Prev</a>
     {% endif %}
     {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
         {% if p %}
             {% if p == pagination.page %}
             <span class="btn btn-primary btn-sm" style="opacity:1;">{{ p }}</span>
             {% else %}
-            <a href="?page={{ p }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}" class="btn btn-sm" style="background:#e2e8f0; color:#4a5568;">{{ p }}</a>
+            <a href="?page={{ p }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="btn btn-sm" style="background:#e2e8f0; color:#4a5568;">{{ p }}</a>
             {% endif %}
         {% else %}
         <span style="color:#718096;">…</span>
         {% endif %}
     {% endfor %}
     {% if pagination.has_next %}
-    <a href="?page={{ pagination.next_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}" class="btn btn-primary btn-sm">Next →</a>
+    <a href="?page={{ pagination.next_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="btn btn-primary btn-sm">Next →</a>
     {% endif %}
 </div>
 {% endif %}
@@ -120,8 +129,13 @@ document.getElementById('filterForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const monthYear = document.getElementById('monthFilter').value;
     const bookedBy = document.getElementById('bookedByFilter').value;
+    const search = document.getElementById('searchInput').value.trim();
     
     let params = [];
+    
+    if (search) {
+        params.push(`search=${encodeURIComponent(search)}`);
+    }
     
     if (monthYear) {
         const [year, month] = monthYear.split('-');

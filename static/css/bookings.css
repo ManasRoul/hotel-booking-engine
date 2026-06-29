@@ -1,21 +1,35 @@
 @media (max-width: 768px) {
+        /* Header with flex-wrap */
         [style*="flex-wrap:wrap"] {
             padding: 1rem !important;
             gap: 0.8rem !important;
         }
         
         [style*="flex-wrap:wrap"] h2 {
-            font-size: 1.2rem !important;
+            font-size: 1.1rem !important;
+            width: 100%;
+        }
+        
+        [style*="flex-wrap:wrap"] a.btn {
+            width: 100%;
+            justify-content: center;
         }
         
         .card {
             padding: 1rem !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
         
         /* Month filter form */
         form[action="/bookings"] {
             flex-direction: column !important;
             align-items: stretch !important;
+        }
+        
+        form[action="/bookings"] > div {
+            flex-direction: column !important;
+            gap: 1rem !important;
         }
         
         form[action="/bookings"] label {
@@ -25,12 +39,25 @@
         form[action="/bookings"] select {
             max-width: 100% !important;
             min-width: 100% !important;
+            width: 100% !important;
         }
         
         form[action="/bookings"] button,
         form[action="/bookings"] a {
             width: 100%;
             justify-content: center;
+        }
+        
+        /* Pagination */
+        [style*="justify-content:center"] {
+            flex-wrap: wrap;
+            gap: 0.4rem !important;
+        }
+        
+        [style*="justify-content:center"] .btn-sm {
+            min-width: 44px;
+            padding: 0.5rem 0.7rem !important;
+            font-size: 0.8rem !important;
         }
         
         table {
@@ -45,17 +72,34 @@
     }
     
     @media (max-width: 640px) {
+        /* Prevent horizontal overflow */
+        * {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Show all columns on mobile - no hiding */
+        
         /* Remove table scroll on mobile */
         .card[style*="overflow-x"] {
             overflow-x: visible !important;
             padding: 0.5rem !important;
+            margin: 0 0 1rem 0 !important;
+        }
+        
+        .card {
+            border-radius: 12px !important;
+            margin: 0 0 1rem 0 !important;
+            width: 100% !important;
+            overflow: hidden !important;
         }
         
         /* Card-style table for mobile */
         table {
             display: block !important;
             width: 100% !important;
-            overflow-x: visible !important;
+            overflow: visible !important;
+            border-collapse: collapse !important;
         }
         
         table thead {
@@ -77,15 +121,21 @@
             padding: 1rem;
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            width: 100%;
-            box-sizing: border-box;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
         }
         
         table td {
             display: block !important;
             text-align: left !important;
-            padding: 0.4rem 0 !important;
+            padding: 0.5rem 0 !important;
             border: none !important;
+            min-width: 0 !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+            white-space: normal !important;
         }
         
         table td::before {
@@ -99,32 +149,31 @@
             margin-bottom: 0.25rem;
         }
         
-        /* Receipt and Room badges - in 2 columns side by side */
-        table td:nth-child(1),
-        table td:nth-child(2) {
-            padding-bottom: 0.5rem !important;
-            margin-bottom: 0.5rem;
+        /* All data fields in 2-column layout (7 rows each side) */
+        /* No special spanning - keep everything in grid */
+        
+        /* Comments should wrap text properly */
+        table td:nth-child(13) {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
         }
         
-        table td:nth-child(1)::before,
-        table td:nth-child(2)::before {
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-        
-        /* Add bottom border after room (2nd column wraps to 2nd row) */
-        table td:nth-child(2) {
-            padding-bottom: 0.8rem !important;
-            margin-bottom: 0.5rem;
-            border-bottom: 2px solid #f7fafc;
+        table td:nth-child(13) span {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            display: block !important;
+            max-width: 100% !important;
         }
         
         /* Action button - full width, separate with border */
         table td:last-child {
-            grid-column: 1 / -1;
+            grid-column: 1 / -1 !important;
             margin-top: 0.5rem;
             padding-top: 0.8rem !important;
             border-top: 2px solid #e2e8f0;
+            width: 100% !important;
         }
         
         table td:last-child::before {
@@ -132,29 +181,61 @@
             display: none;
         }
         
-        /* Full width action button */
-        table td form {
-            display: block !important;
-            width: 100%;
+        /* Action buttons container - stack vertically on mobile */
+        table td:last-child > div {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
         }
         
-        table td button {
+        /* Full width action buttons */
+        table td:last-child a,
+        table td:last-child button {
             width: 100% !important;
+            max-width: 100% !important;
             padding: 0.7rem 1rem !important;
             font-size: 0.85rem !important;
-            justify-content: center;
+            justify-content: center !important;
+            display: flex !important;
+            align-items: center !important;
+            box-sizing: border-box !important;
         }
         
-        /* Badges should wrap properly */
+        table td:last-child form {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+        
+        table td:last-child form button {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Badges should wrap properly and not overflow */
         table td span[style*="background"] {
-            display: inline-block;
-            max-width: 100%;
-            word-wrap: break-word;
+            display: inline-block !important;
+            max-width: 100% !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
             font-size: 0.75rem !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Ensure all text wraps */
+        table td span {
+            max-width: 100% !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
         }
         
         /* Compact font sizes for two-column layout */
         table td {
             font-size: 0.8rem !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
         }
     }
