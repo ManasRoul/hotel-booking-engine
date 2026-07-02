@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<style>
+    .confirm-card { background:rgba(255,255,255,0.95); border-radius:20px; padding:2.5rem; box-shadow:0 10px 40px rgba(0,0,0,0.1); max-width:600px; margin:2rem auto; }
+    .confirm-card h2 { text-align:center; margin-bottom:1.5rem; color:#38a169; }
+    .confirm-card .detail { display:flex; justify-content:space-between; padding:0.7rem 0; border-bottom:1px solid #e2e8f0; }
+    .confirm-card .detail:last-child { border-bottom:none; }
+    .confirm-card .label { color:#718096; font-weight:600; }
+    .confirm-card .value { color:#2d3748; font-weight:700; }
+    .confirm-actions { display:flex; gap:1rem; justify-content:center; margin-top:2rem; flex-wrap:wrap; }
+    .confirm-actions .btn { padding:0.8rem 1.5rem; border-radius:12px; font-weight:700; text-decoration:none; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="confirm-card">
+    <h2>✅ Booking Confirmed!</h2>
+    <div class="detail"><span class="label">Room</span><span class="value">{{ booking.room.number }} ({{ booking.room.room_type }})</span></div>
+    <div class="detail"><span class="label">Guest</span><span class="value">{{ booking.guest_name }}</span></div>
+    {% if booking.guest_phone %}<div class="detail"><span class="label">Phone</span><span class="value">{{ booking.guest_phone }}</span></div>{% endif %}
+    {% if booking.id_number %}<div class="detail"><span class="label">ID Number</span><span class="value">{{ booking.id_number }}</span></div>{% endif %}
+    <div class="detail"><span class="label">Check-in</span><span class="value">{{ booking.checkin.strftime('%d %b %Y, %H:%M') }}</span></div>
+    <div class="detail"><span class="label">Check-out</span><span class="value">{{ booking.checkout.strftime('%d %b %Y, %H:%M') }}</span></div>
+    <div class="detail"><span class="label">Guests</span><span class="value">{{ booking.adults or 1 }} Adults, {{ booking.children or 0 }} Children</span></div>
+    {% if booking.mattress %}<div class="detail"><span class="label">Extra Mattress</span><span class="value">{{ booking.mattress }}</span></div>{% endif %}
+    <div class="detail"><span class="label">Total Amount</span><span class="value">₹{{ booking.total_amount or 0 }}</span></div>
+    <div class="detail"><span class="label">Paid</span><span class="value" style="color:#38a169;">₹{{ booking.amount_received or 0 }}</span></div>
+    {% if (booking.total_amount or 0) - (booking.amount_received or 0) > 0 %}
+    <div class="detail"><span class="label">Remaining</span><span class="value" style="color:#e53e3e;">₹{{ (booking.total_amount or 0) - (booking.amount_received or 0) }}</span></div>
+    {% endif %}
+    {% if booking.payment_mode %}<div class="detail"><span class="label">Payment</span><span class="value">{{ booking.payment_mode }} / {{ booking.payment_type or '—' }}</span></div>{% endif %}
+    {% if booking.receipt_no %}<div class="detail"><span class="label">Receipt No.</span><span class="value">{{ booking.receipt_no }}</span></div>{% endif %}
+    {% if booking.booked_by %}<div class="detail"><span class="label">Booked By</span><span class="value">{{ booking.booked_by }}</span></div>{% endif %}
+    <div class="confirm-actions">
+        <a href="/" class="btn" style="background:linear-gradient(135deg,#667eea,#764ba2); color:white;">📊 Dashboard</a>
+        <a href="/book" class="btn" style="background:linear-gradient(135deg,#48bb78,#38a169); color:white;">📝 New Booking</a>
+        <a href="/bookings" class="btn" style="background:#e2e8f0; color:#4a5568;">📋 All Bookings</a>
+    </div>
+</div>
+{% endblock %}

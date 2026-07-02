@@ -1,0 +1,98 @@
+.audit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1.2rem 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.audit-title {
+    margin: 0;
+}
+
+.audit-card {
+    overflow-x: auto;
+    padding: 1rem;
+}
+
+.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.audit-table th,
+.audit-table td {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.audit-table th {
+    background: #f7fafc;
+    font-weight: 700;
+    color: #4a5568;
+    position: sticky;
+    top: 0;
+}
+
+.audit-time {
+    white-space: nowrap;
+}
+
+.audit-user {
+    font-weight: 600;
+}
+
+.audit-details {
+    color: #718096;
+}
+
+.audit-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #718096;
+}
+
+.audit-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+}
+
+.badge-created {
+    background: #38a169;
+}
+
+.badge-edited {
+    background: #667eea;
+}
+
+.badge-canceled {
+    background: #e53e3e;
+}
+
+.badge-checkout {
+    background: #d69e2e;
+}
+
+.badge-payment {
+    background: #319795;
+}
+
+.audit-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.audit-page-label {
+    padding: 0.5rem 1rem;
+    color: #718096;
+}

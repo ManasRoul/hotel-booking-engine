@@ -1,36 +1,357 @@
+.bookings-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    padding: 1.2rem 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.bookings-title {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.bookings-filter-card {
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+}
+
+.bookings-filter-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.bookings-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.bookings-filter-label {
+    font-weight: 700;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.bookings-search-input {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 0.7rem 1rem;
+    border: 2px solid #cbd5e0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.bookings-filter-select {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 0.7rem 1rem;
+    border: 2px solid #cbd5e0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2d3748;
+    background: white;
+    cursor: pointer;
+}
+
+.btn-clear-neutral {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.bookings-table-card {
+    overflow-x: auto;
+    padding: 1.5rem;
+}
+
+.receipt-pill {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.room-pill {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.guest-cell {
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.group-pill {
+    background: #4299e1;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-left: 0.3rem;
+}
+
+.acm-cell {
+    font-size: 0.85rem;
+    color: #4a5568;
+}
+
+.acm-pill {
+    background: #e6f2ff;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.muted-cell {
+    color: #718096;
+    font-size: 0.88rem;
+}
+
+.id-cell {
+    font-size: 0.88rem;
+    color: #4a5568;
+}
+
+.date-cell {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.checkout-pill {
+    background: #38a169;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.payment-pill {
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.payment-cash {
+    background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+.payment-upi {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.amount-cell {
+    font-weight: 700;
+}
+
+.paid-cell {
+    font-weight: 700;
+    color: #38a169;
+}
+
+.remaining-cell {
+    font-weight: 800;
+    color: #e53e3e;
+}
+
+.comments-cell {
+    font-size: 0.85rem;
+    color: #4a5568;
+    max-width: 200px;
+}
+
+.comments-wrap {
+    display: block;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.placeholder-muted {
+    color: #cbd5e0;
+    font-size: 0.88rem;
+}
+
+.booked-by-cell {
+    font-size: 0.88rem;
+    color: #718096;
+}
+
+.bookings-action-wrap {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.action-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 85px;
+}
+
+.action-edit {
+    background: #667eea;
+}
+
+.action-checkout {
+    background: #38a169;
+    padding: 0.5rem 0.9rem;
+    width: 85px;
+}
+
+.action-cancel {
+    padding: 0.5rem 0.9rem;
+    width: 85px;
+}
+
+.inline-form {
+    display: inline;
+    margin: 0;
+}
+
+.bookings-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.page-current {
+    opacity: 1;
+}
+
+.pagination-ellipsis {
+    color: #718096;
+}
+
+.bookings-empty {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+.bookings-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.bookings-empty-text {
+    color: #718096;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.bookings-empty-cta {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+}
+
 @media (max-width: 768px) {
-        [style*="flex-wrap:wrap"] {
+        /* Header with flex-wrap */
+        [style*="flex-wrap:wrap"],
+        .bookings-header {
             padding: 1rem !important;
             gap: 0.8rem !important;
         }
         
-        [style*="flex-wrap:wrap"] h2 {
-            font-size: 1.2rem !important;
+        [style*="flex-wrap:wrap"] h2,
+        .bookings-title {
+            font-size: 1.1rem !important;
+            width: 100%;
+        }
+        
+        [style*="flex-wrap:wrap"] a.btn,
+        .bookings-header a.btn {
+            width: 100%;
+            justify-content: center;
         }
         
         .card {
             padding: 1rem !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
         
         /* Month filter form */
-        form[action="/bookings"] {
+        form[action="/bookings"],
+        .bookings-filter-form {
             flex-direction: column !important;
             align-items: stretch !important;
         }
         
-        form[action="/bookings"] label {
+        form[action="/bookings"] > div,
+        .bookings-filter-row {
+            flex-direction: column !important;
+            gap: 1rem !important;
+        }
+        
+        form[action="/bookings"] label,
+        .bookings-filter-label {
             font-size: 0.9rem !important;
         }
         
-        form[action="/bookings"] select {
+        form[action="/bookings"] select,
+        .bookings-filter-select {
             max-width: 100% !important;
             min-width: 100% !important;
+            width: 100% !important;
+        }
+
+        .bookings-search-input {
+            max-width: 100% !important;
+            min-width: 100% !important;
+            width: 100% !important;
         }
         
         form[action="/bookings"] button,
-        form[action="/bookings"] a {
+        form[action="/bookings"] a,
+        .bookings-filter-row button,
+        .bookings-filter-row a {
             width: 100%;
             justify-content: center;
+        }
+        
+        /* Pagination */
+        [style*="justify-content:center"],
+        .bookings-pagination {
+            flex-wrap: wrap;
+            gap: 0.4rem !important;
+        }
+        
+        [style*="justify-content:center"] .btn-sm,
+        .bookings-pagination .btn-sm {
+            min-width: 44px;
+            padding: 0.5rem 0.7rem !important;
+            font-size: 0.8rem !important;
         }
         
         table {
@@ -45,17 +366,35 @@
     }
     
     @media (max-width: 640px) {
+        /* Prevent horizontal overflow */
+        * {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Show all columns on mobile - no hiding */
+        
         /* Remove table scroll on mobile */
-        .card[style*="overflow-x"] {
+        .card[style*="overflow-x"],
+        .bookings-table-card {
             overflow-x: visible !important;
             padding: 0.5rem !important;
+            margin: 0 0 1rem 0 !important;
+        }
+        
+        .card {
+            border-radius: 12px !important;
+            margin: 0 0 1rem 0 !important;
+            width: 100% !important;
+            overflow: hidden !important;
         }
         
         /* Card-style table for mobile */
         table {
             display: block !important;
             width: 100% !important;
-            overflow-x: visible !important;
+            overflow: visible !important;
+            border-collapse: collapse !important;
         }
         
         table thead {
@@ -77,15 +416,21 @@
             padding: 1rem;
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            width: 100%;
-            box-sizing: border-box;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
         }
         
         table td {
             display: block !important;
             text-align: left !important;
-            padding: 0.4rem 0 !important;
+            padding: 0.5rem 0 !important;
             border: none !important;
+            min-width: 0 !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+            white-space: normal !important;
         }
         
         table td::before {
@@ -99,32 +444,31 @@
             margin-bottom: 0.25rem;
         }
         
-        /* Receipt and Room badges - in 2 columns side by side */
-        table td:nth-child(1),
-        table td:nth-child(2) {
-            padding-bottom: 0.5rem !important;
-            margin-bottom: 0.5rem;
+        /* All data fields in 2-column layout (7 rows each side) */
+        /* No special spanning - keep everything in grid */
+        
+        /* Comments should wrap text properly */
+        table td:nth-child(13) {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
         }
         
-        table td:nth-child(1)::before,
-        table td:nth-child(2)::before {
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-        
-        /* Add bottom border after room (2nd column wraps to 2nd row) */
-        table td:nth-child(2) {
-            padding-bottom: 0.8rem !important;
-            margin-bottom: 0.5rem;
-            border-bottom: 2px solid #f7fafc;
+        table td:nth-child(13) span {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            display: block !important;
+            max-width: 100% !important;
         }
         
         /* Action button - full width, separate with border */
         table td:last-child {
-            grid-column: 1 / -1;
+            grid-column: 1 / -1 !important;
             margin-top: 0.5rem;
             padding-top: 0.8rem !important;
             border-top: 2px solid #e2e8f0;
+            width: 100% !important;
         }
         
         table td:last-child::before {
@@ -132,29 +476,151 @@
             display: none;
         }
         
-        /* Full width action button */
-        table td form {
-            display: block !important;
-            width: 100%;
+        /* Action buttons container - stack vertically on mobile */
+        table td:last-child > div {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
         }
         
-        table td button {
+        /* Full width action buttons */
+        table td:last-child a,
+        table td:last-child button {
             width: 100% !important;
+            max-width: 100% !important;
             padding: 0.7rem 1rem !important;
             font-size: 0.85rem !important;
-            justify-content: center;
+            justify-content: center !important;
+            display: flex !important;
+            align-items: center !important;
+            box-sizing: border-box !important;
         }
         
-        /* Badges should wrap properly */
+        table td:last-child form {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+        
+        table td:last-child form button {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Badges should wrap properly and not overflow */
         table td span[style*="background"] {
-            display: inline-block;
-            max-width: 100%;
-            word-wrap: break-word;
+            display: inline-block !important;
+            max-width: 100% !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
             font-size: 0.75rem !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Ensure all text wraps */
+        table td span {
+            max-width: 100% !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
         }
         
         /* Compact font sizes for two-column layout */
         table td {
             font-size: 0.8rem !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
         }
     }
+
+/* ── Group booking rows ──────────────────────────────────────── */
+/* .group-detail-hidden beats `table tr { display:grid !important }`
+   because a class selector (0,1,0) is more specific than element (0,0,1) */
+.group-detail-hidden {
+    display: none !important;
+}
+
+.group-summary-row {
+    background: linear-gradient(135deg, #ebf4ff 0%, #f0fff4 100%);
+    border-left: 3px solid #667eea;
+}
+
+.group-summary-row td {
+    font-weight: 600;
+}
+
+.group-toggle-btn {
+    background: #667eea;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.group-toggle-btn:hover {
+    background: #5a67d8;
+}
+
+.group-detail-row {
+    background: #f7faff;
+}
+
+.group-detail-row td {
+    font-size: 0.85rem;
+    color: #4a5568;
+    border-top: none;
+}
+
+.group-detail-indent {
+    border-left: 3px solid #c3dafe !important;
+    padding: 0 !important;
+    width: 0.5rem;
+}
+
+/* ── Mobile overrides for group rows (≤640px card layout) ────── */
+@media (max-width: 640px) {
+    /* Toggle button spans full width at top of group card */
+    .group-summary-row td:first-child {
+        grid-column: 1 / -1 !important;
+        border-bottom: 2px solid #c3dafe !important;
+        padding-bottom: 0.6rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    /* Group summary card: show gradient on the card (TR) */
+    .group-summary-row {
+        background: linear-gradient(135deg, #ebf4ff 0%, #f0fff4 100%) !important;
+        border: 2px solid #667eea !important;
+    }
+    .group-summary-row td {
+        background: transparent !important;
+    }
+
+    /* Group detail sub-card: indented, lighter tint */
+    .group-detail-row {
+        background: #f0f7ff !important;
+        border: 1px dashed #bee3f8 !important;
+        margin-left: 1rem !important;
+        width: calc(100% - 1rem) !important;
+        box-sizing: border-box !important;
+    }
+    .group-detail-row td {
+        background: transparent !important;
+    }
+
+    /* Hide indent-only cells on mobile */
+    .group-detail-indent {
+        display: none !important;
+    }
+
+    /* Hide empty first cell on plain individual rows */
+    table tr:not(.group-summary-row):not(.group-detail-row) td:first-child:not([data-label]) {
+        display: none !important;
+    }
+}

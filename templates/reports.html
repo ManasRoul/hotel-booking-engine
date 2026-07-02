@@ -1,37 +1,6 @@
 {% extends "base.html" %}
 {% block extra_style %}
 <link rel="stylesheet" href="{{ url_for("static", filename="css/reports.css") }}">
-<style>
-    @media (max-width: 768px) {
-        #reportForm > div:first-child {
-            grid-template-columns: 1fr !important;
-        }
-        
-        #reportForm > div:last-child {
-            grid-template-columns: 1fr !important;
-        }
-        
-        #reportForm input[type="date"] {
-            font-size: 16px !important; /* Prevent iOS zoom */
-        }
-        
-        #reportForm button {
-            padding: 0.9rem 1.2rem !important;
-            font-size: 0.95rem !important;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .card h3 {
-            font-size: 1.1rem !important;
-        }
-        
-        #reportForm button {
-            padding: 0.85rem 1rem !important;
-            font-size: 0.9rem !important;
-        }
-    }
-</style>
 {% endblock %}
 
 {% block content %}
@@ -41,7 +10,7 @@
     {% else %}
     <a href="?year={{ year - 1 }}&month=12">◀</a>
     {% endif %}
-    <h2 style="margin:0; flex:1;">📊 {{ month_name }} {{ year }} Reports</h2>
+    <h2 class="reports-title">📊 {{ month_name }} {{ year }} Reports</h2>
     {% if month < 12 %}
     <a href="?year={{ year }}&month={{ month + 1 }}">▶</a>
     {% else %}
@@ -51,34 +20,34 @@
 
 <!-- Download Reports Section (Owners Only) -->
 {% if session.get('user_role') == 'owner' %}
-<div class="card" style="margin-bottom:2rem; background:linear-gradient(135deg,#f7fafc,#edf2f7);">
-    <h3 style="margin-bottom:1.2rem; color:#2d3748; display:flex; align-items:center; gap:0.5rem;">
+    <div class="card download-card">
+        <h3 class="download-title">
         📥 <span>Download Reports</span>
-        <span style="background:linear-gradient(135deg,#f59e0b,#d97706); color:white; padding:0.2rem 0.6rem; border-radius:6px; font-size:0.7rem; font-weight:700;">OWNER ONLY</span>
+            <span class="owner-only-pill">OWNER ONLY</span>
     </h3>
-    <div style="background:#e6f2ff; border-left:4px solid #667eea; padding:0.8rem 1rem; margin-bottom:1.5rem; border-radius:8px; font-size:0.85rem; color:#4a5568;">
+        <div class="download-tip">
         💡 <strong>Tip:</strong> Select a date range and download customer details or financial reports in CSV format
     </div>
     
-    <form id="reportForm" style="display:grid; gap:1.2rem;">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <form id="reportForm" class="report-form">
+            <div class="report-grid-2">
             <div>
-                <label style="display:block; font-weight:700; color:#4a5568; margin-bottom:0.5rem; font-size:0.9rem;">📅 Start Date</label>
-                <input type="date" id="startDate" name="start_date" required style="width:100%; padding:0.75rem; border:2px solid #cbd5e0; border-radius:8px; font-size:0.95rem; transition:all 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#cbd5e0'">
+                    <label class="report-label">📅 Start Date</label>
+                    <input type="date" id="startDate" name="start_date" required class="report-date-input">
             </div>
             <div>
-                <label style="display:block; font-weight:700; color:#4a5568; margin-bottom:0.5rem; font-size:0.9rem;">📅 End Date</label>
-                <input type="date" id="endDate" name="end_date" required style="width:100%; padding:0.75rem; border:2px solid #cbd5e0; border-radius:8px; font-size:0.95rem; transition:all 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#cbd5e0'">
+                    <label class="report-label">📅 End Date</label>
+                    <input type="date" id="endDate" name="end_date" required class="report-date-input">
             </div>
         </div>
         
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-            <button type="button" onclick="downloadCustomerReport()" style="background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:1rem 1.5rem; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 12px rgba(102,126,234,0.3); display:flex; align-items:center; justify-content:center; gap:0.5rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102,126,234,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102,126,234,0.3)'">
+            <div class="report-grid-2">
+                <button type="button" onclick="downloadCustomerReport()" class="report-download-btn customer-btn">
                 <span>👥</span>
                 <span>Customer Report</span>
             </button>
             
-            <button type="button" onclick="downloadFinancialReport()" style="background:linear-gradient(135deg,#48bb78,#38a169); color:white; padding:1rem 1.5rem; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 12px rgba(72,187,120,0.3); display:flex; align-items:center; justify-content:center; gap:0.5rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(72,187,120,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(72,187,120,0.3)'">
+                <button type="button" onclick="downloadFinancialReport()" class="report-download-btn financial-btn">
                 <span>💰</span>
                 <span>Financial Report</span>
             </button>
@@ -87,7 +56,7 @@
 </div>
 {% endif %}
 
-<h3 style="margin-bottom:1.2rem; color:#2d3748; font-size:1.3rem;">💰 Collection Summary</h3>
+    <h3 class="section-title">💰 Collection Summary</h3>
 <div class="collection-cards">
     <div class="col-card total">
         <div class="amount">₹{{ total_collected }}</div>
@@ -101,30 +70,77 @@
         <div class="amount">₹{{ upi_collected }}</div>
         <div class="label">📲 UPI</div>
     </div>
-    <div class="col-card total" style="border-color:#f56565;">
+    <div class="col-card total col-card-total-danger">
         <div class="amount">{{ bookings|length }}</div>
         <div class="label">📋 Bookings</div>
     </div>
 </div>
 
+<!-- Canceled Bookings Section -->
+{% if canceled_count > 0 %}
+<h3 class="section-title-danger">❌ Canceled Bookings</h3>
+<div class="collection-cards">
+    <div class="col-card col-card-danger">
+        <div class="amount amount-danger">{{ canceled_count }}</div>
+        <div class="label">🚫 Canceled</div>
+    </div>
+    <div class="col-card col-card-danger-soft">
+        <div class="amount amount-danger-soft">₹{{ canceled_total_lost }}</div>
+        <div class="label">💔 Potential Lost</div>
+    </div>
+    <div class="col-card col-card-warning">
+        <div class="amount amount-warning">₹{{ canceled_refunded }}</div>
+        <div class="label">↩️ Refunded</div>
+    </div>
+</div>
+
+<!-- Canceled Bookings List -->
+<div class="card canceled-card">
+    <h3 class="canceled-title">
+        <span>🗑️</span>
+        <span>Canceled Bookings Details</span>
+    </h3>
+    <div class="table-scroll">
+        <table class="full-width-table">
+            <thead>
+            <tr><th>Room</th><th>Guest</th><th>Check-in</th><th>Check-out</th><th>Total</th><th>Paid</th><th>Canceled On</th></tr>
+            </thead>
+            <tbody>
+            {% for b in canceled_bookings %}
+            <tr class="{% if loop.index % 2 == 0 %}canceled-row-alt{% endif %}">
+                <td class="room-strong">{{ b.room.number }}</td>
+                <td class="guest-strong">{{ b.guest_name }}</td>
+                <td class="date-small">{{ b.checkin.strftime('%d %b %Y') }}</td>
+                <td class="date-small">{{ b.checkout.strftime('%d %b %Y') }}</td>
+                <td class="amount-strong">₹{{ b.total_amount or 0 }}</td>
+                <td class="amount-green">₹{{ b.amount_received or 0 }}</td>
+                <td class="canceled-on">{{ b.canceled_at.strftime('%d %b %Y, %H:%M') if b.canceled_at else '—' }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
 <div class="card">
-    <h3 style="margin-bottom:1.5rem; color:#2d3748;">🏨 Occupancy by Room</h3>
-    <table style="width:100%;">
+    <h3 class="occ-title">🏨 Occupancy by Room</h3>
+    <table class="full-width-table">
         <thead>
         <tr><th>Room</th><th>Type</th><th>Occupied Days</th><th>Occupancy Rate</th></tr>
         </thead>
         <tbody>
         {% for rid, data in room_occupancy.items() %}
         <tr>
-            <td style="font-weight:800; font-size:1.05rem; color:#667eea;">{{ data.room.number }}</td>
-            <td><span style="background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:0.4rem 1rem; border-radius:12px; font-size:0.85rem; font-weight:700; color:#2d3748;">{{ data.room.room_type }}</span></td>
-            <td style="font-weight:700; color:#2d3748;">{{ data.occupied }} / {{ data.total }} days</td>
-            <td style="width:45%;">
-                <div style="display:flex; align-items:center; gap:0.8rem;">
-                    <div class="occ-bar" style="flex:1;">
-                        <div class="fill {% if data.percent >= 70 %}high{% elif data.percent >= 40 %}mid{% else %}low{% endif %}" style="width:{{ data.percent }}%;"></div>
+            <td class="room-strong">{{ data.room.number }}</td>
+            <td><span class="type-pill">{{ data.room.room_type }}</span></td>
+            <td class="occupancy-text">{{ data.occupied }} / {{ data.total }} days</td>
+            <td class="occ-cell">
+                <div class="occ-wrap">
+                    <div class="occ-bar occ-bar-flex">
+                        <div class="fill fill-width {% if data.percent >= 70 %}high{% elif data.percent >= 40 %}mid{% else %}low{% endif %}" data-pct="{{ data.percent }}"></div>
                     </div>
-                    <span style="font-weight:800; font-size:0.95rem; min-width:50px; color:#667eea;">{{ data.percent }}%</span>
+                    <span class="occ-percent">{{ data.percent }}%</span>
                 </div>
             </td>
         </tr>
@@ -134,13 +150,13 @@
 </div>
 
 <div class="card">
-    <h3 style="margin-bottom:1.5rem; color:#2d3748;">📅 Daily Occupancy Overview</h3>
+    <h3 class="daily-title">📅 Daily Occupancy Overview</h3>
     <div class="daily-grid">
         {% for day, data in daily_occupancy.items() %}
         <div class="day-cell">
             <div class="day-num">Day {{ day }}</div>
-            <div class="day-val" style="color:{% if data.percent >= 70 %}#38a169{% elif data.percent >= 40 %}#dd6b20{% else %}#e53e3e{% endif %};">{{ data.occupied }}/{{ data.total }}</div>
-            <div class="day-pct" style="color:{% if data.percent >= 70 %}#38a169{% elif data.percent >= 40 %}#dd6b20{% else %}#e53e3e{% endif %};">{{ data.percent }}%</div>
+            <div class="day-val {% if data.percent >= 70 %}tone-high{% elif data.percent >= 40 %}tone-mid{% else %}tone-low{% endif %}">{{ data.occupied }}/{{ data.total }}</div>
+            <div class="day-pct {% if data.percent >= 70 %}tone-high{% elif data.percent >= 40 %}tone-mid{% else %}tone-low{% endif %}">{{ data.percent }}%</div>
         </div>
         {% endfor %}
     </div>
@@ -235,6 +251,11 @@ function downloadFinancialReport() {
     document.getElementById('startDate').value = firstDay.toISOString().split('T')[0];
     document.getElementById('endDate').value = lastDay.toISOString().split('T')[0];
 })();
+
+document.querySelectorAll('.fill-width[data-pct]').forEach((el) => {
+    const pct = parseFloat(el.dataset.pct || '0');
+    el.style.setProperty('--pct', `${pct}%`);
+});
 </script>
 
 {% endblock %}

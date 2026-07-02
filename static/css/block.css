@@ -1,3 +1,126 @@
+.block-form-title {
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.block-tip {
+    background: #e6f2ff;
+    border-left: 4px solid #48bb78;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #4a5568;
+}
+
+.block-room-status {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #667eea;
+    margin-left: 0.5rem;
+}
+
+.block-readonly-user {
+    background: #f7fafc;
+    cursor: not-allowed;
+}
+
+.block-submit-btn {
+    width: 100%;
+    padding: 0.9rem;
+}
+
+.block-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.block-header-title {
+    margin: 0;
+    color: #2d3748;
+}
+
+.block-badge {
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+    background: linear-gradient(135deg, #ed8936, #dd6b20);
+}
+
+.block-group-badge {
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+    background: linear-gradient(135deg, #3182ce, #2b6cb0);
+}
+
+.room-number-pill {
+    background: linear-gradient(135deg, #ed8936, #dd6b20);
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+}
+
+.group-number-pill {
+    background: linear-gradient(135deg, #3182ce, #2b6cb0);
+    color: white;
+    padding: 0.35rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.cell-strong {
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.cell-muted-italic {
+    color: #718096;
+    font-style: italic;
+}
+
+.cell-date {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.cell-muted {
+    color: #4a5568;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.block-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.block-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.block-empty-text {
+    color: #718096;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.group-bookings-card {
+    margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
         h2 {
             font-size: 1.4rem;
@@ -98,23 +221,24 @@
             padding: 0.75rem 1rem !important;
         }
         
-        [style*="flex-wrap:wrap"] {
+        [style*="flex-wrap:wrap"],
+        .block-header {
             gap: 0.8rem !important;
         }
         
-        [style*="flex-wrap:wrap"] h3 {
+        [style*="flex-wrap:wrap"] h3,
+        .block-header-title {
             font-size: 0.95rem !important;
         }
         
         /* Badge styling for blocked count */
-        [style*="flex-wrap:wrap"] span {
+        [style*="flex-wrap:wrap"] span,
+        .block-badge {
             font-size: 0.75rem !important;
             padding: 0.35rem 0.75rem !important;
-            background: linear-gradient(135deg, #ed8936, #dd6b20) !important;
             color: white !important;
             border-radius: 10px !important;
             font-weight: 700 !important;
-            box-shadow: 0 3px 10px rgba(237, 137, 54, 0.3) !important;
             display: inline-block;
             white-space: nowrap;
         }
@@ -126,11 +250,13 @@
         }
         
         /* Keep Active Blocks header horizontal */
-        [style*="flex-wrap:wrap"] h3 {
+        [style*="flex-wrap:wrap"] h3,
+        .block-header-title {
             font-size: 0.9rem !important;
         }
         
-        [style*="flex-wrap:wrap"] span {
+        [style*="flex-wrap:wrap"] span,
+        .block-badge {
             font-size: 0.7rem !important;
             padding: 0.3rem 0.6rem !important;
         }
@@ -251,15 +377,15 @@
         }
         
         /* Ensure room badges display properly on mobile */
-        table td span[style*="background"] {
+        table td span[style*="background"],
+        .room-number-pill,
+        .group-number-pill {
             display: inline-block;
             font-size: 0.85rem !important;
             padding: 0.4rem 0.8rem !important;
-            background: linear-gradient(135deg, #ed8936, #dd6b20) !important;
             color: white !important;
             border-radius: 8px !important;
             font-weight: 700 !important;
-            box-shadow: 0 2px 8px rgba(237, 137, 54, 0.3) !important;
             white-space: nowrap;
         }
         

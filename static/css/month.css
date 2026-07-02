@@ -127,6 +127,20 @@
         box-shadow: 0 2px 8px rgba(229,62,62,0.3);
     }
     
+    .cal-table .checkout-day {
+        background: linear-gradient(135deg, #e53e3e 50%, #f7fafc 50%);
+        color: #2d3748;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(229,62,62,0.2);
+        font-size: 1.2rem;
+    }
+    
+    .cal-table .checkout-day:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(229,62,62,0.4);
+    }
+    
     .cal-table .available { 
         background: #f7fafc; 
         color: #718096; 
@@ -502,6 +516,26 @@
     }
     
     @media (max-width: 768px) {
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.5rem 0.75rem;
+            padding: 0.8rem 1rem;
+        }
+
+        .legend span {
+            font-size: 0.78rem;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .legend .box {
+            width: 18px;
+            height: 18px;
+        }
+
         .month-header {
             gap: 0.8rem;
             padding: 1rem;

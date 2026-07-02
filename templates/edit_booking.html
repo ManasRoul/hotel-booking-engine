@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/book.css") }}">
+{% endblock %}
+{% block content %}
+<div class="edit-booking-page">
+    <a href="{{ url_for('list_bookings') }}" class="booking-back-link">← Back to Bookings</a>
+    <h2>✏️ Edit Booking #{{ booking.id }}</h2>
+    {% if error %}
+    <div class="error">⚠️ {{ error }}</div>
+    {% endif %}
+    <div class="card">
+        <form method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>✓ Check-in</label>
+                    <input type="datetime-local" name="checkin" id="checkin" required value="{{ booking.checkin.strftime('%Y-%m-%dT%H:%M') }}">
+                </div>
+                <div class="form-group">
+                    <label>✓ Check-out</label>
+                    <input type="datetime-local" name="checkout" id="checkout" required value="{{ booking.checkout.strftime('%Y-%m-%dT%H:%M') }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>🏨 Room</label>
+                <input type="text" value="Room {{ booking.room.number }} ({{ booking.room.room_type }} {{ 'N-AC' if booking.room.ac_type == 'Non-AC' else booking.room.ac_type }})" readonly class="readonly-input">
+                <input type="hidden" name="room_id" value="{{ booking.room_id }}">
+            </div>
+            <div class="form-group">
+                <label>👤 Guest Name</label>
+                <input type="text" name="guest_name" required placeholder="Full name" value="{{ booking.guest_name }}">
+            </div>
+            <div class="form-row form-row-3">
+                <div class="form-group">
+                    <label>👥 Adults</label>
+                    <input type="number" name="adults" min="1" value="{{ booking.adults or 1 }}" required placeholder="Number of adults">
+                </div>
+                <div class="form-group">
+                    <label>👶 Children</label>
+                    <input type="number" name="children" min="0" value="{{ booking.children or 0 }}" placeholder="Number of children">
+                </div>
+                <div class="form-group">
+                    <label>🛏️ Extra Mattress</label>
+                    <input type="number" name="mattress" min="0" value="{{ booking.mattress or 0 }}" placeholder="Extra mattresses">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📱 Phone</label>
+                    <input type="text" name="guest_phone" placeholder="Contact number" value="{{ booking.guest_phone or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>🆔 DL / Aadhaar</label>
+                    <input type="text" name="id_number" placeholder="ID number" value="{{ booking.id_number or '' }}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>💳 Payment Mode</label>
+                    <select name="payment_mode" required>
+                        <option value="">Select...</option>
+                        <option value="Cash" {% if booking.payment_mode == 'Cash' %}selected{% endif %}>💵 Cash</option>
+                        <option value="UPI" {% if booking.payment_mode == 'UPI' %}selected{% endif %}>📲 UPI</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>💰 Payment Type</label>
+                    <select name="payment_type" required>
+                        <option value="">Select...</option>
+                        <option value="Advance" {% if booking.payment_type == 'Advance' %}selected{% endif %}>Advance</option>
+                        <option value="Full" {% if booking.payment_type == 'Full' %}selected{% endif %}>Full Payment</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>💵 Total Amount (₹)</label>
+                    <input type="number" name="total_amount" id="total_amount" step="0.01" required placeholder="0.00" value="{{ booking.total_amount or 0 }}">
+                </div>
+                <div class="form-group">
+                    <label>💵 Amount Received (₹)</label>
+                    <input type="number" value="{{ booking.amount_received or 0 }}" readonly class="amount-received-input">
+                    <small class="helper-note">Use payment history to update</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📄 Receipt No.</label>
+                    <input type="text" name="receipt_no" placeholder="Receipt number" value="{{ booking.receipt_no or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>👨‍💼 Booked By</label>
+                    <input type="text" name="booked_by" value="{{ booking.booked_by or '' }}" class="readonly-booked-by" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Comments (Optional)</label>
+                <input type="text" name="comments" placeholder="Any additional comments or special requests..." value="{{ booking.comments or '' }}">
+            </div>
+            <div class="btn-row edit-booking-actions">
+                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                <a href="{{ url_for('list_bookings') }}" class="btn btn-secondary">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

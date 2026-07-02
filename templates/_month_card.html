@@ -1,0 +1,132 @@
+{% set month_name = ['January','February','March','April','May','June','July','August','September','October','November','December'][month-1] %}
+{% set days_in_month = cal_data[month]['days'] %}
+<h3><a href="/month/{{ year }}/{{ month }}" style="color:inherit; text-decoration:none;">{{ month_name }} ↗</a></h3>
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+<table class="cal-table">
+    <tr>
+        <th class="room-label">Room</th>
+        {% for day in range(1, days_in_month + 1) %}
+        <th>{{ day }}</th>
+        {% endfor %}
+    </tr>
+    {% for room in rooms %}
+    <tr>
+        <td class="room-label"><a href="/room/{{ room.id }}">{{ room.number }} ({{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }})</a></td>
+        {% for day in range(1, days_in_month + 1) %}
+            {% set cell = cal_data[month]['rooms'][room.id][day] %}
+            {% if cell['status'] == 'booked' %}
+            {% set b = cell['booking'] %}
+            <td class="booked" title="{{ b.guest_name }}" 
+                data-type="booking"
+                data-bookingid="{{ b.id }}"
+                data-room="{{ room.number }}"
+                data-guest="{{ b.guest_name }}"
+                data-phone="{{ b.guest_phone or '—' }}"
+                data-id="{{ b.id_number or '—' }}"
+                data-adults="{{ b.adults or 1 }}"
+                data-children="{{ b.children or 0 }}"
+                data-mattress="{{ b.mattress or 0 }}"
+                data-checkin="{{ b.checkin.strftime('%d %b %Y, %H:%M') }}"
+                data-checkout="{{ b.checkout.strftime('%d %b %Y, %H:%M') }}"
+                data-payment="{{ b.payment_mode or '—' }} / {{ b.payment_type or '—' }}"
+                data-paymenttype="{{ b.payment_type or '—' }}"
+                data-total="{{ b.booking_group.total_amount if b.group_id and b.booking_group else (b.total_amount or 0) }}"
+                data-amount="{{ b.booking_group.amount_received if b.group_id and b.booking_group else (b.amount_received or 0) }}"
+                data-bookedby="{{ b.booked_by or '—' }}"
+                data-receipt="{{ b.receipt_no or '—' }}"
+                data-comments="{{ (b.booking_group.comments if b.group_id and b.booking_group else b.comments) or '' }}">●</td>
+            {% elif cell['status'] == 'checkout' %}
+            {% set b = cell['booking'] %}
+            <td class="checkout-day" title="{{ b.guest_name }} (checkout {{ b.checkout.strftime('%H:%M') }})" 
+                data-type="booking"
+                data-bookingid="{{ b.id }}"
+                data-room="{{ room.number }}"
+                data-guest="{{ b.guest_name }}"
+                data-phone="{{ b.guest_phone or '—' }}"
+                data-id="{{ b.id_number or '—' }}"
+                data-adults="{{ b.adults or 1 }}"
+                data-children="{{ b.children or 0 }}"
+                data-mattress="{{ b.mattress or 0 }}"
+                data-checkin="{{ b.checkin.strftime('%d %b %Y, %H:%M') }}"
+                data-checkout="{{ b.checkout.strftime('%d %b %Y, %H:%M') }}"
+                data-payment="{{ b.payment_mode or '—' }} / {{ b.payment_type or '—' }}"
+                data-paymenttype="{{ b.payment_type or '—' }}"
+                data-total="{{ b.booking_group.total_amount if b.group_id and b.booking_group else (b.total_amount or 0) }}"
+                data-amount="{{ b.booking_group.amount_received if b.group_id and b.booking_group else (b.amount_received or 0) }}"
+                data-bookedby="{{ b.booked_by or '—' }}"
+                data-receipt="{{ b.receipt_no or '—' }}"
+                data-comments="{{ (b.booking_group.comments if b.group_id and b.booking_group else b.comments) or '' }}">◐</td>
+            {% elif cell['status'] == 'blocked' %}
+            {% set blocks_list = cell['blocks'] %}
+            {% set block_count = cell['count'] %}
+            {% set all_blocked_by = blocks_list|map(attribute='blocked_by')|join(', ') %}
+            {% set blocks_json = [] %}
+            {% set user_colors = [] %}
+            {% for bl in blocks_list %}
+                {% set user_color = bl.user.color if bl.user else '#dd6b20' %}
+                {% set _ = user_colors.append(user_color) %}
+                {% set _ = blocks_json.append({
+                    'blocked_by': bl.blocked_by,
+                    'reason': bl.reason or '',
+                    'start_date': bl.start_date.isoformat(),
+                    'end_date': bl.end_date.isoformat(),
+                    'user_color': user_color
+                }) %}
+            {% endfor %}
+            {% if block_count == 1 %}
+                {% set bg_style = 'background:' + user_colors[0] %}
+            {% elif block_count == 2 %}
+                {% set bg_style = 'background:linear-gradient(135deg,' + user_colors[0] + ' 0%, ' + user_colors[0] + ' 50%, ' + user_colors[1] + ' 50%, ' + user_colors[1] + ' 100%)' %}
+            {% else %}
+                {% set bg_style = 'background:linear-gradient(135deg,' + user_colors|join(',') + ')' %}
+            {% endif %}
+            <td class="blocked" 
+                title="{{ block_count }} block(s): {{ all_blocked_by }}" 
+                data-blocks='{{ blocks_json|tojson }}'
+                data-room="{{ room.number }}"
+                data-roomtype="{{ room.room_type }}"
+                data-ac="{{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }}"
+                style="cursor:pointer; {{ bg_style }}; color:white; font-weight:800;">
+                ✖{% if block_count > 1 %}<span style="font-size:0.7rem; font-weight:800; vertical-align:super; pointer-events:none;">{{ block_count }}</span>{% endif %}
+            </td>
+            {% elif cell['status'] == 'block-end' %}
+            {% set blocks_list = cell['blocks'] %}
+            {% set block_count = cell['count'] %}
+            {% set all_blocked_by = blocks_list|map(attribute='blocked_by')|join(', ') %}
+            {% set blocks_json = [] %}
+            {% set user_colors = [] %}
+            {% for bl in blocks_list %}
+                {% set user_color = bl.user.color if bl.user else '#dd6b20' %}
+                {% set _ = user_colors.append(user_color) %}
+                {% set _ = blocks_json.append({
+                    'blocked_by': bl.blocked_by,
+                    'reason': bl.reason or '',
+                    'start_date': bl.start_date.isoformat(),
+                    'end_date': bl.end_date.isoformat(),
+                    'user_color': user_color
+                }) %}
+            {% endfor %}
+            {% if block_count == 1 %}
+                {% set bg_style = 'background:linear-gradient(135deg, ' + user_colors[0] + ' 50%, #f7fafc 50%)' %}
+            {% elif block_count == 2 %}
+                {% set bg_style = 'background:linear-gradient(135deg, ' + user_colors[0] + ' 25%, ' + user_colors[1] + ' 25%, ' + user_colors[1] + ' 50%, #f7fafc 50%)' %}
+            {% else %}
+                {% set bg_style = 'background:linear-gradient(135deg, ' + user_colors|join(' 33%, ') + ' 33%, #f7fafc 50%)' %}
+            {% endif %}
+            <td class="block-end-day" 
+                title="Block ends: {{ all_blocked_by }}" 
+                data-blocks='{{ blocks_json|tojson }}'
+                data-room="{{ room.number }}"
+                data-roomtype="{{ room.room_type }}"
+                data-ac="{{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }}"
+                style="cursor:pointer; {{ bg_style }}; color:#dd6b20; font-weight:800;">
+                ◐{% if block_count > 1 %}<span style="font-size:0.7rem; font-weight:800; vertical-align:super; pointer-events:none;">{{ block_count }}</span>{% endif %}
+            </td>
+            {% else %}
+            <td class="available">{{ room.number }}</td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</div>

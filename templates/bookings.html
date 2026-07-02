@@ -1,106 +1,242 @@
 {% extends "base.html" %}
 {% block extra_style %}
-<link rel="stylesheet" href="{{ url_for("static", filename="css/bookings.css") }}">
+<link rel="stylesheet" href="{{ url_for("static", filename="css/bookings.css") }}?v=1782719771">
 {% endblock %}
 {% block content %}
-<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.5rem; background:rgba(255,255,255,0.9); backdrop-filter:blur(20px); padding:1.2rem 1.5rem; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-    <h2 style="margin:0; font-size:1.3rem;">
+<div class="bookings-header">
+    <h2 class="bookings-title">
         📋 {% if selected_month and selected_year %}
-        {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selected_month-1] }} {{ selected_year }} Bookings
-        {% else %}
+        {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selected_month-1] }} {{ selected_year }}
+        {% endif %}
+        {% if selected_booked_by %}
+        by {{ selected_booked_by }}
+        {% endif %}
+        {% if not selected_month and not selected_year and not selected_booked_by %}
         All Bookings
+        {% else %}
+        Bookings
         {% endif %}
     </h2>
     <a href="/book" class="btn btn-primary">✨ New Booking</a>
 </div>
 
-<!-- Month Filter -->
-<div class="card" style="margin-bottom:1.5rem; padding:1.2rem;">
-    <form method="GET" action="/bookings" style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
-        <label style="font-weight:700; color:#4a5568; font-size:0.95rem;">🗓️ Filter by Month:</label>
-        <select name="month_year" id="monthFilter" style="flex:1; min-width:200px; max-width:300px; padding:0.7rem 1rem; border:2px solid #cbd5e0; border-radius:12px; font-size:0.95rem; font-weight:600; color:#2d3748; background:white; cursor:pointer;">
-            <option value="">All Bookings</option>
-            {% for year, month in available_months %}
-            <option value="{{ year }}-{{ month }}" {% if selected_year == year and selected_month == month %}selected{% endif %}>
-                {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][month-1] }} {{ year }}
-            </option>
-            {% endfor %}
-        </select>
-        <button type="submit" class="btn btn-primary">Apply Filter</button>
-        {% if selected_month and selected_year %}
-        <a href="/bookings" class="btn" style="background:#e2e8f0; color:#4a5568;">Clear Filter</a>
-        {% endif %}
+<!-- Filters -->
+<div class="card bookings-filter-card">
+    <form method="GET" action="/bookings" id="filterForm" class="bookings-filter-form">
+        <div class="bookings-filter-row">
+            <label class="bookings-filter-label">🔍</label>
+            <input type="text" name="search" id="searchInput" value="{{ search or '' }}" placeholder="Search guest name or phone..." class="bookings-search-input">
+            
+            <label class="bookings-filter-label">🗓️ Month:</label>
+            <select name="month_year" id="monthFilter" class="bookings-filter-select">
+                <option value="">All Months</option>
+                {% for year, month in available_months %}
+                <option value="{{ year }}-{{ month }}" {% if selected_year == year and selected_month == month %}selected{% endif %}>
+                    {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][month-1] }} {{ year }}
+                </option>
+                {% endfor %}
+            </select>
+            
+            <label class="bookings-filter-label">👨‍💼 Booked By:</label>
+            <select name="booked_by" id="bookedByFilter" class="bookings-filter-select">
+                <option value="">All Users</option>
+                {% for person in booked_by_list %}
+                <option value="{{ person }}" {% if selected_booked_by == person %}selected{% endif %}>{{ person }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+            {% if selected_month or selected_year or selected_booked_by or search %}
+            <a href="/bookings" class="btn btn-clear-neutral">Clear All</a>
+            {% endif %}
+        </div>
     </form>
 </div>
 
 {% if bookings %}
-<div class="card" style="overflow-x:auto; padding:1.5rem;">
+<div class="card bookings-table-card">
     <table>
         <thead>
-        <tr><th>Receipt</th><th>Room</th><th>Guest</th><th>Phone</th><th>ID No.</th><th>Check-in</th><th>Check-out</th><th>Payment</th><th>Total</th><th>Paid</th><th>Remaining</th><th>Booked By</th><th>Action</th></tr>
+        <tr><th></th><th>Receipt</th><th>Room</th><th>Guest</th><th>A/C/M</th><th>Phone</th><th>ID No.</th><th>Check-in</th><th>Check-out</th><th>Payment</th><th>Total</th><th>Paid</th><th>Remaining</th><th>Comments</th><th>Booked By</th><th>Action</th></tr>
         </thead>
         <tbody>
         {% for b in bookings %}
-        <tr>
-            <td data-label="Receipt">{% if b.receipt_no %}<span style="background:linear-gradient(135deg,#f59e0b,#d97706); color:white; padding:0.4rem 0.9rem; border-radius:10px; font-size:0.85rem; font-weight:800; box-shadow:0 4px 12px rgba(245,158,11,0.3);">{{ b.receipt_no }}</span>{% else %}<span style="color:#cbd5e0; font-size:0.88rem;">—</span>{% endif %}</td>
-            <td data-label="Room"><span style="background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:0.4rem 0.9rem; border-radius:10px; font-size:0.85rem; font-weight:800; box-shadow:0 4px 12px rgba(102,126,234,0.3);">{{ b.room.number }}</span></td>
-            <td data-label="Guest" style="font-weight:700; color:#2d3748;">{{ b.guest_name }}</td>
-            <td data-label="Phone" style="color:#718096; font-size:0.88rem;">{{ b.guest_phone or '—' }}</td>
-            <td data-label="ID No." style="font-size:0.88rem; color:#4a5568;">{{ b.id_number or '—' }}</td>
-            <td data-label="Check-in" style="font-size:0.85rem; font-weight:600;">{{ b.checkin.strftime('%d %b %Y, %H:%M') }}</td>
-            <td data-label="Check-out" style="font-size:0.85rem; font-weight:600;">{{ b.checkout.strftime('%d %b %Y, %H:%M') }}</td>
-            <td data-label="Payment"><span style="background:{% if b.payment_mode == 'Cash' %}linear-gradient(135deg,#48bb78,#38a169){% else %}linear-gradient(135deg,#667eea,#764ba2){% endif %}; color:white; padding:0.3rem 0.8rem; border-radius:10px; font-size:0.8rem; font-weight:700; box-shadow:0 3px 10px rgba(0,0,0,0.15);">{{ b.payment_mode or '—' }} / {{ b.payment_type or '—' }}</span></td>
-            <td data-label="Total" style="font-weight:700;">₹{{ b.total_amount or 0 }}</td>
-            <td data-label="Paid" style="font-weight:700; color:#38a169;">₹{{ b.amount_received or 0 }}</td>
-            <td data-label="Remaining" style="font-weight:800; color:#e53e3e;">₹{{ (b.total_amount or 0) - (b.amount_received or 0) }}</td>
-            <td data-label="Booked By" style="font-size:0.88rem; color:#718096;">{{ b.booked_by or '—' }}</td>
+        {% if b.group_id %}
+        {# ── GROUP SUMMARY ROW ─────────────────────────────────────── #}
+        {% set grp = b.booking_group %}
+        {% set grp_rooms = grp.bookings | selectattr('status', 'equalto', 'active') | list %}
+        <tr class="group-summary-row" data-group-id="{{ b.group_id }}">
+            <td><button class="group-toggle-btn" onclick="toggleGroup({{ b.group_id }})" title="Expand rooms" aria-label="Toggle group rooms">▶</button></td>
+            <td data-label="Receipt">{% if grp.receipt_no %}<span class="receipt-pill">{{ grp.receipt_no }}</span>{% else %}<span class="placeholder-muted">—</span>{% endif %}</td>
+            <td data-label="Room">
+                {% for gb in grp_rooms %}<span class="room-pill">{{ gb.room.number }}</span> {% endfor %}
+            </td>
+            <td data-label="Guest" class="guest-cell">
+                {{ grp.guest_name }}
+                <span class="group-pill" title="Group booking — {{ grp_rooms|length }} rooms">👥 {{ grp_rooms|length }} rooms</span>
+            </td>
+            <td data-label="A/C/M" class="acm-cell">
+                {% if grp_rooms %}<span class="acm-pill">{{ grp_rooms[0].adults or 1 }}/{{ grp_rooms[0].children or 0 }}/{{ grp_rooms[0].mattress or 0 }}</span>{% else %}—{% endif %}
+            </td>
+            <td data-label="Phone" class="muted-cell">{{ grp.guest_phone or '—' }}</td>
+            <td data-label="ID No." class="id-cell">{{ grp.id_number or '—' }}</td>
+            <td data-label="Check-in" class="date-cell">{{ grp.checkin.strftime('%d %b %Y, %H:%M') }}</td>
+            <td data-label="Check-out" class="date-cell">{{ grp.checkout.strftime('%d %b %Y, %H:%M') }}{% if grp.checkout < now %} <span class="checkout-pill">✓ OUT</span>{% endif %}</td>
+            <td data-label="Payment"><span class="payment-pill {% if grp.payment_mode == 'Cash' %}payment-cash{% else %}payment-upi{% endif %}">{{ grp.payment_mode or '—' }} / Group</span></td>
+            <td data-label="Total" class="amount-cell">₹{{ grp.total_amount or 0 }}</td>
+            <td data-label="Paid" class="paid-cell">₹{{ grp.amount_received or 0 }}</td>
+            <td data-label="Remaining" class="remaining-cell">₹{{ (grp.total_amount or 0) - (grp.amount_received or 0) }}</td>
+            <td data-label="Comments" class="comments-cell">{% if grp.comments %}<span title="{{ grp.comments }}" class="comments-wrap">{{ grp.comments }}</span>{% else %}<span class="placeholder-muted">—</span>{% endif %}</td>
+            <td data-label="Booked By" class="booked-by-cell">{{ grp.booked_by or '—' }}</td>
             <td data-label="Action">
-                <form method="POST" action="/bookings/delete/{{ b.id }}" style="display:inline;">
-                    <button class="btn btn-danger btn-sm" onclick="return confirm('Cancel booking for {{ b.guest_name }}?')">Cancel</button>
-                </form>
+                <div class="bookings-action-wrap">
+                    <a href="/book-group/edit/{{ b.group_id }}" class="btn btn-sm action-link action-edit">✏️ Edit Group</a>
+                    <form method="POST" action="/book-group/cancel/{{ b.group_id }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="btn btn-danger btn-sm action-cancel" onclick="return confirm('Cancel ALL {{ grp_rooms|length }} rooms for {{ grp.guest_name }}?')">Cancel All</button>
+                    </form>
+                </div>
             </td>
         </tr>
+        {# ── DETAIL ROWS (one per room, hidden by default) ─────────── #}
+        {% for gb in grp_rooms %}
+        <tr class="group-detail-row group-detail-{{ b.group_id }} group-detail-hidden">
+            <td class="group-detail-indent"></td>
+            <td data-label="Receipt">{% if gb.receipt_no %}<span class="receipt-pill">{{ gb.receipt_no }}</span>{% else %}<span class="placeholder-muted">—</span>{% endif %}</td>
+            <td data-label="Room"><span class="room-pill">{{ gb.room.number }}</span></td>
+            <td data-label="Guest" class="guest-cell">{{ gb.guest_name }}</td>
+            <td data-label="A/C/M" class="acm-cell"><span class="acm-pill">{{ gb.adults or 1 }}/{{ gb.children or 0 }}/{{ gb.mattress or 0 }}</span></td>
+            <td data-label="Phone" class="muted-cell">{{ gb.guest_phone or '—' }}</td>
+            <td data-label="ID No." class="id-cell">{{ gb.id_number or '—' }}</td>
+            <td data-label="Check-in" class="date-cell">{{ gb.checkin.strftime('%d %b %Y, %H:%M') }}</td>
+            <td data-label="Check-out" class="date-cell">{{ gb.checkout.strftime('%d %b %Y, %H:%M') }}</td>
+            <td data-label="Payment"><span class="payment-pill {% if gb.payment_mode == 'Cash' %}payment-cash{% else %}payment-upi{% endif %}">{{ gb.payment_mode or '—' }}</span></td>
+            <td data-label="Total" class="amount-cell muted-cell">—</td>
+            <td data-label="Paid" class="paid-cell muted-cell">—</td>
+            <td data-label="Remaining" class="remaining-cell muted-cell">—</td>
+            <td data-label="Comments" class="comments-cell"><span class="placeholder-muted">see group</span></td>
+            <td data-label="Booked By" class="booked-by-cell">{{ gb.booked_by or '—' }}</td>
+            <td data-label="Action">
+                <div class="bookings-action-wrap">
+                    {% if gb.checkout > now %}
+                    <form method="POST" action="/bookings/checkout/{{ gb.id }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="btn btn-sm action-checkout" onclick="return confirm('Check out room {{ gb.room.number }} now?')">Checkout</button>
+                    </form>
+                    {% endif %}
+                    <form method="POST" action="/bookings/delete/{{ gb.id }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="btn btn-danger btn-sm action-cancel" onclick="return confirm('Remove room {{ gb.room.number }} from this group?')">Remove</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        {# ── INDIVIDUAL BOOKING ROW ────────────────────────────────── #}
+        <tr>
+            <td></td>
+            <td data-label="Receipt">{% if b.receipt_no %}<span class="receipt-pill">{{ b.receipt_no }}</span>{% else %}<span class="placeholder-muted">—</span>{% endif %}</td>
+            <td data-label="Room"><span class="room-pill">{{ b.room.number }}</span></td>
+            <td data-label="Guest" class="guest-cell">{{ b.guest_name }}</td>
+            <td data-label="Adults/Children/Mat" class="acm-cell"><span class="acm-pill">{{ b.adults or 1 }}/{{ b.children or 0 }}/{{ b.mattress or 0 }}</span></td>
+            <td data-label="Phone" class="muted-cell">{{ b.guest_phone or '—' }}</td>
+            <td data-label="ID No." class="id-cell">{{ b.id_number or '—' }}</td>
+            <td data-label="Check-in" class="date-cell">{{ b.checkin.strftime('%d %b %Y, %H:%M') }}</td>
+            <td data-label="Check-out" class="date-cell">{{ b.checkout.strftime('%d %b %Y, %H:%M') }}{% if b.checkout < now %} <span class="checkout-pill">✓ OUT</span>{% endif %}</td>
+            <td data-label="Payment"><span class="payment-pill {% if b.payment_mode == 'Cash' %}payment-cash{% else %}payment-upi{% endif %}">{{ b.payment_mode or '—' }} / {{ b.payment_type or '—' }}</span></td>
+            <td data-label="Total" class="amount-cell">₹{{ b.total_amount or 0 }}</td>
+            <td data-label="Paid" class="paid-cell">₹{{ b.amount_received or 0 }}</td>
+            <td data-label="Remaining" class="remaining-cell">₹{{ (b.total_amount or 0) - (b.amount_received or 0) }}</td>
+            <td data-label="Comments" class="comments-cell">{% if b.comments %}<span title="{{ b.comments }}" class="comments-wrap">{{ b.comments }}</span>{% else %}<span class="placeholder-muted">—</span>{% endif %}</td>
+            <td data-label="Booked By" class="booked-by-cell">{{ b.booked_by or '—' }}</td>
+            <td data-label="Action">
+                <div class="bookings-action-wrap">
+                    <a href="/bookings/edit/{{ b.id }}" class="btn btn-sm action-link action-edit">Edit</a>
+                    {% if b.checkout > now %}
+                    <form method="POST" action="/bookings/checkout/{{ b.id }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="btn btn-sm action-checkout" onclick="return confirm('Check out {{ b.guest_name }} now?')">Checkout</button>
+                    </form>
+                    {% endif %}
+                    <form method="POST" action="/bookings/delete/{{ b.id }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="btn btn-danger btn-sm action-cancel" onclick="return confirm('Cancel booking for {{ b.guest_name }}?')">Cancel</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% endif %}
         {% endfor %}
         </tbody>
     </table>
 </div>
 {% if pagination.pages > 1 %}
-<div style="display:flex; justify-content:center; align-items:center; gap:0.5rem; margin-top:1.5rem;">
+        <div class="bookings-pagination">
     {% if pagination.has_prev %}
-    <a href="?page={{ pagination.prev_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}" class="btn btn-primary btn-sm">← Prev</a>
+    <a href="?page={{ pagination.prev_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="btn btn-primary btn-sm">← Prev</a>
     {% endif %}
     {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
         {% if p %}
             {% if p == pagination.page %}
-            <span class="btn btn-primary btn-sm" style="opacity:1;">{{ p }}</span>
+                    <span class="btn btn-primary btn-sm page-current">{{ p }}</span>
             {% else %}
-            <a href="?page={{ p }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}" class="btn btn-sm" style="background:#e2e8f0; color:#4a5568;">{{ p }}</a>
+                    <a href="?page={{ p }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="btn btn-sm btn-clear-neutral">{{ p }}</a>
             {% endif %}
         {% else %}
-        <span style="color:#718096;">…</span>
+                <span class="pagination-ellipsis">…</span>
         {% endif %}
     {% endfor %}
     {% if pagination.has_next %}
-    <a href="?page={{ pagination.next_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}" class="btn btn-primary btn-sm">Next →</a>
+    <a href="?page={{ pagination.next_num }}{% if selected_month and selected_year %}&month={{ selected_month }}&year={{ selected_year }}{% endif %}{% if selected_booked_by %}&booked_by={{ selected_booked_by }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="btn btn-primary btn-sm">Next →</a>
     {% endif %}
 </div>
 {% endif %}
 {% else %}
-<div class="card" style="text-align:center; padding:5rem 2rem;">
-    <div style="font-size:4rem; margin-bottom:1rem;">📋</div>
-    <p style="color:#718096; font-size:1.3rem; margin-bottom:2rem; font-weight:600;">No bookings yet</p>
-    <a href="/book" class="btn btn-primary" style="font-size:1rem; padding:1rem 2rem;">✨ Make your first booking</a>
+<div class="card bookings-empty">
+    <div class="bookings-empty-icon">📋</div>
+    <p class="bookings-empty-text">No bookings yet</p>
+    <a href="/book" class="btn btn-primary bookings-empty-cta">✨ Make your first booking</a>
 </div>
 {% endif %}
 
 <script>
-// Handle month filter form submission
-document.querySelector('form[action="/bookings"]').addEventListener('submit', function(e) {
+// Expand / collapse group booking detail rows
+function toggleGroup(groupId) {
+    const rows = document.querySelectorAll(`.group-detail-${groupId}`);
+    const btn = document.querySelector(`[data-group-id="${groupId}"] .group-toggle-btn`);
+    const isHidden = rows.length > 0 && rows[0].classList.contains('group-detail-hidden');
+    rows.forEach(row => {
+        row.classList.toggle('group-detail-hidden', !isHidden);
+    });
+    if (btn) btn.textContent = isHidden ? '▼' : '▶';
+}
+
+// Handle filter form submission
+document.getElementById('filterForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const monthYear = document.getElementById('monthFilter').value;
+    const bookedBy = document.getElementById('bookedByFilter').value;
+    const search = document.getElementById('searchInput').value.trim();
+    
+    let params = [];
+    
+    if (search) {
+        params.push(`search=${encodeURIComponent(search)}`);
+    }
+    
     if (monthYear) {
         const [year, month] = monthYear.split('-');
-        window.location.href = `/bookings?month=${month}&year=${year}`;
+        params.push(`month=${month}`);
+        params.push(`year=${year}`);
+    }
+    
+    if (bookedBy) {
+        params.push(`booked_by=${encodeURIComponent(bookedBy)}`);
+    }
+    
+    if (params.length > 0) {
+        window.location.href = `/bookings?${params.join('&')}`;
     } else {
         window.location.href = '/bookings';
     }

@@ -1,3 +1,131 @@
+.users-form-title {
+    margin-bottom: 1.2rem;
+}
+
+.password-help {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+.color-picker-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.color-picker-input {
+    width: 80px;
+    height: 48px;
+    border: 2px solid #cbd5e0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.color-meta {
+    flex: 1;
+}
+
+.color-hex-input {
+    background: #f7fafc;
+    font-family: monospace;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.color-help {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.3rem;
+}
+
+.user-role-select {
+    padding: 0.75rem;
+    border: 2px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.users-actions {
+    gap: 0.8rem;
+}
+
+.users-table-title {
+    margin-bottom: 1.2rem;
+}
+
+.username-cell {
+    font-weight: 600;
+}
+
+.role-pill {
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.role-pill-owner {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.role-pill-contributor {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.color-cell-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-code {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+.user-action-wrap {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.user-edit-link {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.inline-delete-form {
+    display: inline;
+}
+
+.self-note {
+    color: #718096;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+}
+
 @media (max-width: 768px) {
         h2 {
             font-size: 1.4rem;
@@ -27,6 +155,21 @@
         table td {
             padding: 0.7rem 0.5rem;
             font-size: 0.85rem;
+        }
+
+        .color-picker-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.8rem !important;
+        }
+
+        .color-picker-input {
+            width: 100% !important;
+            height: 60px !important;
+        }
+
+        table td[data-label="Color"] > .color-cell-wrap {
+            justify-content: flex-start !important;
         }
     }
     
@@ -64,5 +207,28 @@
         
         table td:last-child {
             margin-top: 0.5rem;
+        }
+
+        table td[data-label="Color"] > .color-cell-wrap {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.3rem !important;
+        }
+
+        table td[data-label="Color"] .color-swatch {
+            width: 48px !important;
+            height: 48px !important;
+        }
+
+        table td[data-label="Action"] > .user-action-wrap {
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+            width: 100%;
+        }
+
+        table td[data-label="Action"] a,
+        table td[data-label="Action"] button {
+            width: 100% !important;
+            justify-content: center !important;
         }
     }

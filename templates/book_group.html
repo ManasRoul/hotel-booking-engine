@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/book.css") }}">
+{% endblock %}
+{% block content %}
+<div class="group-form-page group-booking-page">
+    <h2>{% if group %}✏️ Edit Group Booking #{{ group.id }}{% else %}👥 Book Multiple Rooms (Group Booking){% endif %}</h2>
+    <p class="group-form-subtitle group-form-subtitle-light">{% if group %}Update rooms, dates, or payment details for this group booking{% else %}Book 2 or more rooms for the same guest with shared payment tracking{% endif %}</p>
+    
+    {% if error %}
+    <div class="error">⚠️ {{ error }}</div>
+    {% endif %}
+    
+    <div class="card">
+        <form method="POST" action="{% if group %}/book-group/edit/{{ group.id }}{% else %}/book-group{% endif %}" onsubmit="return validateForm()">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>✓ Check-in</label>
+                    <input type="datetime-local" name="checkin" id="checkin" required onchange="updateAvailableRooms()"
+                           value="{% if group %}{{ group.checkin.strftime('%Y-%m-%dT%H:%M') }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label>✓ Check-out</label>
+                    <input type="datetime-local" name="checkout" id="checkout" required onchange="updateAvailableRooms()"
+                           value="{% if group %}{{ group.checkout.strftime('%Y-%m-%dT%H:%M') }}{% endif %}">
+                </div>
+            </div>
+            
+            <div id="date-error" class="group-date-error"></div>
+            
+            <div class="form-group">
+                <label>🏨 Select Rooms (minimum 2)</label>
+                <div id="room-tools" class="room-tools group-room-tools-hidden">
+                    <input type="text" id="room-search" placeholder="Search by room number/type..." oninput="filterRooms()">
+                    <label class="group-toggle-label">
+                        <input type="checkbox" id="show-unavailable" onchange="filterRooms()" checked>
+                        Show unavailable
+                    </label>
+                    <button type="button" class="btn btn-secondary" onclick="selectVisibleRooms()">Select Visible</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearAllRooms()">Clear</button>
+                    <div id="room-summary" class="room-summary"></div>
+                </div>
+                <div id="selected-count" class="selected-count group-hidden">
+                    <span id="count-text">0 rooms selected</span>
+                </div>
+                <div id="room-selection" class="room-selection">
+                    <p class="group-message-muted">Select check-in/out dates first...</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>👤 Guest Name</label>
+                <input type="text" name="guest_name" required placeholder="Full name"
+                       value="{{ group.guest_name if group else '' }}">
+            </div>
+            
+            <div class="form-row form-row-3">
+                <div class="form-group">
+                    <label>👥 Adults (per room)</label>
+                    {% set sample_booking = group.bookings[0] if group and group.bookings else none %}
+                    <input type="number" name="adults" min="1" required
+                           value="{{ sample_booking.adults if sample_booking else 1 }}">
+                </div>
+                <div class="form-group">
+                    <label>👶 Children (per room)</label>
+                    <input type="number" name="children" min="0"
+                           value="{{ sample_booking.children if sample_booking else 0 }}">
+                </div>
+                <div class="form-group">
+                    <label>🛏️ Mattress (per room)</label>
+                    <input type="number" name="mattress" min="0"
+                           value="{{ sample_booking.mattress if sample_booking else 0 }}">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📱 Phone</label>
+                    <input type="text" name="guest_phone" placeholder="Contact number"
+                           value="{{ group.guest_phone if group else '' }}">
+                </div>
+                <div class="form-group">
+                    <label>🆔 DL / Aadhaar</label>
+                    <input type="text" name="id_number" placeholder="ID number"
+                           value="{{ group.id_number if group else '' }}">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>💰 Payment Mode</label>
+                    <select name="payment_mode">
+                        <option value="">Not specified</option>
+                        <option value="Cash" {% if group and group.payment_mode == 'Cash' %}selected{% endif %}>Cash</option>
+                        <option value="UPI"  {% if group and group.payment_mode == 'UPI'  %}selected{% endif %}>UPI</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>💳 Advance Received</label>
+                    <input type="number" name="amount_received" step="0.01" min="0"
+                           value="{{ group.amount_received if group else 0 }}" placeholder="Advance payment">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>💵 Total Amount (all rooms)</label>
+                    <input type="number" name="total_amount" step="0.01" min="0"
+                           value="{{ group.total_amount if group else '' }}" placeholder="Total for all rooms">
+                </div>
+                <div class="form-group">
+                    <label>🧾 Receipt No</label>
+                    <input type="text" name="receipt_no" placeholder="Receipt number"
+                           value="{{ group.receipt_no if group else '' }}">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>👨‍💼 Booked By</label>
+                <input type="text" name="booked_by"
+                       value="{{ group.booked_by if group else current_username }}"
+                       placeholder="Who is creating this booking">
+            </div>
+            
+            <div class="form-group">
+                <label>📝 Comments (Optional)</label>
+                <input type="text" name="comments" placeholder="Any additional comments or special requests..."
+                       value="{{ group.comments if group else '' }}">
+            </div>
+            
+            <div class="btn-row group-action-row">
+                <button type="submit" class="btn btn-primary">{% if group %}💾 Save Changes{% else %}✅ Create Group Booking{% endif %}</button>
+                <a href="/bookings" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+let availableRoomsData = [];
+
+function updateAvailableRooms() {
+    const checkinInput = document.getElementById('checkin');
+    const checkoutInput = document.getElementById('checkout');
+    const roomSelection = document.getElementById('room-selection');
+    const dateError = document.getElementById('date-error');
+    const roomTools = document.getElementById('room-tools');
+    
+    if (!checkinInput.value || !checkoutInput.value) {
+        return;
+    }
+    
+    const checkin = new Date(checkinInput.value);
+    const checkout = new Date(checkoutInput.value);
+    
+    // Validate dates
+    if (checkout <= checkin) {
+        dateError.textContent = '⚠️ Check-out must be after check-in';
+        dateError.style.display = 'block';
+        roomSelection.innerHTML = '<p class="group-message-error">Fix date error first</p>';
+        roomTools.style.display = 'none';
+        return;
+    }
+    
+    const now = new Date();
+    now.setDate(now.getDate() - 1);
+    if (checkin < now) {
+        dateError.textContent = '⚠️ Check-in cannot be more than 1 day in the past';
+        dateError.style.display = 'block';
+        roomSelection.innerHTML = '<p class="group-message-error">Fix date error first</p>';
+        roomTools.style.display = 'none';
+        return;
+    }
+    
+    dateError.style.display = 'none';
+    
+    // Fetch available rooms (exclude current group's own bookings in edit mode)
+    const checkinStr = checkinInput.value;
+    const checkoutStr = checkoutInput.value;
+    const excludeParam = EDIT_GROUP_ID ? `&exclude_group_id=${EDIT_GROUP_ID}` : '';
+    
+    fetch(`/api/available-rooms?checkin=${encodeURIComponent(checkinStr)}&checkout=${encodeURIComponent(checkoutStr)}${excludeParam}`)
+        .then(r => r.json())
+        .then(data => {
+            availableRoomsData = data || [];
+            if (availableRoomsData.length === 0) {
+                roomSelection.innerHTML = '<p class="group-message-error">❌ No rooms available for these dates</p>';
+                roomTools.style.display = 'none';
+                return;
+            }
+
+            roomTools.style.display = 'flex';
+            filterRooms();
+        })
+        .catch(err => {
+            roomSelection.innerHTML = '<p class="group-message-error">Error loading rooms</p>';
+            roomTools.style.display = 'none';
+            console.error(err);
+        });
+}
+
+function filterRooms() {
+    const q = (document.getElementById('room-search').value || '').trim().toLowerCase();
+    const showUnavailable = document.getElementById('show-unavailable').checked;
+    const roomSelection = document.getElementById('room-selection');
+
+    const filtered = availableRoomsData.filter(room => {
+        const searchable = `${room.number} ${room.type || ''} ${room.ac || ''}`.toLowerCase();
+        if (!showUnavailable && !room.available) return false;
+        return searchable.includes(q);
+    });
+
+    if (filtered.length === 0) {
+        if (!showUnavailable && availableRoomsData.length > 0) {
+            roomSelection.innerHTML = '<p class="group-message-info">No available rooms for this filter. Enable "Show unavailable" to view all rooms.</p>';
+        } else {
+            roomSelection.innerHTML = '<p class="group-message-muted">No rooms match this filter.</p>';
+        }
+        updateCount();
+        updateRoomSummary(0, 0);
+        return;
+    }
+
+    roomSelection.innerHTML = filtered.map(room => {
+        const disabled = room.available ? '' : 'disabled';
+        const unavailableClass = room.available ? '' : ' unavailable';
+        const statusText = room.available ? '' : ' (NA)';
+        const titleText = room.available
+            ? `${room.number} | ${room.type || 'Standard'} | ${room.ac || 'AC'} | ₹${room.price || 0}`
+            : `${room.number} | ${room.reason || 'Unavailable'}`;
+
+        return `
+            <label class="room-item${unavailableClass}" for="room_${room.id}">
+                <span class="room-title" title="${titleText}">${room.number} ${room.ac || 'AC'}${statusText}</span>
+                <input class="room-check" type="checkbox" name="room_ids" value="${room.id}" id="room_${room.id}" onchange="updateCount()" ${disabled}>
+            </label>
+        `;
+    }).join('');
+
+    applyPreSelection();
+    updateCount();
+    updateRoomSummary(filtered.length, filtered.filter(r => r.available).length);
+}
+
+function updateRoomSummary(shownCount, shownAvailableCount) {
+    const total = availableRoomsData.length;
+    const totalAvailable = availableRoomsData.filter(r => r.available).length;
+    const summary = document.getElementById('room-summary');
+    summary.textContent = `Showing ${shownCount} rooms (${shownAvailableCount} selectable) • Total ${total} (${totalAvailable} selectable)`;
+}
+
+function selectVisibleRooms() {
+    document.querySelectorAll('#room-selection input[name="room_ids"]:not(:disabled)').forEach(cb => {
+        cb.checked = true;
+    });
+    updateCount();
+}
+
+function clearAllRooms() {
+    document.querySelectorAll('#room-selection input[name="room_ids"]').forEach(cb => {
+        cb.checked = false;
+    });
+    updateCount();
+}
+
+function updateCount() {
+    const checked = document.querySelectorAll('input[name="room_ids"]:checked');
+    const countDiv = document.getElementById('selected-count');
+    const countText = document.getElementById('count-text');
+
+    document.querySelectorAll('#room-selection .room-item').forEach(item => {
+        const checkbox = item.querySelector('input[name="room_ids"]');
+        if (checkbox && checkbox.checked) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+    
+    const count = checked.length;
+    countText.textContent = `${count} room${count !== 1 ? 's' : ''} selected`;
+    
+    if (count > 0) {
+        countDiv.style.display = 'block';
+        if (count < 2) {
+            countDiv.style.background = '#fc8181';
+        } else {
+            countDiv.style.background = '#48bb78';
+        }
+    } else {
+        countDiv.style.display = 'none';
+    }
+}
+
+function validateForm() {
+    const checked = document.querySelectorAll('input[name="room_ids"]:checked');
+    if (checked.length < 2) {
+        alert('⚠️ Please select at least 2 rooms for group booking.\n\nFor single room booking, use the regular "Book Room" option.');
+        return false;
+    }
+    return true;
+}
+
+// Rooms to pre-select in edit mode (passed from server)
+const PRE_SELECTED_ROOMS = {{ current_room_ids | tojson if current_room_ids is defined else '[]' }};
+// Group ID being edited (0 if creating new)
+const EDIT_GROUP_ID = {{ group.id if group else 0 }};
+
+// After rooms are rendered, pre-check the ones that were already in the group
+function applyPreSelection() {
+    if (PRE_SELECTED_ROOMS.length === 0) return;
+    PRE_SELECTED_ROOMS.forEach(roomId => {
+        const cb = document.querySelector(`input[name="room_ids"][value="${roomId}"]`);
+        if (cb) cb.checked = true;
+    });
+    updateCount();
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    {% if group %}
+    // Edit mode — dates already pre-filled from server
+    updateAvailableRooms();
+    {% else %}
+    // Create mode — default to today / tomorrow
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('checkin').value = formatDateTime(now);
+    document.getElementById('checkout').value = formatDateTime(tomorrow);
+    updateAvailableRooms();
+    {% endif %}
+});
+
+function formatDateTime(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+</script>
+{% endblock %}

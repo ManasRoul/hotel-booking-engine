@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block extra_style %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/settings.css") }}">
+{% endblock %}
+{% block content %}
+<div class="settings-page">
+    <h2 class="settings-title">⚙️ Settings</h2>
+    
+    <div class="card">
+        <form method="POST">
+            <div class="settings-section">
+                <h3 class="settings-section-title">📅 Calendar Display</h3>
+                
+                <div class="settings-toggle-box">
+                    <label class="settings-toggle-label">
+                        <input type="checkbox" name="show_checkout_indicator" 
+                               {% if user.show_checkout_indicator %}checked{% endif %}
+                               class="settings-toggle-checkbox">
+                        <div>
+                            <div class="settings-toggle-title">Show Checkout Day Indicator</div>
+                            <div class="settings-toggle-desc">
+                                When enabled, checkout days will be highlighted with a half-circle (◐) to indicate when guests are leaving. 
+                                When disabled, checkout days will show as available.
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="settings-info-card">
+                <div class="settings-info-head">
+                    <span class="settings-info-icon">ℹ️</span>
+                    <strong class="settings-info-title">About Checkout Indicators</strong>
+                </div>
+                <p class="settings-info-text">
+                    The checkout day indicator helps you see at a glance when rooms will become available. 
+                    It displays a half-filled circle on the guest's checkout date, making it easy to plan new bookings.
+                </p>
+            </div>
+            
+            <div class="btn-row">
+                <button type="submit" class="btn btn-primary">💾 Save Settings</button>
+                <a href="/" class="btn btn-secondary">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+    
+    <div class="card settings-note-card">
+        <h3 class="settings-note-title">⚠️ Note</h3>
+        <p class="settings-note-text">
+            These settings are personal and will only affect your view of the calendar. 
+            Other users will see the calendar according to their own preferences.
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block extra_style %}
-<link rel="stylesheet" href="{{ url_for("static", filename="css/month.css") }}">
+<link rel="stylesheet" href="{{ url_for("static", filename="css/month.css") }}?v=1782777900">
 {% endblock %}
 
 {% block content %}
@@ -23,7 +23,9 @@
 <div class="legend">
     <span><span class="box" style="background:#f7fafc; border:2px solid #cbd5e0;"></span> Available (Room #)</span>
     <span><span class="box" style="background:#e53e3e;"></span> Booked</span>
+    <span><span class="box" style="background:linear-gradient(135deg, #e53e3e 50%, #f7fafc 50%);"></span> Checkout Day</span>
     <span><span class="box" style="background:#dd6b20;"></span> Blocked</span>
+    <span><span class="box" style="background:linear-gradient(135deg, #dd6b20 50%, #f7fafc 50%);"></span> Block Ends</span>
 </div>
 
 <div class="card" style="overflow-x:auto; padding:2rem;">
@@ -39,9 +41,9 @@
         <tbody>
         {% for room in rooms %}
         <tr>
-            <td class="room-label">{{ room.number }} ({{ room.ac_type }})</td>
+            <td class="room-label">{{ room.number }} ({{ 'N-AC' if room.ac_type == 'Non-AC' else room.ac_type }})</td>
             {% for day in range(1, days_in_month + 1) %}
-                {% set ns = namespace(booked=false, blocked_list=[], guest='') %}
+                {% set ns = namespace(booked=false, blocked_list=[], block_end_list=[], guest='', is_checkout=false) %}
                 {% for b in bookings %}
                     {% if b.room_id == room.id %}
                         {% set day_start = year * 10000 + month * 100 + day %}
@@ -49,6 +51,10 @@
                         {% set b_end = b.checkout.year * 10000 + b.checkout.month * 100 + b.checkout.day %}
                         {% if day_start >= b_start and day_start < b_end %}
                             {% set ns.booked = true %}
+                            {% set ns.guest = b.guest_name %}
+                        {% endif %}
+                        {% if day_start == b_end %}
+                            {% set ns.is_checkout = true %}
                             {% set ns.guest = b.guest_name %}
                         {% endif %}
                     {% endif %}
@@ -61,12 +67,16 @@
                             {% set bl_end = bl.end_date.year * 10000 + bl.end_date.month * 100 + bl.end_date.day %}
                             {% if day_start >= bl_start and day_start < bl_end %}
                                 {% set _ = ns.blocked_list.append(bl) %}
+                            {% elif day_start == bl_end %}
+                                {% set _ = ns.block_end_list.append(bl) %}
                             {% endif %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
                 {% if ns.booked %}
                 <td class="booked" title="{{ ns.guest }}" onclick="showBookingDetails({{ year }}, {{ month }}, {{ day }}, {{ room.id }})">●</td>
+                {% elif ns.is_checkout %}
+                <td class="checkout-day" title="{{ ns.guest }} (checkout)" onclick="showCheckoutBookingDetails({{ year }}, {{ month }}, {{ day }}, {{ room.id }})">◐</td>
                 {% elif ns.blocked_list|length > 0 %}
                 {% set all_blocked_by = ns.blocked_list|map(attribute='blocked_by')|join(', ') %}
                 {% set user_colors = [] %}
@@ -82,6 +92,21 @@
                     {% set bg_style = 'background:linear-gradient(135deg,' + user_colors|join(',') + ')' %}
                 {% endif %}
                 <td class="blocked" title="{{ ns.blocked_list|length }} block(s): {{ all_blocked_by }}" onclick="showBlockedDetails({{ year }}, {{ month }}, {{ day }}, {{ room.id }})" style="{{ bg_style }}; color:white; font-weight:800;">✖{% if ns.blocked_list|length > 1 %}<span style="font-size:0.65rem; font-weight:800; vertical-align:super;">{{ ns.blocked_list|length }}</span>{% endif %}</td>
+                {% elif ns.block_end_list|length > 0 %}
+                {% set all_blocked_by = ns.block_end_list|map(attribute='blocked_by')|join(', ') %}
+                {% set user_colors = [] %}
+                {% for bl in ns.block_end_list %}
+                    {% set user_color = bl.user.color if bl.user else '#dd6b20' %}
+                    {% set _ = user_colors.append(user_color) %}
+                {% endfor %}
+                {% if ns.block_end_list|length == 1 %}
+                    {% set bg_style = 'background:linear-gradient(135deg, ' + user_colors[0] + ' 50%, #f7fafc 50%)' %}
+                {% elif ns.block_end_list|length == 2 %}
+                    {% set bg_style = 'background:linear-gradient(135deg, ' + user_colors[0] + ' 25%, ' + user_colors[1] + ' 25%, ' + user_colors[1] + ' 50%, #f7fafc 50%)' %}
+                {% else %}
+                    {% set bg_style = 'background:linear-gradient(135deg, ' + user_colors|join(' 33%, ') + ' 33%, #f7fafc 50%)' %}
+                {% endif %}
+                <td class="block-end-day" title="Block ends: {{ all_blocked_by }}" onclick="showBlockedDetails({{ year }}, {{ month }}, {{ day }}, {{ room.id }})" style="{{ bg_style }}; color:#dd6b20; font-weight:800;">◐{% if ns.block_end_list|length > 1 %}<span style="font-size:0.65rem; font-weight:800; vertical-align:super;">{{ ns.block_end_list|length }}</span>{% endif %}</td>
                 {% else %}
                 <td class="available">{{ room.number }}</td>
                 {% endif %}
@@ -132,18 +157,22 @@ const bookingsData = [
         room_id: {{ b.room_id }},
         room_number: "{{ b.room.number }}",
         room_type: "{{ b.room.room_type }}",
-        ac_type: "{{ b.room.ac_type }}",
+        ac_type: "{{ 'N-AC' if b.room.ac_type == 'Non-AC' else b.room.ac_type }}",
         guest_name: "{{ b.guest_name }}",
         guest_phone: "{{ b.guest_phone or '' }}",
         id_number: "{{ b.id_number or '' }}",
+        adults: {{ b.adults or 1 }},
+        children: {{ b.children or 0 }},
+        mattress: {{ b.mattress or 0 }},
         checkin: new Date("{{ b.checkin.isoformat() }}"),
         checkout: new Date("{{ b.checkout.isoformat() }}"),
         payment_mode: "{{ b.payment_mode or '' }}",
         payment_type: "{{ b.payment_type or '' }}",
-        total_amount: {{ b.total_amount or 0 }},
-        amount_received: {{ b.amount_received or 0 }},
+        total_amount: {{ (b.booking_group.total_amount if b.group_id and b.booking_group else b.total_amount) or 0 }},
+        amount_received: {{ (b.booking_group.amount_received if b.group_id and b.booking_group else b.amount_received) or 0 }},
         booked_by: "{{ b.booked_by or '' }}",
-        receipt_no: "{{ b.receipt_no or '' }}"
+        receipt_no: "{{ b.receipt_no or '' }}",
+        comments: "{{ (b.booking_group.comments if b.group_id and b.booking_group else b.comments) or '' }}"
     },
     {% endfor %}
 ];
@@ -156,7 +185,7 @@ const blocksData = [
         room_id: {{ bl.room_id }},
         room_number: "{{ bl.room.number }}",
         room_type: "{{ bl.room.room_type }}",
-        ac_type: "{{ bl.room.ac_type }}",
+        ac_type: "{{ 'N-AC' if bl.room.ac_type == 'Non-AC' else bl.room.ac_type }}",
         start_date: new Date("{{ bl.start_date.isoformat() }}"),
         end_date: new Date("{{ bl.end_date.isoformat() }}"),
         blocked_by: "{{ bl.blocked_by or '' }}",
@@ -174,6 +203,33 @@ function showBookingDetails(year, month, day, roomId) {
         return b.room_id === roomId && 
                clickedDate >= new Date(b.checkin.getFullYear(), b.checkin.getMonth(), b.checkin.getDate()) &&
                clickedDate < new Date(b.checkout.getFullYear(), b.checkout.getMonth(), b.checkout.getDate());
+    });
+    
+    if (!booking) return;
+    
+    // Load payment history
+    fetch(`/api/booking-payments/${booking.id}`)
+        .then(r => r.json())
+        .then(payments => {
+            displayBookingWithPayments(booking, payments);
+        })
+        .catch(error => {
+            console.error('Error loading payments:', error);
+            document.getElementById('modalBody').innerHTML = '<p style="color:#e53e3e;">Error loading booking details</p>';
+        });
+    
+    document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function showCheckoutBookingDetails(year, month, day, roomId) {
+    const checkoutDate = new Date(year, month - 1, day);
+    
+    // Find the booking that checks out on this date and room
+    const booking = bookingsData.find(b => {
+        const bookingCheckout = new Date(b.checkout.getFullYear(), b.checkout.getMonth(), b.checkout.getDate());
+        return b.room_id === roomId && 
+               checkoutDate.getTime() === bookingCheckout.getTime();
     });
     
     if (!booking) return;
@@ -231,6 +287,14 @@ function displayBookingWithPayments(booking, payments) {
             <div class="detail-row">
                 <div class="detail-label">Guest Name:</div>
                 <div class="detail-value"><strong>${booking.guest_name}</strong></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Adults / Children:</div>
+                <div class="detail-value"><span style="background:#e6f2ff; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700;">${booking.adults} / ${booking.children}</span></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Extra Mattress:</div>
+                <div class="detail-value"><span style="background:#fff3cd; padding:0.3rem 0.7rem; border-radius:8px; font-weight:700; color:#856404;">${booking.mattress}</span></div>
             </div>
     `;
     
@@ -296,6 +360,15 @@ function displayBookingWithPayments(booking, payments) {
         `;
     }
     
+    if (booking.comments) {
+        html += `
+            <div class="detail-row">
+                <div class="detail-label">Comments:</div>
+                <div class="detail-value" style="font-style:italic; color:#4a5568;">${booking.comments}</div>
+            </div>
+        `;
+    }
+    
     if (payments.length > 0) {
         html += `
             <div class="payment-history">
@@ -315,11 +388,12 @@ function displayBookingWithPayments(booking, payments) {
         `;
     }
     
-    if (remaining > 0) {
-        html += `<button class="btn-add-payment" onclick="showAddPaymentForm(${booking.id}, ${remaining})">💰 Add Payment</button>`;
-    }
-    
     html += `
+        <div style="display:flex; gap:0.5rem; margin-top:1.2rem; flex-wrap:wrap; align-items:center;">
+            <a href="/bookings/edit/${booking.id}" class="btn-add-payment" style="background:#667eea; text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">✏️ Edit Booking</a>
+            ${remaining > 0 ? `<button class="btn-add-payment" onclick="showAddPaymentForm(${booking.id}, ${remaining})">💰 Add Payment</button>` : ''}
+            <button class="btn-add-payment" style="background:#38a169;" onclick="checkoutBooking(${booking.id}, '${booking.guest_name}')">🏁 Checkout</button>
+        </div>
         </div>
         <div id="addPaymentMode" class="edit-form">
             <form id="addPaymentForm" onsubmit="addPayment(event, ${booking.id})">
@@ -352,6 +426,7 @@ function displayBookingWithPayments(booking, payments) {
     
     document.getElementById('modalBody').innerHTML = html;
     document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 function showBlockedDetails(year, month, day, roomId) {
@@ -359,9 +434,11 @@ function showBlockedDetails(year, month, day, roomId) {
     
     // Find ALL blocks for this date and room
     const matchingBlocks = blocksData.filter(bl => {
+        const startDay = new Date(bl.start_date.getFullYear(), bl.start_date.getMonth(), bl.start_date.getDate());
+        const endDay = new Date(bl.end_date.getFullYear(), bl.end_date.getMonth(), bl.end_date.getDate());
         return bl.room_id === roomId && 
-               clickedDate >= new Date(bl.start_date.getFullYear(), bl.start_date.getMonth(), bl.start_date.getDate()) &&
-               clickedDate < new Date(bl.end_date.getFullYear(), bl.end_date.getMonth(), bl.end_date.getDate());
+               clickedDate >= startDay &&
+               clickedDate <= endDay;
     });
     
     if (matchingBlocks.length === 0) return;
@@ -439,11 +516,13 @@ function showBlockedDetails(year, month, day, roomId) {
     document.getElementById('modalTitle').textContent = `🚫 Blocked Room: ${firstBlock.room_number} (${firstBlock.room_type} ${firstBlock.ac_type})`;
     document.getElementById('modalBody').innerHTML = html;
     document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
     document.getElementById('bookingModal').classList.remove('active');
     document.getElementById('modalTitle').textContent = '📋 Booking Details';
+    document.body.style.overflow = '';
 }
 
 // Show booking details by ID (for clicking booking list items)
@@ -463,6 +542,7 @@ function showBookingDetailsById(bookingId) {
         });
     
     document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 function showAddPaymentForm(bookingId, remaining) {
@@ -482,6 +562,7 @@ function addPayment(event, bookingId) {
     
     const form = event.target;
     const formData = new FormData(form);
+    formData.append('csrf_token', document.querySelector('meta[name="csrf-token"]').content);
     
     fetch(`/bookings/update/${bookingId}`, {
         method: 'POST',
@@ -526,6 +607,34 @@ function addPayment(event, bookingId) {
     .catch(error => {
         console.error('Error:', error);
         alert('❌ Error adding payment. Please try again.');
+    });
+}
+
+function checkoutBooking(bookingId, guestName) {
+    if (!confirm(`Check out ${guestName} now?`)) {
+        return;
+    }
+    
+    fetch(`/bookings/checkout/${bookingId}`, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            closeModal();
+            alert(`✅ ${guestName} has been checked out successfully!`);
+            // Reload the page to update the calendar
+            window.location.reload();
+        } else {
+            alert('❌ Error checking out. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('❌ Error checking out. Please try again.');
     });
 }
 
